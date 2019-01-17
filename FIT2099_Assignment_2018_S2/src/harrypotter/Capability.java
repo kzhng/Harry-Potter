@@ -1,7 +1,7 @@
 package harrypotter;
 /**
  * Capabilities that various entities may have.  This is useful in <code>canDo()</code> methods of 
- * <code>HPActionInterface</code> implementations.
+ * <code>HPActionInterface</code> implementations. 
  *  
  * @author 	ram
  * @see 	HPActionInterface
