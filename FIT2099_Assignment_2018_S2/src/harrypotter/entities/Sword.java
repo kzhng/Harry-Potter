@@ -44,7 +44,7 @@ public class Sword extends HPEntity {
 	 * A symbol that is used to represent the Sword on a text based user interface
 	 * 
 	 * @return 	A String containing a single character.
-	 * @see 	{@link harrypotter.HPEntityInterface#getSymbol()}
+	 * @see 	{@link harrypotter.HPEntityInterface#getSymbol()} 
 	 */
 	@Override
 	public String getSymbol() {
