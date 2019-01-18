@@ -55,7 +55,8 @@
     </coordinates>
     <panel_attributes>harrypotter.entities.actors.behaviors
 --
-</panel_attributes>
+
+bg=green</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -79,7 +80,8 @@ m1=1</panel_attributes>
       <h>560</h>
     </coordinates>
     <panel_attributes>harrypotter.entities.actors
---</panel_attributes>
+--
+bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -581,7 +583,9 @@ Sectumsempra
 Avada Kedavra
 Protego
 
-bg=gray</panel_attributes>
+bg=gray
+
+// might need to delte this , not related , </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
