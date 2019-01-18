@@ -251,33 +251,6 @@ bg=gray</panel_attributes>
     <additional_attributes>10.0;100.0;200.0;10.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>910</x>
-      <y>450</y>
-      <w>100</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>Drink
-
-bg=gray
-
-//drink potion</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>710</x>
-      <y>360</y>
-      <w>220</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-</panel_attributes>
-    <additional_attributes>10.0;10.0;200.0;110.0</additional_attributes>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
       <x>710</x>
