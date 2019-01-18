@@ -4,7 +4,7 @@ import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 
 /**
  * This class represents "legends" - major characters - in the Harry Potter universe.  
- * They use a variation of the Singleton
+ * They use a variation of the Singleton 
  * pattern to ensure that only ONE of each legend can exist.
  * 
  * Subclasses are intended to contain a static instance which represents the one

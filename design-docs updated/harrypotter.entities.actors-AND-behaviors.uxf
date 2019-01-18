@@ -313,7 +313,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>130</x>
-      <y>230</y>
+      <y>220</y>
       <w>200</w>
       <h>30</h>
     </coordinates>
@@ -401,9 +401,9 @@ m2=1
     <id>UMLClass</id>
     <coordinates>
       <x>270</x>
-      <y>590</y>
+      <y>580</y>
       <w>100</w>
-      <h>30</h>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Player</panel_attributes>
     <additional_attributes/>
@@ -414,10 +414,10 @@ m2=1
       <x>60</x>
       <y>390</y>
       <w>230</w>
-      <h>230</h>
+      <h>220</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;210.0;210.0;210.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;200.0;210.0;200.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -466,8 +466,8 @@ m2=1
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>1360</x>
-      <y>0</y>
+      <x>1050</x>
+      <y>70</y>
       <w>250</w>
       <h>90</h>
     </coordinates>
@@ -565,46 +565,24 @@ bg=gray</panel_attributes>
     <additional_attributes>210.0;120.0;210.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>150</x>
-      <y>40</y>
-      <w>1250</w>
-      <h>230</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-
-//removed it because, they should not be related
-</panel_attributes>
-    <additional_attributes>10.0;40.0;10.0;20.0;1230.0;20.0;1230.0;210.0;1200.0;210.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1090</x>
-      <y>90</y>
+      <x>170</x>
+      <y>720</y>
       <w>140</w>
-      <h>90</h>
+      <h>130</h>
     </coordinates>
     <panel_attributes>&lt;&lt;enumeration&gt;&gt;
 Spells
 --
-AVADA KADAVRA
-EXPELLIAMUS
+Expelliarmus
+Immobulus
+Sectumsempra
+Avada Kedavra
+Protego
 
 bg=gray</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1220</x>
-      <y>120</y>
-      <w>50</w>
-      <h>140</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;</panel_attributes>
-    <additional_attributes>30.0;120.0;30.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -663,5 +641,40 @@ bg=gray
     </coordinates>
     <panel_attributes>lt=.&gt;</panel_attributes>
     <additional_attributes>150.0;10.0;150.0;50.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>230</y>
+      <w>110</w>
+      <h>510</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>90.0;10.0;10.0;10.0;10.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>610</y>
+      <w>30</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>10</x>
+      <y>150</y>
+      <w>280</w>
+      <h>470</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+//not sure if we should include this dependency</panel_attributes>
+    <additional_attributes>260.0;450.0;10.0;450.0;10.0;10.0;30.0;10.0</additional_attributes>
   </element>
 </diagram>
