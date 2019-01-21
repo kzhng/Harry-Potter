@@ -633,8 +633,8 @@ fg=orange</panel_attributes>
       <h>70</h>
     </coordinates>
     <panel_attributes>&lt;&lt;enum&gt;&gt;
-fg=orange
-Spells</panel_attributes>
+bg=gray
+Spells </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
