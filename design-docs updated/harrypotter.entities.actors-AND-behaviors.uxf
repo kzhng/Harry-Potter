@@ -502,7 +502,7 @@ bg=gray</panel_attributes>
       <w>180</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>Cast 
+    <panel_attributes>Cast
 
 bg=gray</panel_attributes>
     <additional_attributes/>
@@ -613,6 +613,31 @@ fg=magenta</panel_attributes>
     <panel_attributes>lt=.&gt;
 fg=magenta</panel_attributes>
     <additional_attributes>10.0;10.0;320.0;10.0;320.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>140</x>
+      <y>660</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Potion
+bg=gray
+
+//player is the only one with hitpoints</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>230</x>
+      <y>620</y>
+      <w>170</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>150.0;10.0;150.0;50.0;10.0;50.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
