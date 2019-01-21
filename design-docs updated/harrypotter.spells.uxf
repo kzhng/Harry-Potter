@@ -467,10 +467,10 @@ m1=0..*
     <coordinates>
       <x>700</x>
       <y>250</y>
-      <w>290</w>
+      <w>280</w>
       <h>320</h>
     </coordinates>
     <panel_attributes>lt=&lt;..</panel_attributes>
-    <additional_attributes>10.0;300.0;270.0;300.0;270.0;10.0;240.0;10.0</additional_attributes>
+    <additional_attributes>10.0;300.0;260.0;300.0;260.0;10.0;240.0;10.0</additional_attributes>
   </element>
 </diagram>
