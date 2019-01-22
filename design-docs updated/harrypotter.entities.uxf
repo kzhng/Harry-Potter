@@ -173,11 +173,12 @@ fg=orange</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>910</x>
-      <y>260</y>
-      <w>100</w>
-      <h>30</h>
+      <y>250</y>
+      <w>110</w>
+      <h>40</h>
     </coordinates>
-    <panel_attributes>Capability</panel_attributes>
+    <panel_attributes>&lt;&lt;enum&gt;&gt;
+Capability</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
