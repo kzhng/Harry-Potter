@@ -229,7 +229,7 @@ bg=gray</panel_attributes>
       <h>110</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
-bg=green</panel_attributes>
+fg=yellow</panel_attributes>
     <additional_attributes>10.0;10.0;170.0;90.0</additional_attributes>
   </element>
   <element>
