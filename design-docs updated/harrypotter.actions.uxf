@@ -489,19 +489,6 @@ fg=magenta</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>540</x>
-      <y>50</y>
-      <w>440</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-
-fg=orange</panel_attributes>
-    <additional_attributes>10.0;60.0;10.0;20.0;420.0;20.0;420.0;80.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
       <x>290</x>
       <y>220</y>
       <w>480</w>
@@ -597,32 +584,6 @@ fg=green</panel_attributes>
     <panel_attributes>lt=&lt;&lt;-
 fg=orange</panel_attributes>
     <additional_attributes>10.0;320.0;140.0;320.0;140.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1020</x>
-      <y>140</y>
-      <w>280</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-
-fg=orange</panel_attributes>
-    <additional_attributes>260.0;110.0;260.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>990</x>
-      <y>150</y>
-      <w>220</w>
-      <h>490</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-
-fg=orange</panel_attributes>
-    <additional_attributes>200.0;470.0;10.0;470.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
