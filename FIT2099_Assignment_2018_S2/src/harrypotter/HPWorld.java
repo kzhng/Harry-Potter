@@ -1,5 +1,5 @@
 package harrypotter;
-
+import java.util.ArrayList;
 import edu.monash.fit2099.gridworld.Grid.CompassBearing;
 import edu.monash.fit2099.simulator.matter.Affordance;
 import edu.monash.fit2099.simulator.matter.EntityManager;
@@ -7,6 +7,7 @@ import edu.monash.fit2099.simulator.space.Direction;
 import edu.monash.fit2099.simulator.space.Location;
 import edu.monash.fit2099.simulator.space.World;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.actions.Leave;
 import harrypotter.actions.Take;
 import harrypotter.entities.*;
 import harrypotter.entities.actors.*;
@@ -29,6 +30,11 @@ public class HPWorld extends World {
 	 * <code>HPGrid</code> of this <code>HPWorld</code>
 	 */
 	private HPGrid myGrid;
+	public ArrayList<HPEntity> itemsExist = new ArrayList<HPEntity>(); //list of all items in the grid
+	
+	public ArrayList<HPEntity> getItems(){
+		return itemsExist;
+	}
 	
 	/**The entity manager of the world which keeps track of <code>HPEntities</code> and their <code>HPLocation</code>s*/
 	private static final EntityManager<HPEntityInterface, HPLocation> entityManager = new EntityManager<HPEntityInterface, HPLocation>();
@@ -194,7 +200,7 @@ public class HPWorld extends World {
 		Sword sword = new Sword(iface);
 		entityManager.setLocation(sword, loc);
 		entityManager.setLocation(dumbledore, loc);
-		// Use the sword's Take affordance to give it to Dumbledore, so all necessary things get done
+	// Use the sword's Take affordance to give it to Dumbledore, so all necessary things get done
 		// Quite hacky. Is there a better way?
 		Affordance[] affordances = sword.getAffordances();
 		for(int i = 0; i < affordances.length; i++) {
@@ -211,6 +217,14 @@ public class HPWorld extends World {
 		harry.setShortDescription("Harry");
 		harry.setLongDescription("Harry Potter, the boy who lived");
 		entityManager.setLocation(harry, loc);
+		Wand wand = new Wand(iface);
+		harry.setItemCarried(wand);
+		for (Affordance a : wand.getAffordances()){
+			if (a instanceof Take){
+				wand.removeAffordance(a);
+			}	
+		}
+		wand.addAffordance(new Leave(wand, iface));
 		harry.resetMoveCommands(loc);
 		
 		/*
@@ -226,6 +240,7 @@ public class HPWorld extends World {
 		dagger.addAffordance(new Take(dagger, iface));
 		dagger.capabilities.add(Capability.WEAPON);
 		entityManager.setLocation(dagger, loc);
+		itemsExist.add(dagger);
 
 		// a ring
 		loc = myGrid.getLocationByCoordinates(1,5);
@@ -237,6 +252,8 @@ public class HPWorld extends World {
 		// add a Take affordance to the ring, so that an actor can take it
 		ring.addAffordance(new Take(ring, iface));
 		entityManager.setLocation(ring, loc);
+		itemsExist.add(ring);//mmoh
+
 		
 		// an axe
 		loc = myGrid.getLocationByCoordinates(2,8);
@@ -250,7 +267,8 @@ public class HPWorld extends World {
 		// add a Take affordance to the oil axe, so that an actor can take it
 		axe.addAffordance(new Take(axe, iface));
 		entityManager.setLocation(axe, loc);
-		
+		itemsExist.add(axe);
+				
 		// Some Death Eaters
 		DeathEater deathEater = new DeathEater(10, iface, this);
 		deathEater.setSymbol("E");
@@ -340,7 +358,19 @@ public class HPWorld extends World {
 	public EntityManager<HPEntityInterface, HPLocation> getEntityManager() {
 		return HPWorld.getEntitymanager();
 	}
-
+	
+	/**
+	 * Returns the <code>EntityManager</code> which keeps track of the <code>HPEntities</code> and
+	 * <code>HPLocations</code> in <code>HPWorld</code>.
+	 * 
+	 * @return 	the <code>EntityManager</code> of this <code>HPWorld</code>
+	 * @param 	e the entity to find
+	 * @see 	{@link #entityManager}
+	 */
+	public static EntityManager<HPEntityInterface, HPLocation> myEntitymanager(HPEntityInterface e) {
+		return entityManager;
+	}
+//mmoh
 	/**
 	 * Returns the <code>EntityManager</code> which keeps track of the <code>HPEntities</code> and
 	 * <code>HPLocations</code> in <code>HPWorld</code>.
@@ -350,5 +380,17 @@ public class HPWorld extends World {
 	 */
 	public static EntityManager<HPEntityInterface, HPLocation> getEntitymanager() {
 		return entityManager;
+	}
+	
+//mmoh
+	
+	/**
+	 * Makes all entities in HPWorld and Tunnel tick, and carry out their actions 
+	 * 
+	 * @param <code>HPEntityInterface</code> e that represents the entity requesting the EntityManager
+	 */
+	@Override
+	public void tick() {
+		entityManager.tick();
 	}
 }
