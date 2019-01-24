@@ -79,6 +79,8 @@ public class Take extends HPAffordance {
 			
 			//remove the take affordance
 			target.removeAffordance(this);
+			target.addAffordance(new Leave(theItem, messageRenderer)); //kzhe added leave affordance to the item so that you can repeatedly leave
+			// and take an item
 		}
 	}
 
