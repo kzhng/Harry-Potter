@@ -10,4 +10,5 @@ package harrypotter;
 public enum Capability {
 	CHOPPER,//CHOPPER capability allows an entity to Chop another entity which has the Chop Affordance
 	WEAPON,//WEAPON capability allows an entity to Attack another entity which has the Attack Affordance
+	HEALTH,//hEALTH capability allow an entity to increase its health
 }

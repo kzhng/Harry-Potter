@@ -25,6 +25,7 @@ import edu.monash.fit2099.simulator.space.Location;
 import edu.monash.fit2099.simulator.time.Scheduler;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 import harrypotter.actions.Attack;
+import harrypotter.actions.Give;
 import harrypotter.actions.Move;
 
 public abstract class HPActor extends Actor<HPActionInterface> implements HPEntityInterface {
@@ -34,6 +35,9 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	
 	/**The amount of <code>hitpoints</code> of this actor. If the hitpoints are zero or less this <code>Actor</code> is dead*/
 	private int hitpoints;
+
+	/**The <code>maxHitpoints</code> of this actor. Health cannot increase beyond this maximum, when initialized its the same as hitpoints*/
+	private int maxHitpoints;
 	
 	/**The world this <code>HPActor</code> belongs to.*/
 	protected HPWorld world;
@@ -79,12 +83,16 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		actions = new HashSet<HPActionInterface>();
 		this.team = team;
 		this.hitpoints = hitpoints;
+		this.maxHitpoints = hitpoints;
 		this.world = world;
 		this.symbol = "@";
 		
 		//HPActors are given the Attack affordance hence they can be attacked
 		HPAffordance attack = new Attack(this, m);
 		this.addAffordance(attack);
+		//HPActors are given the Give affordance hence they can give items to other actors
+		HPAffordance give = new Give(this, m);
+		this.addAffordance(give);
 	}
 	
 	/**
@@ -119,6 +127,28 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	@Override
 	public int getHitpoints() {
 		return hitpoints;
+	}
+
+	/**
+	 * @param sets hitpoints to this <code>HPActor</code> 
+	 */
+	private void setHitpoints(int hitpoints) {
+		this.hitpoints = hitpoints;
+	}
+	
+	/**
+	 * adds hitpoints to this <code>HPActor</code> 
+	 * @param the hit points from the health potion
+	 */	
+	public void addHitpoints(int potionHitpoints) {
+		//Precondition 1: Ensure the added hitpoints is not negative. Negative hitpoints could decrease the HPActor's hitpoints
+		assert (potionHitpoints >= 0)	:"damage on HPActor must not be negative";
+		
+		this.setHitpoints(this.hitpoints + potionHitpoints);
+		
+		if(this.hitpoints > this.maxHitpoints) {
+			this.setHitpoints(maxHitpoints);
+		}
 	}
 
 	/**

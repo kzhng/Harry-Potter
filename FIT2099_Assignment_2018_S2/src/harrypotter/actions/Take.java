@@ -1,6 +1,7 @@
 package harrypotter.actions;
 
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.Capability;
 import harrypotter.HPAction;
 import harrypotter.HPActor;
 import harrypotter.HPAffordance;
@@ -64,8 +65,16 @@ public class Take extends HPAffordance {
 	@Override
 	public void act(HPActor a) {
 		if (target instanceof HPEntityInterface) {
+			
 			HPEntityInterface theItem = (HPEntityInterface) target;
-			a.setItemCarried(theItem);
+			
+			if (((HPEntityInterface) target).hasCapability(Capability.HEALTH)) {	// adding health is done upon taking the item
+				a.addHitpoints(theItem.getHitpoints());
+				a.say("\t" + a.getShortDescription() + " says: what " + theItem.getShortDescription() + ", wummy wummy.");
+			}
+			else {
+				a.setItemCarried(theItem);
+			}
 			HPAction.getEntitymanager().remove(target);//remove the target from the entity manager since it's now held by the HPActor
 			
 			//remove the take affordance
