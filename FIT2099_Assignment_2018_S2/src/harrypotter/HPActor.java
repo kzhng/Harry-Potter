@@ -25,8 +25,9 @@ import edu.monash.fit2099.simulator.space.Location;
 import edu.monash.fit2099.simulator.time.Scheduler;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 import harrypotter.actions.Attack;
-import harrypotter.actions.Give;
+import harrypotter.actions.Cast;
 import harrypotter.actions.Move;
+import harrypotter.actions.Give;
 
 public abstract class HPActor extends Actor<HPActionInterface> implements HPEntityInterface {
 	
@@ -35,10 +36,10 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	
 	/**The amount of <code>hitpoints</code> of this actor. If the hitpoints are zero or less this <code>Actor</code> is dead*/
 	private int hitpoints;
-
+	
 	/**The <code>maxHitpoints</code> of this actor. Health cannot increase beyond this maximum, when initialized its the same as hitpoints*/
 	private int maxHitpoints;
-	
+
 	/**The world this <code>HPActor</code> belongs to.*/
 	protected HPWorld world;
 	
@@ -57,6 +58,11 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	/**A set of <code>Capabilities</code> of this <code>HPActor</code>*/
 	private HashSet<Capability> capabilities;
 	
+	/**An ArrayList of <code>Spells</code> known to this <code>HPActor</code>, has to be learned when populating the HPWorld*/
+	private ArrayList<Spell> knownSpells;
+	
+	/** An ArrayList of <code>HPEntity</code> seen by the <code>HPctor</code>**/
+	private ArrayList<HPEntity> seenItems;
 	/**
 	 * Constructor for the <code>HPActor</code>.
 	 * <p>
@@ -86,13 +92,20 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		this.maxHitpoints = hitpoints;
 		this.world = world;
 		this.symbol = "@";
+		this.knownSpells = new ArrayList<Spell>();
+		this.seenItems = new ArrayList<HPEntity>();
 		
 		//HPActors are given the Attack affordance hence they can be attacked
 		HPAffordance attack = new Attack(this, m);
 		this.addAffordance(attack);
-		//HPActors are given the Give affordance hence they can give items to other actors
+		
+		//HPActors are given the Cast affordance hence they can be casted on
+		HPAffordance cast = new Cast(this, null, m, true);	
+		this.addAffordance(cast);
+		
 		HPAffordance give = new Give(this, m);
 		this.addAffordance(give);
+
 	}
 	
 	/**
@@ -151,6 +164,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		}
 	}
 
+	
 	/**
 	 * Returns an ArrayList containing this Actor's available Actions, including the Affordances of items
 	 * that the Actor is holding.
@@ -301,9 +315,32 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		// TODO: This assumes that the only actions are the Move actions. This will clobber any others. Needs to be fixed.
 		/* Actually, that's not the case: all non-movement actions are transferred to newActions before the movements are transferred. --ram */
 	}
-
-
 	
+	/**
+	 * This method returns the list of Spells learned by the <code>HPActor</code>.
+	 *  
+	 *  @return an ArrayList of <code>Spell</code>
+	 */
+	public ArrayList<Spell> getSpells(){
+		return knownSpells;
+	}
 	
+	/**
+	 * This method allows a <code>HPActor</code> to learn a Spell.
+	 *  
+	 *  @param newSpell a <code>Spell</code> to be 'taught' to this <code>HPActor</code>
+	 */
+	public void learnSpell(Spell newSpell){
+		knownSpells.add(newSpell);
+	}
 	
+	/**
+	 * This method returns an ArrayList of HPEntity which represents the items seen by the HPActor
+	 *  
+	 *  @return ArrayList<HPEntity> of seen items
+	 */
+	public ArrayList<HPEntity> returnSeenItems(){
+		ArrayList<HPEntity>  tempSeenItems= new ArrayList<HPEntity>(seenItems);
+		return tempSeenItems;
+	}	
 }
