@@ -1,9 +1,9 @@
 package harrypotter.entities.actors;
 
-
 import java.util.List;
 
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.HPActionInterface;
 import harrypotter.HPActor;
 import harrypotter.HPEntityInterface;
 import harrypotter.HPLocation;
@@ -57,9 +57,23 @@ public class Player extends HPActor {
 	@Override
 	public void act() {	
 		describeScene();
-		scheduler.schedule(HPGridController.getUserDecision(this), this, 1);
+		HPActionInterface userDecision = HPGridController.getUserDecision(this);
+		boolean isActionValid = true;
 		
+		if (userDecision.isCastCommand()){
+			if(!this.getSpells().isEmpty()){
+					userDecision = HPGridController.getTargetSpell(userDecision, this);
+		} else {
+				this.say(this.getShortDescription() + " does not know any spells! No action done.");
+				isActionValid = false;
+			}
+		}
+		
+		if (isActionValid){
+			scheduler.schedule(userDecision, this, 1);
+		}			
 	}
+	
 	/**
 	 * This method will describe, 
 	 * <ul>
