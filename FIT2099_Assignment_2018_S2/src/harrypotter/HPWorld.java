@@ -7,11 +7,10 @@ import edu.monash.fit2099.simulator.space.Direction;
 import edu.monash.fit2099.simulator.space.Location;
 import edu.monash.fit2099.simulator.space.World;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
-import harrypotter.actions.Give;
-import harrypotter.actions.Leave;
-import harrypotter.actions.Take;
+import harrypotter.actions.*;
 import harrypotter.entities.*;
 import harrypotter.entities.actors.*;
+import harrypotter.spells.*;
 
 /**
  * Class representing a world in the Harry Potter universe. 
@@ -191,7 +190,7 @@ public class HPWorld extends World {
 		
 		// Dumbledore
 		loc = myGrid.getLocationByCoordinates(4,  5);
-		Direction [] patrolmoves = {CompassBearing.EAST, CompassBearing.WEST, //mh changed from CompassBearing.EAST, CompassBearing.east
+		Direction [] patrolmoves = {CompassBearing.EAST, CompassBearing.EAST,
                 /*CompassBearing.SOUTH,
                 CompassBearing.WEST, CompassBearing.WEST,
                 CompassBearing.SOUTH,
@@ -199,23 +198,23 @@ public class HPWorld extends World {
                 CompassBearing.NORTHWEST, CompassBearing.NORTHWEST*/};
 		Dumbledore dumbledore = Dumbledore.getDumbledore(iface, this, patrolmoves);
 		Sword sword = new Sword(iface);
-		//sword.addAffordance(new Give(sword, iface));
 		entityManager.setLocation(sword, loc);
 		entityManager.setLocation(dumbledore, loc);
 		// Use the sword's Take affordance to give it to Dumbledore, so all necessary things get done
 		// Quite hacky. Is there a better way?
 		Affordance[] affordances = sword.getAffordances();
 		for(int i = 0; i < affordances.length; i++) {
-			if (affordances[i] instanceof Take && false) {	//mh added && false for testing
+			if (affordances[i] instanceof Take) {
 				affordances[i].execute(dumbledore);
 				break;
 			}
-		}		
+		}
 		
-		loc = myGrid.getLocationByCoordinates(4,5);	//mh changed from (5,9)
+		
+		loc = myGrid.getLocationByCoordinates(5,9);
 		
 		// Harry
-		Player harry = new Player(Team.GOOD, 100, iface, this);
+		Player harry = new Player(Team.EVIL, 100, iface, this);
 		harry.setShortDescription("Harry");
 		harry.setLongDescription("Harry Potter, the boy who lived");
 		entityManager.setLocation(harry, loc);
@@ -227,6 +226,10 @@ public class HPWorld extends World {
 			}	
 		}
 		wand.addAffordance(new Leave(wand, iface));
+		wand.capabilities.add(Capability.CASTING);
+		harry.learnSpell(new AvadaKedavra());
+		harry.learnSpell(new Expelliarmus());
+		harry.learnSpell(new Expelliarmus2());
 		harry.resetMoveCommands(loc);
 		
 		/*
@@ -240,7 +243,6 @@ public class HPWorld extends World {
 		dagger.setLongDescription("an old, blunt dagger");
 		dagger.setHitpoints(10);
 		dagger.addAffordance(new Take(dagger, iface));
-		//dagger.addAffordance(new Give(dagger, iface));	//mh will probably remove
 		dagger.capabilities.add(Capability.WEAPON);
 		entityManager.setLocation(dagger, loc);
 		itemsExist.add(dagger);
@@ -272,12 +274,6 @@ public class HPWorld extends World {
 		entityManager.setLocation(axe, loc);
 		itemsExist.add(axe);
 				
-		// a health potion
-		loc = myGrid.getLocationByCoordinates(4,7);
-		Potion potion = new Potion(iface);
-		entityManager.setLocation(potion, loc);
-		
-		
 		// Some Death Eaters
 		DeathEater deathEater = new DeathEater(10, iface, this);
 		deathEater.setSymbol("E");
@@ -288,18 +284,7 @@ public class HPWorld extends World {
 		deathEater.setSymbol("E");
 		loc = myGrid.getLocationByCoordinates(5,2);
 		entityManager.setLocation(deathEater, loc);
-
-		// Some Dementor
-		Dementor dementor = new Dementor(40, iface, this);
-		dementor.setSymbol("Z");
-		loc = myGrid.getLocationByCoordinates(4,4);
-		entityManager.setLocation(dementor, loc);
 		
-//		dementor = new Dementor(40, iface, this);
-//		dementor.setSymbol("Z");
-//		loc = myGrid.getLocationByCoordinates(5,5);
-//		entityManager.setLocation(dementor, loc);
-				
 		// Whomping Willow
 		loc = myGrid.getLocationByCoordinates(7, 4);
 		HPEntity whompingwillow = new HPEntity(iface);
@@ -390,7 +375,7 @@ public class HPWorld extends World {
 	public static EntityManager<HPEntityInterface, HPLocation> myEntitymanager(HPEntityInterface e) {
 		return entityManager;
 	}
-//mmoh
+	
 	/**
 	 * Returns the <code>EntityManager</code> which keeps track of the <code>HPEntities</code> and
 	 * <code>HPLocations</code> in <code>HPWorld</code>.
@@ -402,7 +387,6 @@ public class HPWorld extends World {
 		return entityManager;
 	}
 	
-//mmoh
 	
 	/**
 	 * Makes all entities in HPWorld and Tunnel tick, and carry out their actions 
