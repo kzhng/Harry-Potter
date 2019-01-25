@@ -229,7 +229,6 @@ public class HPWorld extends World {
 		wand.capabilities.add(Capability.CASTING);
 		harry.learnSpell(new AvadaKedavra());
 		harry.learnSpell(new Expelliarmus());
-		harry.learnSpell(new Expelliarmus2());
 		harry.resetMoveCommands(loc);
 		
 		/*
