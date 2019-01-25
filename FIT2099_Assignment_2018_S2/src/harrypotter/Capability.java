@@ -1,7 +1,7 @@
 package harrypotter;
 /**
  * Capabilities that various entities may have.  This is useful in <code>canDo()</code> methods of 
- * <code>HPActionInterface</code> implementations. 
+ * <code>HPActionInterface</code> implementations.
  *  
  * @author 	ram
  * @see 	HPActionInterface
@@ -10,5 +10,6 @@ package harrypotter;
 public enum Capability {
 	CHOPPER,//CHOPPER capability allows an entity to Chop another entity which has the Chop Affordance
 	WEAPON,//WEAPON capability allows an entity to Attack another entity which has the Attack Affordance
-	HEALTH,//hEALTH capability allow an entity to increase its health
+	CASTING, //CASTING capability allows an entity to Cast Spells on another entity which has the Cast Affordance
+	HEALTH//hEALTH capability allow an entity to increase its health
 }
