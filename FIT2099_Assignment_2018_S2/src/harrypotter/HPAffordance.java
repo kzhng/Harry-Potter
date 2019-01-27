@@ -48,7 +48,11 @@ public abstract class HPAffordance extends Affordance implements HPActionInterfa
 	public boolean isMoveCommand() {
 		return false;
 	}
-
+	
+	@Override
+	public boolean isCastCommand() {
+		return false;
+	}
 
 	@Override
 	public int getDuration() {

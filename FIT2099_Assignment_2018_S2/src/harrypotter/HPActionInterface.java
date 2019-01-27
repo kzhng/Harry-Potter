@@ -10,8 +10,11 @@ import edu.monash.fit2099.simulator.matter.ActionInterface;
  */
 public interface HPActionInterface extends ActionInterface {
 	
-	/**Returns if or not the action is a move command. Returns true if so, false otherwise*/ 
+	/**Returns if or not the action is a move command. Returns true if so, false otherwise*/
 	public boolean isMoveCommand();
+	
+	/**Returns if or not the action is a cast command. Returns true if so, false otherwise*/
+	public boolean isCastCommand();
 	
 	/**
 	 * Returns if the given <code>HPActor a</code> can perform this action

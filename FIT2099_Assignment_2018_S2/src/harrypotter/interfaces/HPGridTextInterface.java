@@ -13,6 +13,7 @@ import harrypotter.HPEntityInterface;
 import harrypotter.HPGrid;
 import harrypotter.HPLocation;
 import harrypotter.HPWorld;
+import harrypotter.Spell;
 
 /**
  * This is the text based user interface for the simulation. Is responsible for outputting a 
@@ -185,5 +186,34 @@ public class HPGridTextInterface implements GridRenderer {
 		return cmds.get(selection-1);//return the action selected		
 	}
  	
+	/**
+	 * Will return a Spell selected by the user.
+	 * <p>
+	 * This method will provide the user interface with a list of Spells from which the user 
+	 * needs to select one from and will return this selection.	
+	 * 
+	 * @param 	an ArrayList of <code>Spell</code>
+	 * @return	the selected Spell
+	 */
+	public Spell getSpellSelection(ArrayList<Spell> listOfSpells) {
+		
+		//construct the Spells to be displayed in the console
+		for (int i = 0; i < listOfSpells.size(); i++) {
+			System.out.println(i + 1 + " " + listOfSpells.get(i).getDescription());
+		}
+		
+		int selection = 0; //set to zero to trigger the loop
+		while (selection < 1 || selection > listOfSpells.size()) {//loop until a valid command has been obtained
+			System.out.println("Enter command:");
+			
+			try{
+				selection = (instream.nextInt());
+			}catch (InputMismatchException e) { //catching any non integer inputs
+			    instream.next(); // this consumes the invalid input
+			}
+		}	
+	
+		return listOfSpells.get(selection-1);//return the spell selected		
+	}
 
 }

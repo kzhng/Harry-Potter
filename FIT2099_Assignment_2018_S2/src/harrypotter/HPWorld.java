@@ -7,12 +7,10 @@ import edu.monash.fit2099.simulator.space.Direction;
 import edu.monash.fit2099.simulator.space.Location;
 import edu.monash.fit2099.simulator.space.World;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
-import harrypotter.actions.Drink;
-import harrypotter.actions.Give;
-import harrypotter.actions.Leave;
-import harrypotter.actions.Take;
+import harrypotter.actions.*;
 import harrypotter.entities.*;
 import harrypotter.entities.actors.*;
+import harrypotter.spells.*;
 
 /**
  * Class representing a world in the Harry Potter universe. 
@@ -72,6 +70,7 @@ public class HPWorld extends World {
 		return space.getWidth();
 	}
 	
+	/**
 	/**
 	 * Set up the world, setting descriptions for locations and placing items and actors
 	 * on the grid.
@@ -200,7 +199,6 @@ public class HPWorld extends World {
                 CompassBearing.NORTHWEST, CompassBearing.NORTHWEST*/};
 		Dumbledore dumbledore = Dumbledore.getDumbledore(iface, this, patrolmoves);
 		Sword sword = new Sword(iface);
-		//sword.addAffordance(new Give(sword, iface));
 		entityManager.setLocation(sword, loc);
 		entityManager.setLocation(dumbledore, loc);
 		// Use the sword's Take affordance to give it to Dumbledore, so all necessary things get done
@@ -211,7 +209,8 @@ public class HPWorld extends World {
 				affordances[i].execute(dumbledore);
 				break;
 			}
-		}		
+		}
+		
 		
 		loc = myGrid.getLocationByCoordinates(4,5);	//mh changed from (5,9)
 		
@@ -228,6 +227,9 @@ public class HPWorld extends World {
 			}	
 		}
 		wand.addAffordance(new Leave(wand, iface));
+		wand.capabilities.add(Capability.CASTING);
+		harry.learnSpell(new AvadaKedavra());
+		harry.learnSpell(new Expelliarmus());
 		harry.resetMoveCommands(loc);
 		
 		/*
@@ -241,7 +243,6 @@ public class HPWorld extends World {
 		dagger.setLongDescription("an old, blunt dagger");
 		dagger.setHitpoints(10);
 		dagger.addAffordance(new Take(dagger, iface));
-		//dagger.addAffordance(new Give(dagger, iface));	//mh will probably remove
 		dagger.capabilities.add(Capability.WEAPON);
 		entityManager.setLocation(dagger, loc);
 		itemsExist.add(dagger);

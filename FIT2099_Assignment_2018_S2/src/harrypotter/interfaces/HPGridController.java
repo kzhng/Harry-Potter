@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import edu.monash.fit2099.gridworld.GridController;
 import edu.monash.fit2099.gridworld.GridRenderer;
 import edu.monash.fit2099.simulator.matter.ActionInterface;
+import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.Capability;
 import harrypotter.HPActionInterface;
 import harrypotter.HPActor;
 import harrypotter.HPGrid;
 import harrypotter.HPWorld;
+import harrypotter.Spell;
+import harrypotter.actions.Cast;
 
 /**
  * Concrete implementation of the <code>GridController</code>.
@@ -90,5 +94,78 @@ public class HPGridController implements GridController {
 		//cast and return selection
 		return (HPActionInterface)selectedAction;
 	}
+
+	/**
+	 * Will return a Action selected by the user.
+	 * <p>
+	 * This method will provide the user interface with a list of commands from which the user 
+	 * needs to select one from and will return this selection.	
+	 * 
+	 * @param 	a the <code>HPActor</code> for whom an Action needs to be selected
+	 * @return	the selected action for the <code>HPActor a</code>
+	 */
+	public static HPActionInterface getUserDecision(HPActor a, MessageRenderer m) {
+		
+		//this list will store all the commands that HPActor a can perform
+		ArrayList<ActionInterface> cmds = new ArrayList<ActionInterface>();
+
+		//Get all the actions the HPActor a can perform
+		for (HPActionInterface ac : HPWorld.getEntitymanager().getActionsFor(a)) {
+			if (ac.canDo(a))
+				cmds.add(ac);
+		}
+		
+		if (a.getItemCarried() != null){
+			if (a.getItemCarried().hasCapability(Capability.CASTING)){
+				for (Spell s : a.getSpells()){
+					if (!s.affectActor()){
+						cmds.add(new Cast(null, s, m, false));
+					}
+				}
+			}
+		}
+		
+		//Get the UI to display the commands to the user and get a selection
+		//TO DO: Ensure the cmd list is not empty to avoid an infinite wait
+		assert (cmds.size()>0): "No commands for Harry Potter Actor";
+		
+		ActionInterface selectedAction = ui.getSelection(cmds);
+		
+		//cast and return selection
+		return (HPActionInterface)selectedAction;
+	}
 	
+	/**
+	 * Will return a Spell selected by the user.
+	 * <p>
+	 * This method will provide the user interface with a list of Spells from which the user 
+	 * needs to select one from and will return this selection.	
+	 * 
+	 * @param 	a the <code>HPActor</code> for whom a Spell needs to be selected
+	 * @return	the selected Spell for the <code>HPActor a</code>
+	 */
+	
+	public static HPActionInterface getTargetSpell(HPActionInterface cast, HPActor a){
+		
+		ArrayList<Spell> tempList = new ArrayList<Spell>();
+		
+		if (!((Cast)cast).doesCastAffectActor()){
+			for (Spell s : a.getSpells()){
+				if (!s.affectActor()){
+					tempList.add(s);
+				}
+			}	
+		} else {
+			for (Spell s : a.getSpells()){
+				if (s.affectActor()){
+					tempList.add(s);
+				}
+			}	
+		}
+		
+		Spell selectedSpell = ((HPGridTextInterface) ui).getSpellSelection(tempList);	
+		((Cast)cast).setSpell(selectedSpell);
+		
+		return (HPActionInterface)cast;
+	}	
 }
