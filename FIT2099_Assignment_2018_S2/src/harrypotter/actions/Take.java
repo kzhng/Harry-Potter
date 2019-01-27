@@ -68,9 +68,9 @@ public class Take extends HPAffordance {
 			
 			HPEntityInterface theItem = (HPEntityInterface) target;
 			
-			if (((HPEntityInterface) target).hasCapability(Capability.HEALTH)) {	// adding health is done upon taking the item
+			if (((HPEntityInterface) target).hasCapability(Capability.HEALTH) && false) {	// adding health is done upon taking the item
 				a.addHitpoints(theItem.getHitpoints());
-				a.say("\t" + a.getShortDescription() + " says: what " + theItem.getShortDescription() + ", wummy wummy.");
+				a.say("\t" + a.getShortDescription() + " says: what " + theItem.getShortDescription() + ", yummy yummy.");
 			}
 			else {
 				a.setItemCarried(theItem);

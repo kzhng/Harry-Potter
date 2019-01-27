@@ -3,9 +3,13 @@ package harrypotter.entities.actors;
 import edu.monash.fit2099.simulator.matter.Affordance;
 import edu.monash.fit2099.simulator.space.Direction;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.HPActor;
+import harrypotter.HPEntity;
+import harrypotter.HPEntityInterface;
 import harrypotter.HPLegend;
 import harrypotter.HPWorld;
 import harrypotter.Team;
+import harrypotter.actions.Give;
 import harrypotter.actions.Move;
 import harrypotter.actions.Take;
 import harrypotter.entities.Sword;
@@ -53,10 +57,25 @@ public class Dumbledore extends HPLegend {
 		AttackInformation attack;
 		attack = AttackNeighbours.attackLocals(albus,  albus.world, true, true);
 		
+		HPEntityInterface itemCarried = this.getItemCarried();
+		
+
+		
 		if (attack != null) {
 			say(getShortDescription() + " suddenly looks sprightly and attacks " +
 		attack.entity.getShortDescription());
 			scheduler.schedule(attack.affordance, albus, 1);
+		}
+		else if(itemCarried != null)
+		{
+			Affordance[] affordances = this.getAffordances();
+			for(int i = 0; i < affordances.length; i++) {
+				if (affordances[i] instanceof Give ) {	//mh added && false for testing
+					affordances[i].execute(this);
+					break;
+				}
+			}		
+			
 		}
 		else {
 			Direction newdirection = path.getNext();

@@ -6,6 +6,8 @@ import harrypotter.HPAction;
 import harrypotter.HPActor;
 import harrypotter.HPAffordance;
 import harrypotter.HPEntityInterface;
+import harrypotter.HPGrid;
+import harrypotter.interfaces.HPGridTextInterface;
 
 /**
  * <code>HPAction</code> that lets a <code>HPActor</code> pick up an object.
@@ -88,10 +90,30 @@ public class Give extends HPAffordance {
 		HPEntityInterface target = this.getTarget();
 		boolean targetIsActor = target instanceof HPActor;
 		HPActor targetActor = null;
-
+		
+		
+		
 		if (targetIsActor) {
 			targetActor = (HPActor) target;
 
+			if ( !(a.isHumanControlled()) && (a.getTeam() == targetActor.getTeam()) && a.getItemCarried() != null
+					&& targetActor.getItemCarried() == null) {
+				HPEntityInterface theItem = a.getItemCarried();
+				
+				if (Math.random() > 0.25) {
+					a.setItemCarried(null);
+					targetActor.setItemCarried(theItem);
+					a.say(a.getShortDescription() + " gave " + theItem.getShortDescription() + " to "
+							+ targetActor.getShortDescription());
+
+				} else {
+					a.say(targetActor.getShortDescription() + " refused to take " + theItem.getShortDescription() + " from "
+							+ a.getShortDescription());
+					return;
+				}
+			}
+			
+			
 			if (a.isHumanControlled() && (a.getTeam() == targetActor.getTeam()) && a.getItemCarried() != null
 					&& targetActor.getItemCarried() == null) {
 				HPEntityInterface theItem = a.getItemCarried();
@@ -140,7 +162,11 @@ public class Give extends HPAffordance {
 	 */
 	@Override
 	public String getDescription() {
-		return "give to " + target.getShortDescription();
+		return  "give to " + target.getShortDescription();
 	}
 
 }
+
+
+
+

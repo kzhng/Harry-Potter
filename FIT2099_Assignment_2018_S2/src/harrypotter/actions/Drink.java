@@ -1,6 +1,7 @@
 package harrypotter.actions;
 
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.Capability;
 import harrypotter.HPAction;
 import harrypotter.HPActor;
 import harrypotter.HPAffordance;
@@ -46,7 +47,7 @@ public class Drink extends HPAffordance {
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
-		return a.getItemCarried()==null;
+		return a.getItemCarried() != null && a.getItemCarried().hasCapability(Capability.HEALTH);
 	}
 
 	/**
@@ -66,10 +67,10 @@ public class Drink extends HPAffordance {
 		if (target instanceof HPEntityInterface) {
 			HPEntityInterface theItem = (HPEntityInterface) target;
 			a.addHitpoints(theItem.getHitpoints());
-			HPAction.getEntitymanager().remove(target);//remove the target from the entity manager since it's now held by the HPActor
+			a.setItemCarried(null);
 			
 			//remove the drink affordance
-			target.removeAffordance(this);
+			theItem.removeAffordance(this);
 		}
 	}
 

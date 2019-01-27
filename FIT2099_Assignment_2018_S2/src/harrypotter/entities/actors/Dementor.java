@@ -56,10 +56,13 @@ public class Dementor extends HPActor {
 		}
 		say(describeLocation());
 
-		AttackInformation attack = AttackNeighbours.attackLocals(this, this.world, false, false);
-		if (attack != null) {
-			say(getShortDescription() + " sucks energy out of " + attack.entity.getShortDescription());
-			scheduler.schedule(attack.affordance, this, 1);
+		ArrayList<AttackInformation> attackable = AttackNeighbours.attackAllLocals(this, this.world, false, false);
+		if (attackable != null) {
+			for(AttackInformation attack : attackable) {
+				say(getShortDescription() + " sucked energy out of " + attack.entity.getShortDescription());
+				scheduler.schedule(attack.affordance, this, 1);
+			}
+			
 		} else {
 			// build a list of available directions
 			if (definedDirections.size() == 0) {

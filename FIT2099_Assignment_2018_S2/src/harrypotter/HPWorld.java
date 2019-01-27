@@ -7,6 +7,7 @@ import edu.monash.fit2099.simulator.space.Direction;
 import edu.monash.fit2099.simulator.space.Location;
 import edu.monash.fit2099.simulator.space.World;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.actions.Drink;
 import harrypotter.actions.Give;
 import harrypotter.actions.Leave;
 import harrypotter.actions.Take;
@@ -206,7 +207,7 @@ public class HPWorld extends World {
 		// Quite hacky. Is there a better way?
 		Affordance[] affordances = sword.getAffordances();
 		for(int i = 0; i < affordances.length; i++) {
-			if (affordances[i] instanceof Take && false) {	//mh added && false for testing
+			if (affordances[i] instanceof Take ) {	//mh added && false for testing
 				affordances[i].execute(dumbledore);
 				break;
 			}
@@ -276,6 +277,7 @@ public class HPWorld extends World {
 		loc = myGrid.getLocationByCoordinates(4,7);
 		Potion potion = new Potion(iface);
 		entityManager.setLocation(potion, loc);
+		potion.addAffordance(new Drink(potion, iface));
 		
 		
 		// Some Death Eaters
@@ -290,9 +292,9 @@ public class HPWorld extends World {
 		entityManager.setLocation(deathEater, loc);
 
 		// Some Dementor
-		Dementor dementor = new Dementor(40, iface, this);
+		Dementor dementor = new Dementor(780, iface, this);
 		dementor.setSymbol("Z");
-		loc = myGrid.getLocationByCoordinates(4,4);
+		loc = myGrid.getLocationByCoordinates(6,5);
 		entityManager.setLocation(dementor, loc);
 		
 //		dementor = new Dementor(40, iface, this);
