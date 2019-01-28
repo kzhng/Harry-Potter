@@ -137,6 +137,12 @@ public class Move extends HPAction {
 		return whichDirection;
 	}
 
+	@Override
+	public boolean isCastCommand() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 	
 

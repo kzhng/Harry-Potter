@@ -611,4 +611,97 @@ Spells </panel_attributes>
 fg=orange</panel_attributes>
     <additional_attributes>220.0;10.0;220.0;30.0;10.0;30.0</additional_attributes>
   </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>940</x>
+      <y>550</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Drink
+
+bg=gray
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1030</x>
+      <y>560</y>
+      <w>180</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+
+fg=pink</panel_attributes>
+    <additional_attributes>160.0;60.0;30.0;60.0;30.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>320</x>
+      <y>570</y>
+      <w>640</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+fg=pink</panel_attributes>
+    <additional_attributes>10.0;10.0;620.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>510</x>
+      <y>190</y>
+      <w>450</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+
+fg=pink</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;380.0;430.0;380.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>320</x>
+      <y>350</y>
+      <w>640</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+fg=pink</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0;210.0;210.0;620.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1010</x>
+      <y>290</y>
+      <w>200</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+
+fg=pink</panel_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0;10.0;260.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>20</x>
+      <y>20</y>
+      <w>250</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Not all dependencies are shown.
+In particular, inherited associations
+and dependencies are usually not
+shown.
+bg=yellow
+fg=black</panel_attributes>
+    <additional_attributes/>
+  </element>
 </diagram>

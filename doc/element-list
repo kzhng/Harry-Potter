@@ -1,7 +1,14 @@
+edu.monash.fit2099.gridworld
+edu.monash.fit2099.simulator.matter
+edu.monash.fit2099.simulator.space
+edu.monash.fit2099.simulator.time
+edu.monash.fit2099.simulator.userInterface
+edu.monash.fit2099.simulator.util
 harrypotter
 harrypotter.actions
 harrypotter.entities
 harrypotter.entities.actors
 harrypotter.entities.actors.behaviors
 harrypotter.interfaces
+harrypotter.spells
 harrypotter.userinterfaces

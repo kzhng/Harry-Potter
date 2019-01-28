@@ -2,23 +2,16 @@ package harrypotter.actions;
 
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 import harrypotter.Capability;
-import harrypotter.HPAction;
 import harrypotter.HPActor;
 import harrypotter.HPAffordance;
 import harrypotter.HPEntityInterface;
 
 /**
- * <code>HPAction</code> that lets a <code>HPActor</code> pick up an object.
+ * <code>HPAction</code> that lets a <code>HPActor</code> drink an object.
  * 
  * @author ram
  */
-/*
- * Changelog
- * 2017/01/26	- candDo method changed. An actor can only drink if it's not holding any items already.
- * 				- act method modified. Drink affordance removed from the item picked up, since an item picked up
- * 				  cannot be taken. This is just a safe guard.
- * 				- canDo method changed to return true only if the actor is not carrying an item (asel)
- */
+
 public class Drink extends HPAffordance {
 
 	/**
@@ -39,8 +32,7 @@ public class Drink extends HPAffordance {
 	 * <p>
 	 * This method returns true if and only if <code>a</code> is not carrying any item already.
 	 *  
-	 * @author 	ram
-	 * @author 	Asel (26/01/2017)
+	 * @author 	Matti
 	 * @param 	a the <code>HPActor</code> being queried
 	 * @return 	true if the <code>HPActor</code> is can drink this item, false otherwise
 	 * @see		{@link harrypotter.HPActor#getItemCarried()}
@@ -56,9 +48,8 @@ public class Drink extends HPAffordance {
 	 * <p>
 	 * This method should only be called if the <code>HPActor a</code> is alive.
 	 * 
-	 * @author 	ram
-	 * @author 	Asel (26/01/2017)
-	 * @param 	a the <code>HPActor</code> that is taking the target
+	 * @author 	Matti
+	 * @param 	a the <code>HPActor</code> that does the drinking
 	 * @see 	{@link #theTarget}
 	 * @see		{@link harrypotter.HPActor#isDead()}
 	 */
@@ -77,7 +68,7 @@ public class Drink extends HPAffordance {
 	/**
 	 * A String describing what this action will do, suitable for display in a user interface
 	 * 
-	 * @author ram
+	 * @author Matti
 	 * @return String comprising "drink " and the short description of the target of this <code>Drink</code>
 	 */
 	@Override

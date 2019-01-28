@@ -191,7 +191,7 @@ public class HPWorld extends World {
 		
 		// Dumbledore
 		loc = myGrid.getLocationByCoordinates(4,  5);
-		Direction [] patrolmoves = {CompassBearing.EAST, CompassBearing.WEST, //mh changed from CompassBearing.EAST, CompassBearing.east
+		Direction [] patrolmoves = {CompassBearing.EAST//, CompassBearing.WEST, //mh changed from CompassBearing.EAST, CompassBearing.east
                 /*CompassBearing.SOUTH,
                 CompassBearing.WEST, CompassBearing.WEST,
                 CompassBearing.SOUTH,
@@ -205,7 +205,7 @@ public class HPWorld extends World {
 		// Quite hacky. Is there a better way?
 		Affordance[] affordances = sword.getAffordances();
 		for(int i = 0; i < affordances.length; i++) {
-			if (affordances[i] instanceof Take ) {	//mh added && false for testing
+			if (affordances[i] instanceof Take) {	//mh added && false for testing
 				affordances[i].execute(dumbledore);
 				break;
 			}
@@ -220,7 +220,7 @@ public class HPWorld extends World {
 		harry.setLongDescription("Harry Potter, the boy who lived");
 		entityManager.setLocation(harry, loc);
 		Wand wand = new Wand(iface);
-		harry.setItemCarried(wand);
+		//harry.setItemCarried(wand);
 		for (Affordance a : wand.getAffordances()){
 			if (a instanceof Take){
 				wand.removeAffordance(a);
@@ -284,18 +284,18 @@ public class HPWorld extends World {
 		// Some Death Eaters
 		DeathEater deathEater = new DeathEater(10, iface, this);
 		deathEater.setSymbol("E");
-		loc = myGrid.getLocationByCoordinates(4,3);
+		loc = myGrid.getLocationByCoordinates(5,5); // 4.3
 		entityManager.setLocation(deathEater, loc);
 		
 		deathEater = new DeathEater(10, iface, this);
 		deathEater.setSymbol("E");
-		loc = myGrid.getLocationByCoordinates(5,2);
+		loc = myGrid.getLocationByCoordinates(5,5);	//5.2
 		entityManager.setLocation(deathEater, loc);
 
 		// Some Dementor
 		Dementor dementor = new Dementor(780, iface, this);
 		dementor.setSymbol("Z");
-		loc = myGrid.getLocationByCoordinates(6,5);
+		loc = myGrid.getLocationByCoordinates(1,1);
 		entityManager.setLocation(dementor, loc);
 		
 //		dementor = new Dementor(40, iface, this);

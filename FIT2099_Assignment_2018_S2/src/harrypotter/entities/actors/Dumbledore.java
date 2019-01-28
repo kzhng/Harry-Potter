@@ -1,5 +1,7 @@
 package harrypotter.entities.actors;
 
+import java.util.ArrayList;
+
 import edu.monash.fit2099.simulator.matter.Affordance;
 import edu.monash.fit2099.simulator.space.Direction;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
@@ -18,13 +20,14 @@ import harrypotter.entities.actors.behaviors.AttackNeighbours;
 import harrypotter.entities.actors.behaviors.Patrol;
 
 /**
- * Dumbledore  
+ * Dumbledore
  * 
- * At this stage, he's an extremely strong critter with a <code>Sword</code>
- * who wanders around in a fixed pattern and neatly slices any Actor not on his
- * team with his sword.
+ * At this stage, he's an extremely strong critter with a <code>Sword</code> who
+ * wanders around in a fixed pattern and neatly slices any Actor not on his team
+ * with his sword.
  * 
  * Note that you can only create ONE Dumbledore, like all SWLegends.
+ * 
  * @author rober_000, davids
  *
  */
@@ -32,8 +35,8 @@ public class Dumbledore extends HPLegend {
 
 	private static Dumbledore albus = null; // yes, it is OK to return the static instance!
 	private Patrol path;
-	
-	private Dumbledore(MessageRenderer m, HPWorld world, Direction [] moves) {
+
+	private Dumbledore(MessageRenderer m, HPWorld world, Direction[] moves) {
 		super(Team.GOOD, 1000, m, world);
 		path = new Patrol(moves);
 		this.setSymbol("D");
@@ -41,43 +44,58 @@ public class Dumbledore extends HPLegend {
 		this.setLongDescription("Albus Dumbledore, a very powerful wizard");
 	}
 
-	public static Dumbledore getDumbledore(MessageRenderer m, HPWorld world, Direction [] moves) {
+	public static Dumbledore getDumbledore(MessageRenderer m, HPWorld world, Direction[] moves) {
 		albus = new Dumbledore(m, world, moves);
 		albus.activate();
 		return albus;
 	}
-	
+
 	@Override
 	protected void legendAct() {
 
-		if(isDead()) {
+		if (isDead()) {
 			return;
 		}
-		
-		AttackInformation attack;
-		attack = AttackNeighbours.attackLocals(albus,  albus.world, true, true);
-		
-		HPEntityInterface itemCarried = this.getItemCarried();
-		
 
-		
+		AttackInformation attack;
+		attack = AttackNeighbours.attackLocals(albus, albus.world, true, true);
+
+		HPEntityInterface itemCarried = this.getItemCarried();
+
 		if (attack != null) {
-			say(getShortDescription() + " suddenly looks sprightly and attacks " +
-		attack.entity.getShortDescription());
+			say(getShortDescription() + " suddenly looks sprightly and attacks " + attack.entity.getShortDescription());
 			scheduler.schedule(attack.affordance, albus, 1);
 		}
-		else if(itemCarried != null)
-		{
-			Affordance[] affordances = this.getAffordances();
-			for(int i = 0; i < affordances.length; i++) {
-				if (affordances[i] instanceof Give ) {	//mh added && false for testing
-					affordances[i].execute(this);
-					break;
+
+		else if (itemCarried != null) {
+			ArrayList<AttackInformation> givable;
+			givable = AttackNeighbours.attackAllLocals(albus, albus.world, false, true);
+			if (givable != null) {
+				for (AttackInformation giveTofreindly : givable) {
+					if (giveTofreindly.entity instanceof Player) {
+
+						Player target = (Player) giveTofreindly.entity;
+
+						if (target.getItemCarried() == null) {
+							for (Affordance thisAffordance : this.getAffordances()) {
+
+								if (thisAffordance instanceof Give) {
+									HPEntityInterface theItem = this.getItemCarried();
+									this.setItemCarried(null);
+									target.setItemCarried(theItem);
+									this.say(this.getShortDescription() + " gave " + theItem.getShortDescription()
+											+ " to " + giveTofreindly.entity.getShortDescription());
+
+									scheduler.schedule(thisAffordance, this, 1);
+								}
+							}
+						}
+
+					}
 				}
-			}		
-			
-		}
-		else {
+
+			}
+		} else {
 			Direction newdirection = path.getNext();
 			say(getShortDescription() + " moves " + newdirection);
 			Move myMove = new Move(newdirection, messageRenderer, world);

@@ -1,13 +1,10 @@
 package harrypotter.actions;
 
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
-import harrypotter.Capability;
-import harrypotter.HPAction;
+import harrypotter.HPActionInterface;
 import harrypotter.HPActor;
 import harrypotter.HPAffordance;
 import harrypotter.HPEntityInterface;
-import harrypotter.HPGrid;
-import harrypotter.interfaces.HPGridTextInterface;
 
 /**
  * <code>HPAction</code> that lets a <code>HPActor</code> pick up an object.
@@ -21,7 +18,7 @@ import harrypotter.interfaces.HPGridTextInterface;
  * just a safe guard. - canDo method changed to return true only if the actor is
  * not carrying an item (asel)
  */
-public class Give extends HPAffordance {
+public class Give extends HPAffordance implements HPActionInterface {
 
 	/**
 	 * Constructor for the <code>Give</code> Class. Will initialize the message
@@ -59,7 +56,7 @@ public class Give extends HPAffordance {
 		if (targetIsActor)
 			targetActor = (HPActor) target;
 
-		return a.getItemCarried() != null && targetIsActor && (a.getTeam() == targetActor.getTeam());
+		return a.getItemCarried() != null && targetActor.getItemCarried() ==null && targetIsActor && (a.getTeam() == targetActor.getTeam());
 	}
 
 	/**
@@ -72,20 +69,12 @@ public class Give extends HPAffordance {
 	 * 
 	 * @author ram
 	 * @author Asel (26/01/2017)
-	 * @param a the <code>HPActor</code> that is taking the target
+	 * @param a the <code>HPActor</code> that is giving to the target
 	 * @see {@link #theTarget}
 	 * @see {@link harrypotter.HPActor#isDead()}
 	 */
 	@Override
 	public void act(HPActor a) {
-		/*
-		 * if (target instanceof HPEntityInterface) { HPEntityInterface theItem =
-		 * (HPEntityInterface) target; a.setItemCarried(null);
-		 * b.setItemCarried(theItem);
-		 * 
-		 * 
-		 * //remove the give affordance //target.removeAffordance(this); }
-		 */
 
 		HPEntityInterface target = this.getTarget();
 		boolean targetIsActor = target instanceof HPActor;
@@ -99,19 +88,13 @@ public class Give extends HPAffordance {
 			if ( !(a.isHumanControlled()) && (a.getTeam() == targetActor.getTeam()) && a.getItemCarried() != null
 					&& targetActor.getItemCarried() == null) {
 				HPEntityInterface theItem = a.getItemCarried();
-				
-				if (Math.random() > 0.25) {
 					a.setItemCarried(null);
 					targetActor.setItemCarried(theItem);
 					a.say(a.getShortDescription() + " gave " + theItem.getShortDescription() + " to "
 							+ targetActor.getShortDescription());
 
-				} else {
-					a.say(targetActor.getShortDescription() + " refused to take " + theItem.getShortDescription() + " from "
-							+ a.getShortDescription());
-					return;
 				}
-			}
+			
 			
 			
 			if (a.isHumanControlled() && (a.getTeam() == targetActor.getTeam()) && a.getItemCarried() != null

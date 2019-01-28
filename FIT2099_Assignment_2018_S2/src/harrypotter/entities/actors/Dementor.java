@@ -37,10 +37,12 @@ public class Dementor extends HPActor {
 	 *                  <code>Dementor</code> belongs to
 	 * 
 	 */
-	private int minWait = 1;
-	private int maxWait = 5;
-	private int turnWait;
-	private ArrayList<Direction> definedDirections;
+
+	private ArrayList<Direction> definedDirections;	
+
+	int minWait = 1;
+	int maxWait = 5;
+	private int turnWait;	//number of turn to wait
 
 	public Dementor(int hitpoints, MessageRenderer m, HPWorld world) {
 		super(Team.EVIL, hitpoints, m, world);
@@ -58,50 +60,39 @@ public class Dementor extends HPActor {
 
 		ArrayList<AttackInformation> attackable = AttackNeighbours.attackAllLocals(this, this.world, false, false);
 		if (attackable != null) {
-			for(AttackInformation attack : attackable) {
-				say(getShortDescription() + " sucked energy out of " + attack.entity.getShortDescription());
-				scheduler.schedule(attack.affordance, this, 1);
+			// attack if possible
+			for (AttackInformation attackActor : attackable) {
+				say(getShortDescription() + " sucked energy out of " + attackActor.entity.getShortDescription());
+				scheduler.schedule(attackActor.affordance, this, 1);
 			}
-			
-		} else {
+
+		}
+
+		else {
 			// build a list of available directions
 			if (definedDirections.size() == 0) {
+				this.buildMOvementDirection();
 
-				ArrayList<Direction> possibledirections = new ArrayList<Direction>();
-				ArrayList<Direction> oppositeDirections = new ArrayList<Direction>();
-				this.turnWait = (int) Math.floor((Math.random() * maxWait) + minWait); // generate new turnWait
+			}
 
-				for (Grid.CompassBearing d : Grid.CompassBearing.values()) {
-					if (HPWorld.getEntitymanager().seesExit(this, d)) {
-						possibledirections.add(d);
-						oppositeDirections.add(CompassBearing.opposite(d)); // opposite direction
-					}
-				}
-				Direction heading = possibledirections
-						.get((int) (Math.floor(Math.random() * possibledirections.size())));
-				Direction retracing = oppositeDirections.get(possibledirections.indexOf(heading));
-				int minSteps = 1;
-				int maxSteps = 3;
-				int steps = (int) Math.floor((Math.random() * maxSteps) + minSteps);
-				for (int i = 0; i < steps; i++) {
-					definedDirections.add(0, heading);
-					definedDirections.add(retracing);
-				}
-
-			} 
-
-			else if (this.turnWait == 0) {
+			else if (this.turnWait == 0) { // move until definedDirections size is zero
 				Direction heading = definedDirections.get(0);
+
+				while (!(HPWorld.getEntitymanager().seesExit(this, heading))) { // if this direction is not possible
+					definedDirections.remove(0);
+					definedDirections.remove(CompassBearing.opposite((CompassBearing) heading));
+					heading = definedDirections.get(0);
+				}
+
 				say(getShortDescription() + " is heading " + heading + " next.");
 				Move myMove = new Move(heading, messageRenderer, world);
 
 				scheduler.schedule(myMove, this, 1);
 				definedDirections.remove(0);
-			}
-			else {
+			} else { // keep waiting
 				turnWait--;
 			}
-			
+
 		}
 	}
 
@@ -120,40 +111,39 @@ public class Dementor extends HPActor {
 		return this.getShortDescription() + " [" + this.getHitpoints() + "] is at " + location.getShortDescription();
 
 	}
-}
 
-//previous implementation of act method
-/*
- * public void act() { if (isDead()) { return; } say(describeLocation());
- * 
- * AttackInformation attack = AttackNeighbours.attackLocals(this, this.world,
- * false, false); if (attack != null) { say(getShortDescription() +
- * " sucks energy out of " + attack.entity.getShortDescription());
- * scheduler.schedule(attack.affordance, this, 1); } else { int minWait = 1; int
- * maxWait = 5; int turnWait = (int) Math.floor((Math.random() * maxWait) +
- * minWait); // waits for a random number of turns // between 1 and 5 inclusive
- * ArrayList<Direction> possibledirections = new ArrayList<Direction>();
- * ArrayList<Direction> oppositeDirections = new ArrayList<Direction>();
- * ArrayList<Direction> definedDirections = new ArrayList<Direction>();
- * 
- * // build a list of available directions if (definedDirections.size() == 0) {
- * for (Grid.CompassBearing d : Grid.CompassBearing.values()) { if
- * (HPWorld.getEntitymanager().seesExit(this, d)) { possibledirections.add(d);
- * oppositeDirections.add(CompassBearing.opposite(d)); // opposite direction } }
- * Direction heading = possibledirections .get((int) (Math.floor(Math.random() *
- * possibledirections.size()))); Direction retracing =
- * oppositeDirections.get(possibledirections.indexOf(heading)); int minSteps =
- * 1; int maxSteps = 3; int steps = (int) Math.floor((Math.random() * maxSteps)
- * + minSteps); steps = 3; for (int i = 0; i < steps; i++) {
- * definedDirections.add(0, heading); definedDirections.add(retracing); } }
- * 
- * Direction heading = definedDirections.get(0); say(getShortDescription() +
- * "is heading " + heading + " next."); Move myMove = new Move(heading,
- * messageRenderer, world);
- * 
- * scheduler.schedule(myMove, this, turnWait); definedDirections.remove(0);
- * 
- * } }
- * 
- * 
- */
+	/**
+	 * builds movement directions. this method builds the movement based on the
+	 * possible exits of current location only
+	 * 
+	 * @return an arraylist of directions
+	 */
+
+	private void buildMOvementDirection() {
+
+		int minSteps = 1;
+		int maxSteps = 3;
+		int steps;
+		ArrayList<Direction> possibledirections = new ArrayList<Direction>();
+		ArrayList<Direction> oppositeDirections = new ArrayList<Direction>();
+
+		// build a new turnWait
+		this.turnWait = (int) Math.floor((Math.random() * maxWait) + minWait); // generate new turnWait
+
+		for (Grid.CompassBearing d : Grid.CompassBearing.values()) {
+			if (HPWorld.getEntitymanager().seesExit(this, d)) {
+				possibledirections.add(d);
+				oppositeDirections.add(CompassBearing.opposite(d)); // opposite direction
+			}
+		}
+		Direction heading = possibledirections.get((int) (Math.floor(Math.random() * possibledirections.size())));
+		Direction retracing = oppositeDirections.get(possibledirections.indexOf(heading));
+
+		steps = (int) Math.floor((Math.random() * maxSteps) + minSteps);
+		for (int i = 0; i < steps; i++) {
+			definedDirections.add(0, heading);
+			definedDirections.add(retracing);
+		}
+
+	}
+}
