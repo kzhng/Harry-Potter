@@ -191,7 +191,7 @@ public class HPWorld extends World {
 		
 		// Dumbledore
 		loc = myGrid.getLocationByCoordinates(4,  5);
-		Direction [] patrolmoves = {CompassBearing.EAST//, CompassBearing.WEST, //mh changed from CompassBearing.EAST, CompassBearing.east
+		Direction [] patrolmoves = {CompassBearing.EAST, CompassBearing.WEST, //mh changed from CompassBearing.EAST, CompassBearing.east
                 /*CompassBearing.SOUTH,
                 CompassBearing.WEST, CompassBearing.WEST,
                 CompassBearing.SOUTH,
@@ -284,12 +284,12 @@ public class HPWorld extends World {
 		// Some Death Eaters
 		DeathEater deathEater = new DeathEater(10, iface, this);
 		deathEater.setSymbol("E");
-		loc = myGrid.getLocationByCoordinates(5,5); // 4.3
+		loc = myGrid.getLocationByCoordinates(4,3); 
 		entityManager.setLocation(deathEater, loc);
 		
 		deathEater = new DeathEater(10, iface, this);
 		deathEater.setSymbol("E");
-		loc = myGrid.getLocationByCoordinates(5,5);	//5.2
+		loc = myGrid.getLocationByCoordinates(5,2);
 		entityManager.setLocation(deathEater, loc);
 
 		// Some Dementor

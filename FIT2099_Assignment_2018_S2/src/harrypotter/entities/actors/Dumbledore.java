@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.monash.fit2099.simulator.matter.Affordance;
 import edu.monash.fit2099.simulator.space.Direction;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.HPActionInterface;
 import harrypotter.HPActor;
 import harrypotter.HPEntity;
 import harrypotter.HPEntityInterface;
@@ -18,6 +19,7 @@ import harrypotter.entities.Sword;
 import harrypotter.entities.actors.behaviors.AttackInformation;
 import harrypotter.entities.actors.behaviors.AttackNeighbours;
 import harrypotter.entities.actors.behaviors.Patrol;
+import harrypotter.interfaces.HPGridController;
 
 /**
  * Dumbledore
@@ -28,7 +30,7 @@ import harrypotter.entities.actors.behaviors.Patrol;
  * 
  * Note that you can only create ONE Dumbledore, like all SWLegends.
  * 
- * @author rober_000, davids
+ * @author Matti
  *
  */
 public class Dumbledore extends HPLegend {
@@ -60,41 +62,15 @@ public class Dumbledore extends HPLegend {
 		AttackInformation attack;
 		attack = AttackNeighbours.attackLocals(albus, albus.world, true, true);
 
-		HPEntityInterface itemCarried = this.getItemCarried();
-
 		if (attack != null) {
 			say(getShortDescription() + " suddenly looks sprightly and attacks " + attack.entity.getShortDescription());
 			scheduler.schedule(attack.affordance, albus, 1);
 		}
 
-		else if (itemCarried != null) {
-			ArrayList<AttackInformation> givable;
-			givable = AttackNeighbours.attackAllLocals(albus, albus.world, false, true);
-			if (givable != null) {
-				for (AttackInformation giveTofreindly : givable) {
-					if (giveTofreindly.entity instanceof Player) {
+		
+		else if (this.albusGive()) {	// His grace's generosity, quite smelly 
+			scheduler.schedule(null, this, 1);
 
-						Player target = (Player) giveTofreindly.entity;
-
-						if (target.getItemCarried() == null) {
-							for (Affordance thisAffordance : this.getAffordances()) {
-
-								if (thisAffordance instanceof Give) {
-									HPEntityInterface theItem = this.getItemCarried();
-									this.setItemCarried(null);
-									target.setItemCarried(theItem);
-									this.say(this.getShortDescription() + " gave " + theItem.getShortDescription()
-											+ " to " + giveTofreindly.entity.getShortDescription());
-
-									scheduler.schedule(thisAffordance, this, 1);
-								}
-							}
-						}
-
-					}
-				}
-
-			}
 		} else {
 			Direction newdirection = path.getNext();
 			say(getShortDescription() + " moves " + newdirection);
@@ -102,6 +78,73 @@ public class Dumbledore extends HPLegend {
 
 			scheduler.schedule(myMove, this, 1);
 		}
+	}
+	
+	
+	/**
+	 * @author Matti
+	 * @return true if the player accept the item carried by albus, otherwise false
+	 */
+	// massive code smell
+	private boolean albusGive() {
+		
+		HPEntityInterface theItem = this.getItemCarried();
+		if(theItem == null) {
+			return false;
+		}
+		
+		ArrayList<AttackInformation> givable;
+		givable = AttackNeighbours.attackAllLocals(albus, albus.world, false, true);
+		if (givable != null) {
+			for (AttackInformation giveTofreindly : givable) {
+				HPActor target = (HPActor) giveTofreindly.entity;
+				
+				if (target instanceof Player && target.getItemCarried() == null) {	
+					//
+					
+					this.say(this.getShortDescription() + " wants to give you this "
+							+ theItem.getShortDescription());
+					boolean userDecision = HPGridController.getAcceptOrDecline(target);
+
+					if (userDecision) {
+						this.setItemCarried(null);
+						target.setItemCarried(theItem);
+						this.say(this.getShortDescription() + " gave " + theItem.getShortDescription()
+								+ " to " + giveTofreindly.entity.getShortDescription());
+						return true;
+					} else {
+						return false;
+					}
+					//
+//						for (Affordance thisAffordance : this.getAffordances()) {
+//
+//							if (thisAffordance instanceof Give) {
+//								HPEntityInterface theItem = this.getItemCarried();
+//								this.say(this.getShortDescription() + " wants to give you this "
+//										+ theItem.getShortDescription());
+//								boolean userDecision = HPGridController.getAcceptOrDecline(target);
+//
+//								if (userDecision) {
+//									this.setItemCarried(null);
+//									target.setItemCarried(theItem);
+//									this.say(this.getShortDescription() + " gave " + theItem.getShortDescription()
+//											+ " to " + giveTofreindly.entity.getShortDescription());
+//
+//									scheduler.schedule(thisAffordance, this, 1);
+//								} else {
+//									continue;
+//								}
+//							}
+//
+//						}
+					
+				}
+
+			}
+		}
+		return false;
+		
+		
 	}
 
 }

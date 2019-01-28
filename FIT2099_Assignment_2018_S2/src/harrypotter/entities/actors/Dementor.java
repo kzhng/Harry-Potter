@@ -30,18 +30,22 @@ public class Dementor extends HPActor {
 	 * the chosen number of steps. It then retraces its steps back to its base one
 	 * step per turn.
 	 * 
+	 * @author Matti
+	 * 
 	 * @param hitpoints the number of hit points of this Dementor. If this decreases
 	 *                  to below zero, the Death Eater will die.
 	 * @param m         <code>MessageRenderer</code> to display messages.
 	 * @param world     the <code>HPWorld</code> world to which this
 	 *                  <code>Dementor</code> belongs to
+	 *                  
+	 *                  
 	 * 
 	 */
 
 	private ArrayList<Direction> definedDirections;	
 
-	int minWait = 1;
-	int maxWait = 5;
+	private int minWait = 1;
+	private int maxWait = 5;
 	private int turnWait;	//number of turn to wait
 
 	public Dementor(int hitpoints, MessageRenderer m, HPWorld world) {
@@ -115,8 +119,6 @@ public class Dementor extends HPActor {
 	/**
 	 * builds movement directions. this method builds the movement based on the
 	 * possible exits of current location only
-	 * 
-	 * @return an arraylist of directions
 	 */
 
 	private void buildMOvementDirection() {

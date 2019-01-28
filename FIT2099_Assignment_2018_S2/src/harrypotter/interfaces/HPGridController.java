@@ -168,4 +168,21 @@ public class HPGridController implements GridController {
 		
 		return (HPActionInterface)cast;
 	}	
+	
+	/**
+	 * Will return a boolean representing Accept and decline for HumanControled Actors or random decision for NonPlayers
+	 * 
+	 * @return a boolean represent Accept and decline
+	 * @author Matti
+	 * @param a			an HPActor 
+	 */
+	
+	public static boolean getAcceptOrDecline(HPActor a){
+		if(a.isHumanControlled()) {
+			return ((HPGridTextInterface) ui).getRespond();	
+		}
+		else {
+			return (Math.random() > 0.25);
+		}
+	}	
 }

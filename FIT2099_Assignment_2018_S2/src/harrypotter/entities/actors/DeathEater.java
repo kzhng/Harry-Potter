@@ -34,7 +34,7 @@ public class DeathEater extends HPActor {
 	 * 
 	 */
 	public DeathEater(int hitpoints, MessageRenderer m, HPWorld world) {
-		super(Team.GOOD, hitpoints, m, world);	//mh changed to Good
+		super(Team.EVIL, hitpoints, m, world);	//mh changed to Good
 	}
 
 	@Override

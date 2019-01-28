@@ -5,19 +5,14 @@ import harrypotter.HPActionInterface;
 import harrypotter.HPActor;
 import harrypotter.HPAffordance;
 import harrypotter.HPEntityInterface;
+import harrypotter.interfaces.HPGridController;
 
 /**
- * <code>HPAction</code> that lets a <code>HPActor</code> pick up an object.
+ * <code>HPAction</code> that lets a <code>HPActor</code> Give an object.
  * 
- * @author ram
+ * @author Willy Wonka
  */
-/*
- * Changelog 2017/01/26 - candDo method changed. An actor can only give if it's
- * holding any items already. - act method modified. Give affordance removed
- * from the item picked up, since an item picked up cannot be given. This is
- * just a safe guard. - canDo method changed to return true only if the actor is
- * not carrying an item (asel)
- */
+
 public class Give extends HPAffordance implements HPActionInterface {
 
 	/**
@@ -39,12 +34,9 @@ public class Give extends HPAffordance implements HPActionInterface {
 	 * <p>
 	 * This method returns true if and only if <code>a</code> is carrying any item
 	 * already and there is at least 1 actor from the same team.
-	 * 
-	 * @author ram
-	 * @author Asel (26/01/2017)
+	 *
 	 * @param a the <code>HPActor</code> being queried
-	 * @return true if the <code>HPActor</code> is can give this item, false
-	 *         otherwise
+	 * @return true if the <code>HPActor</code> can give this item, false otherwise
 	 * @see {@link harrypotter.HPActor#getItemCarried()}
 	 */
 	@Override
@@ -56,7 +48,8 @@ public class Give extends HPAffordance implements HPActionInterface {
 		if (targetIsActor)
 			targetActor = (HPActor) target;
 
-		return a.getItemCarried() != null && targetActor.getItemCarried() ==null && targetIsActor && (a.getTeam() == targetActor.getTeam());
+		return a.getItemCarried() != null && targetActor.getItemCarried() == null && targetIsActor
+				&& (a.getTeam() == targetActor.getTeam());
 	}
 
 	/**
@@ -67,8 +60,6 @@ public class Give extends HPAffordance implements HPActionInterface {
 	 * <p>
 	 * This method should only be called if the <code>HPActor a</code> is alive.
 	 * 
-	 * @author ram
-	 * @author Asel (26/01/2017)
 	 * @param a the <code>HPActor</code> that is giving to the target
 	 * @see {@link #theTarget}
 	 * @see {@link harrypotter.HPActor#isDead()}
@@ -79,77 +70,53 @@ public class Give extends HPAffordance implements HPActionInterface {
 		HPEntityInterface target = this.getTarget();
 		boolean targetIsActor = target instanceof HPActor;
 		HPActor targetActor = null;
-		
-		
-		
+
 		if (targetIsActor) {
 			targetActor = (HPActor) target;
 
-			if ( !(a.isHumanControlled()) && (a.getTeam() == targetActor.getTeam()) && a.getItemCarried() != null
-					&& targetActor.getItemCarried() == null) {
+			if ((a.getTeam() == targetActor.getTeam()) && a.getItemCarried() != null && targetActor.getItemCarried() == null) {
 				HPEntityInterface theItem = a.getItemCarried();
-					a.setItemCarried(null);
-					targetActor.setItemCarried(theItem);
-					a.say(a.getShortDescription() + " gave " + theItem.getShortDescription() + " to "
-							+ targetActor.getShortDescription());
 
-				}
-			
-			
-			
-			if (a.isHumanControlled() && (a.getTeam() == targetActor.getTeam()) && a.getItemCarried() != null
-					&& targetActor.getItemCarried() == null) {
-				HPEntityInterface theItem = a.getItemCarried();
-				
-				if (Math.random() > 0.25) {
+				// getting AI decision using machine learning
+				boolean decision = HPGridController.getAcceptOrDecline(targetActor);
+				if (decision) {
 					a.setItemCarried(null);
 					targetActor.setItemCarried(theItem);
 					a.say(a.getShortDescription() + " gave " + theItem.getShortDescription() + " to "
 							+ targetActor.getShortDescription());
 
 				} else {
-					a.say(targetActor.getShortDescription() + " refused to take " + theItem.getShortDescription() + " from "
-							+ a.getShortDescription());
+					a.say(targetActor.getShortDescription() + " refused to take " + theItem.getShortDescription()
+							+ " from " + a.getShortDescription());
 					return;
 				}
 			}
 		}
 
-		/*
-		 * if (targetIsActor && (a.getTeam() == targetActor.getTeam()) &&
-		 * a.getItemCarried()!= null && targetActor.getItemCarried() == null) {
-		 * HPEntityInterface theItem = a.getItemCarried(); a.setItemCarried(null);
-		 * targetActor.setItemCarried(theItem); a.say(a.getShortDescription() + " gave "
-		 * + theItem.getShortDescription() + " to " +
-		 * targetActor.getShortDescription()); } else if ( (a.isHumanControlled() &&
-		 * targetIsActor )// for a human-controlled player, the receiver has a chance of
-		 * rejecting the item || (targetIsActor && (a.getTeam() ==
-		 * targetActor.getTeam()))) { // the actors must be on the same team
-		 * 
-		 * HPEntityInterface theItem = a.getItemCarried(); a.setItemCarried(null); //
-		 * removing the item from the actor targetActor.setItemCarried(theItem); //
-		 * setting the item to a new actor
-		 * 
-		 * a.say(a.getShortDescription() + " gave " + theItem.getShortDescription() +
-		 * " to" + targetActor.getShortDescription()); }
-		 */
 	}
 
 	/**
 	 * A String describing what this action will do, suitable for display in a user
 	 * interface
 	 * 
-	 * @author ram
 	 * @return String comprising "give " and the short description of the target of
 	 *         this <code>Give</code>
 	 */
 	@Override
 	public String getDescription() {
-		return  "give to " + target.getShortDescription();
+		return "give to " + target.getShortDescription();
 	}
 
 }
 
 
 
-
+//this block is supposed to be for NonPlayer, couldn't get it to work, this was not its final form
+//if ( !(a.isHumanControlled()) && (a.getTeam() == targetActor.getTeam()) && a.getItemCarried() != null && targetActor.getItemCarried() == null) {
+//	HPEntityInterface theItem = a.getItemCarried();
+//		a.setItemCarried(null);
+//		targetActor.setItemCarried(theItem);
+//		a.say(a.getShortDescription() + " gave " + theItem.getShortDescription() + " to "
+//				+ targetActor.getShortDescription());
+//
+//	}	

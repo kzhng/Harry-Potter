@@ -16,204 +16,243 @@ import harrypotter.HPWorld;
 import harrypotter.Spell;
 
 /**
- * This is the text based user interface for the simulation. Is responsible for outputting a 
- * text based map and messages on the console and obtaining user selection of commands from the console
+ * This is the text based user interface for the simulation. Is responsible for
+ * outputting a text based map and messages on the console and obtaining user
+ * selection of commands from the console
  * <p>
  * Its operations are controlled by the <code>HPGridController</code>.
  * 
  * @author Asel
  */
 /*
- * Changelog
- * 2017-02-19	: Show banner method added. I used a boolean attribute to show the banner only once with the map render. (asel)
+ * Changelog 2017-02-19 : Show banner method added. I used a boolean attribute
+ * to show the banner only once with the map render. (asel)
  */
 public class HPGridTextInterface implements GridRenderer {
-	
-	/**The grid of the world*/
+
+	/** The grid of the world */
 	private static HPGrid grid;
-	
-	/**If or not to show the banner*/
+
+	/** If or not to show the banner */
 	private static boolean showBanner;
-	
+
 	private static Scanner instream;
-	
+
 	/**
-	 * Constructor for the <code>HPGridTextInterface</code>. Will set showBanner flag to true to
-	 * show the text banner with the first map render.
+	 * Constructor for the <code>HPGridTextInterface</code>. Will set showBanner
+	 * flag to true to show the text banner with the first map render.
 	 * 
-	 * @param 	grid the grid of the world
-	 * @pre 	grid should not be null 
+	 * @param grid the grid of the world
+	 * @pre grid should not be null
 	 */
 	public HPGridTextInterface(HPGrid grid) {
 		HPGridTextInterface.grid = grid;
 		instream = new Scanner(System.in);
-		//set the show banner to true so that the banner would be displayed on the first map render
+		// set the show banner to true so that the banner would be displayed on the
+		// first map render
 		showBanner = true;
 	}
-	
-	
+
 	/**
-	 * Returns a string consisting of the symbol of the <code>HPLocation loc</code>, a colon ':' followed by 
-	 * any symbols of the contents of the <code>HPLocation loc</code> and/or empty spaces of the <code>HPLocation loc</code>.
+	 * Returns a string consisting of the symbol of the <code>HPLocation loc</code>,
+	 * a colon ':' followed by any symbols of the contents of the
+	 * <code>HPLocation loc</code> and/or empty spaces of the
+	 * <code>HPLocation loc</code>.
 	 * <p>
-	 * All string returned by this method are of a fixed length and doesn't contain any line breaks.
+	 * All string returned by this method are of a fixed length and doesn't contain
+	 * any line breaks.
 	 * 
-	 * @author 	Asel
-	 * @param 	loc for which the string is required
-	 * @pre		all symbols and empty spaces should not be line break characters
-	 * @return 	a string in the format location symbol of <code>loc</code> + : + symbols of contents of <code>loc</code> + any empty characters of <code>loc</code>
-	 * @post	all strings returned are of a fixed size
+	 * @author Asel
+	 * @param loc for which the string is required
+	 * @pre all symbols and empty spaces should not be line break characters
+	 * @return a string in the format location symbol of <code>loc</code> + : +
+	 *         symbols of contents of <code>loc</code> + any empty characters of
+	 *         <code>loc</code>
+	 * @post all strings returned are of a fixed size
 	 */
 	private String getLocationString(HPLocation loc) {
-		
+
 		final EntityManager<HPEntityInterface, HPLocation> em = HPWorld.getEntitymanager();
-		
-		//all string would be of locationWidth length
+
+		// all string would be of locationWidth length
 		final int locationWidth = 8;
-		
+
 		StringBuffer emptyBuffer = new StringBuffer();
-		char es = loc.getEmptySymbol(); 
-		
-		for (int i = 0; i < locationWidth - 2; i++) { 	//add two less as one character is reserved for the location symbol and the other for the colon (":")
-			emptyBuffer.append(es);						
-		}									  			
-			
-		//new buffer buf with a symbol of the location + :
-		StringBuffer buf = new StringBuffer(loc.getSymbol() + ":"); 
-		
-		//get the Contents of the location
+		char es = loc.getEmptySymbol();
+
+		for (int i = 0; i < locationWidth - 2; i++) { // add two less as one character is reserved for the location
+														// symbol and the other for the colon (":")
+			emptyBuffer.append(es);
+		}
+
+		// new buffer buf with a symbol of the location + :
+		StringBuffer buf = new StringBuffer(loc.getSymbol() + ":");
+
+		// get the Contents of the location
 		List<HPEntityInterface> contents = em.contents(loc);
-		
-		
+
 		if (contents == null || contents.isEmpty())
-			buf.append(emptyBuffer);//add empty buffer to buf to complete the string buffer
+			buf.append(emptyBuffer);// add empty buffer to buf to complete the string buffer
 		else {
-			for (HPEntityInterface e: contents) { //add the symbols of the contents
+			for (HPEntityInterface e : contents) { // add the symbols of the contents
 				buf.append(e.getSymbol());
 			}
 		}
-		buf.append(emptyBuffer); //add the empty buffer again since the symbols of the contents that were added might not actually filled the location upto locationWidth
-		
-		//set a fixed length
+		buf.append(emptyBuffer); // add the empty buffer again since the symbols of the contents that were added
+									// might not actually filled the location upto locationWidth
+
+		// set a fixed length
 		buf.setLength(locationWidth);
-		
-		return buf.toString();		
+
+		return buf.toString();
 	}
-	
+
 	/**
-	 * Display the simulation banner. This method will only be called once for each instance.
+	 * Display the simulation banner. This method will only be called once for each
+	 * instance.
 	 * 
-	 * Based on code from the original Eiffel version of this program, and originally 
-	 * generated by the UNIX program figlet.
+	 * Based on code from the original Eiffel version of this program, and
+	 * originally generated by the UNIX program figlet.
 	 * 
 	 * @author ram
 	 */
 	public static void showBanner() {
-		String [] lines = { 
-			" _   _                         ____       _   _            ",
-			"| | | | __ _ _ __ _ __ _   _  |  _ \\ ___ | |_| |_ ___ _ __ ",
-			"| |_| |/ _` | '__| '__| | | | | |_) / _ \\| __| __/ _ \\ '__|",
-			"|  _  | (_| | |  | |  | |_| | |  __/ (_) | |_| ||  __/ |   ",
-			"|_| |_|\\__,_|_|  |_|   \\__, | |_|   \\___/ \\__|\\__\\___|_|   ",
-			"                       |___/                               ",
-		};
-		
-		for(String line: lines) {
+		String[] lines = { " _   _                         ____       _   _            ",
+				"| | | | __ _ _ __ _ __ _   _  |  _ \\ ___ | |_| |_ ___ _ __ ",
+				"| |_| |/ _` | '__| '__| | | | | |_) / _ \\| __| __/ _ \\ '__|",
+				"|  _  | (_| | |  | |  | |_| | |  __/ (_) | |_| ||  __/ |   ",
+				"|_| |_|\\__,_|_|  |_|   \\__, | |_|   \\___/ \\__|\\__\\___|_|   ",
+				"                       |___/                               ", };
+
+		for (String line : lines) {
 			System.out.println(line);
 		}
 		System.out.println();
 		showBanner = false;
 	}
-	
+
 	@Override
 	public void displayMap() {
-		
-		//show the banner if it has not been displayed before
+
+		// show the banner if it has not been displayed before
 		if (showBanner) {
 			showBanner();
 		}
-				
+
 		String buffer = "\n";
 		final int gridHeight = grid.getHeight();
-		final int gridWidth  = grid.getWidth();
-		
-	
-		for (int row = 0; row< gridHeight; row++){ //for each row
-			for (int col = 0; col< gridWidth; col++){ //each column of a row
-				
+		final int gridWidth = grid.getWidth();
+
+		for (int row = 0; row < gridHeight; row++) { // for each row
+			for (int col = 0; col < gridWidth; col++) { // each column of a row
+
 				HPLocation loc = (HPLocation) grid.getLocationByCoordinates(col, row);
-				
-				//construct the string of a location to be displayed on the text interface
-				buffer = buffer + "|"+ getLocationString(loc)+"| ";
+
+				// construct the string of a location to be displayed on the text interface
+				buffer = buffer + "|" + getLocationString(loc) + "| ";
 			}
-			buffer += "\n"; //new row
+			buffer += "\n"; // new row
 		}
-		
-		System.out.println(buffer); //print the grid on the screen
-		
+
+		System.out.println(buffer); // print the grid on the screen
+
 	}
 
 	@Override
 	public void displayMessage(String message) {
-		System.out.println(message);		
+		System.out.println(message);
 	}
-
 
 	@Override
 	public ActionInterface getSelection(ArrayList<ActionInterface> cmds) {
-		
-		//assertion for the precondition
-		assert cmds.size()>0:"command list for the actor is empty";
-							
-		Collections.sort(cmds);//sorting the actions for a prettier output
 
-		//construct the commands to be displayed in the console
+		// assertion for the precondition
+		assert cmds.size() > 0 : "command list for the actor is empty";
+
+		Collections.sort(cmds);// sorting the actions for a prettier output
+
+		// construct the commands to be displayed in the console
 		for (int i = 0; i < cmds.size(); i++) {
 			System.out.println(i + 1 + " " + cmds.get(i).getDescription());
 		}
-		
-		int selection = 0; //set to zero to trigger the loop
-		while (selection < 1 || selection > cmds.size()) {//loop until a valid command has been obtained
+
+		int selection = 0; // set to zero to trigger the loop
+		while (selection < 1 || selection > cmds.size()) {// loop until a valid command has been obtained
 			System.out.println("Enter command:");
-			
-			try{
+
+			try {
 				selection = (instream.nextInt());
-			}catch (InputMismatchException e) { //catching any non integer inputs
-			    instream.next(); // this consumes the invalid input
+			} catch (InputMismatchException e) { // catching any non integer inputs
+				instream.next(); // this consumes the invalid input
 			}
 		}
-	
-		return cmds.get(selection-1);//return the action selected		
+
+		return cmds.get(selection - 1);// return the action selected
 	}
- 	
+
 	/**
 	 * Will return a Spell selected by the user.
 	 * <p>
-	 * This method will provide the user interface with a list of Spells from which the user 
-	 * needs to select one from and will return this selection.	
+	 * This method will provide the user interface with a list of Spells from which
+	 * the user needs to select one from and will return this selection.
 	 * 
-	 * @param 	an ArrayList of <code>Spell</code>
-	 * @return	the selected Spell
+	 * @param an ArrayList of <code>Spell</code>
+	 * @return the selected Spell
 	 */
 	public Spell getSpellSelection(ArrayList<Spell> listOfSpells) {
-		
-		//construct the Spells to be displayed in the console
+
+		// construct the Spells to be displayed in the console
 		for (int i = 0; i < listOfSpells.size(); i++) {
 			System.out.println(i + 1 + " " + listOfSpells.get(i).getDescription());
 		}
-		
-		int selection = 0; //set to zero to trigger the loop
-		while (selection < 1 || selection > listOfSpells.size()) {//loop until a valid command has been obtained
+
+		int selection = 0; // set to zero to trigger the loop
+		while (selection < 1 || selection > listOfSpells.size()) {// loop until a valid command has been obtained
 			System.out.println("Enter command:");
-			
-			try{
+
+			try {
 				selection = (instream.nextInt());
-			}catch (InputMismatchException e) { //catching any non integer inputs
-			    instream.next(); // this consumes the invalid input
+			} catch (InputMismatchException e) { // catching any non integer inputs
+				instream.next(); // this consumes the invalid input
 			}
-		}	
-	
-		return listOfSpells.get(selection-1);//return the spell selected		
+		}
+
+		return listOfSpells.get(selection - 1);// return the spell selected
+	}
+
+	/**
+	 * Will return a boolean representing Accept and decline
+	 * <p>
+	 * This method will provide the user interface with Accept and Decline from which the user needs to select one from and will return this
+	 * selection.
+	 * 
+	 * @return a boolean represent Accept and decline
+	 * @author Matti
+	 */
+	public boolean getRespond() {
+
+		String[] cmds = { "Accept", "Decline" };
+		for (int i = 0; i < cmds.length; i++) {
+			System.out.println(i + 1 + " " + cmds[i]);
+		}
+
+		int selection = 0; // set to zero to trigger the loop
+		while (selection < 1 || selection > cmds.length) {// loop until a valid command has been obtained
+			System.out.println("Enter command:");
+
+			try {
+				selection = (instream.nextInt());
+			} catch (InputMismatchException e) { // catching any non integer inputs
+				instream.next(); // this consumes the invalid input
+			}
+		}
+
+		if (selection == 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }

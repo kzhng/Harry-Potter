@@ -6,9 +6,9 @@ import harrypotter.HPEntity;
 import harrypotter.actions.Take;
 
 /**
- * A Potion
+ * A health Potion
  * 
- * @author Willy Wonka (adapted from Sword by Robert)
+ * @author Matti (adapted from Sword by Robert)
  */
 
 public class Potion extends HPEntity {

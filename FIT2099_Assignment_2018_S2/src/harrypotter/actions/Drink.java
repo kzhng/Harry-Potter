@@ -9,7 +9,7 @@ import harrypotter.HPEntityInterface;
 /**
  * <code>HPAction</code> that lets a <code>HPActor</code> drink an object.
  * 
- * @author ram
+ * @author Matti
  */
 
 public class Drink extends HPAffordance {
@@ -32,7 +32,6 @@ public class Drink extends HPAffordance {
 	 * <p>
 	 * This method returns true if and only if <code>a</code> is not carrying any item already.
 	 *  
-	 * @author 	Matti
 	 * @param 	a the <code>HPActor</code> being queried
 	 * @return 	true if the <code>HPActor</code> is can drink this item, false otherwise
 	 * @see		{@link harrypotter.HPActor#getItemCarried()}
@@ -48,7 +47,6 @@ public class Drink extends HPAffordance {
 	 * <p>
 	 * This method should only be called if the <code>HPActor a</code> is alive.
 	 * 
-	 * @author 	Matti
 	 * @param 	a the <code>HPActor</code> that does the drinking
 	 * @see 	{@link #theTarget}
 	 * @see		{@link harrypotter.HPActor#isDead()}
@@ -68,7 +66,6 @@ public class Drink extends HPAffordance {
 	/**
 	 * A String describing what this action will do, suitable for display in a user interface
 	 * 
-	 * @author Matti
 	 * @return String comprising "drink " and the short description of the target of this <code>Drink</code>
 	 */
 	@Override
