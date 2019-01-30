@@ -240,21 +240,13 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 * @see 	#itemCarried
 	 */
 	
-	public void setItemCarried(HPEntityInterface target) {
-		this.itemCarried = target;
-	}
-	
-	/**
-	 * Reduces the <code>frozenTime</code> of this <code>HPActor</code>.
-	 * 
-	 * @see 	#frozenTime
-	 * @see 	#isFrozen()
-	 * @see 	#freeze(int)
-	 */
 	public void unFreeze() {
-		//PRECONDITION: 
 		assert (frozenTime >= 1) : "freeze time on HPActor must be positive to unfreeze";
 		this.frozenTime -= 1;
+	}
+	
+	public void setItemCarried(HPEntityInterface target) {
+		this.itemCarried = target;
 	}
 	
 	
@@ -271,15 +263,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		return hitpoints <= 0;
 	}
 	
-	/**
-	 * Returns true if this <code>HPActor</code> is frozen, false otherwise.
-	 * <p>
-	 * A <code>HPActor</code> is frozen when it's <code>frozenTime</code> is greater than zero.
-	 *
-	 * @author 	Kerry Zheng
-	 * @return 	true if and only if this <code>HPActor</code> is frozen, false otherwise
-	 * @see 	#frozenTime
-	 */
+	
 	public boolean isFrozen() {
 		return frozenTime > 0;
 	}
@@ -364,10 +348,6 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		knownSpells.add(newSpell);
 	}
 	
-	/**
-	 * This method adds to the <code>frozenTime</code> of this <code>HPActor</code> by a given integer parameter.
-	 * @param freezeTime an integer value of how long this <code>HPActor</code> is to be frozen for
-	 */
 	public void freeze(int freezeTime) {
 		assert freezeTime > 0: "HPActor can only be frozen for a positive integer value";
 		frozenTime += freezeTime;
