@@ -41,6 +41,11 @@ public class Give extends HPAffordance implements HPActionInterface {
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
+		if (a.isFrozen()) {
+			a.unFreeze();
+			return false;
+		}
+		
 		HPEntityInterface target = this.getTarget();
 		boolean targetIsActor = target instanceof HPActor;
 		HPActor targetActor = null;

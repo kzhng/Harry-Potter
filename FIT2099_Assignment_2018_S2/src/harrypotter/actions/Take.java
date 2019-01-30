@@ -49,6 +49,11 @@ public class Take extends HPAffordance {
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
+		if (a.isFrozen()) {
+			a.unFreeze();
+			return false;
+		}
+		
 		return a.getItemCarried() == null;
 	}
 

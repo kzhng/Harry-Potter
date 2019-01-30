@@ -48,9 +48,9 @@ public class Sword extends HPEntity {
 	 */
 	@Override
 	public String getSymbol() {
-		return "â€ ";
+		return "†";
 	}
 	
 	
-
+	
 }

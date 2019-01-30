@@ -24,6 +24,11 @@ public class Leave extends HPAffordance {
 	 * 		 if the <code>HPActor</code> is allowed to Leave the item
 	 */
 	 public boolean canDo(HPActor a){
+			if (a.isFrozen()) {
+				a.unFreeze();
+				return false;
+			}
+		 
 		 return a.getItemCarried()!=null;
 	 }
 	 /**

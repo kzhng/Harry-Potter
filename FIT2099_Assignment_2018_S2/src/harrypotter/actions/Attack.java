@@ -67,6 +67,10 @@ public class Attack extends HPAffordance implements HPActionInterface {
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
+		if (a.isFrozen()) {
+			a.unFreeze();
+			return false;
+		}
 		return true;
 	}
 

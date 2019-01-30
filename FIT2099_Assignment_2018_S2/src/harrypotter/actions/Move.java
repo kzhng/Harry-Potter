@@ -123,6 +123,11 @@ public class Move extends HPAction {
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
+		if (a.isFrozen()) {
+			a.unFreeze();
+			return false;
+		}
+		
 		return !a.isDead();
 	}
 

@@ -77,6 +77,11 @@ public class Cast extends HPAffordance implements HPActionInterface {
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
+		if (a.isFrozen()) {
+			a.unFreeze();
+			return false;
+		}
+		
 		if ((a.getItemCarried()) != null ){
 			if ((a.getItemCarried()).hasCapability(Capability.CASTING)){
 				return true;

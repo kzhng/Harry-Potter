@@ -41,7 +41,13 @@ public class DeathEater extends HPActor {
 	public void act() {
 		if (isDead()) {
 			return;
+		}	
+		
+		if (this.isFrozen()) {
+			this.unFreeze();
+			return;
 		}
+
 		say(describeLocation());
 
 		AttackInformation attack = AttackNeighbours.attackLocals(this, this.world, false, false);

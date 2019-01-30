@@ -59,6 +59,11 @@ public class Dumbledore extends HPLegend {
 			return;
 		}
 
+		if (isFrozen()) {
+			unFreeze();
+			return;
+		}
+		
 		AttackInformation attack;
 		attack = AttackNeighbours.attackLocals(albus, albus.world, true, true);
 

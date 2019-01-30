@@ -60,6 +60,12 @@ public class Dementor extends HPActor {
 		if (isDead()) {
 			return;
 		}
+		
+		if (this.isFrozen()) {
+			this.unFreeze();
+			return;
+		}
+		
 		say(describeLocation());
 
 		ArrayList<AttackInformation> attackable = AttackNeighbours.attackAllLocals(this, this.world, false, false);

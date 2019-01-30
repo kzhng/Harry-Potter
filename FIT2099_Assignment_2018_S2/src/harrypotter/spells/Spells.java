@@ -1,5 +1,5 @@
 package harrypotter.spells;
 
 public enum Spells {
-	IMMOBULUS, EXPELLIARMUS
+	IMMOBULUS, EXPELLIARMUS, AVADAKEDAVRA
 }

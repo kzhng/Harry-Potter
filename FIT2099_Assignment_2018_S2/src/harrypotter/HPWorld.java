@@ -198,29 +198,24 @@ public class HPWorld extends World {
                 CompassBearing.EAST, CompassBearing.EAST,
                 CompassBearing.NORTHWEST, CompassBearing.NORTHWEST*/};
 		Dumbledore dumbledore = Dumbledore.getDumbledore(iface, this, patrolmoves);
-		Sword sword = new Sword(iface);
-		entityManager.setLocation(sword, loc);
+		Sword sword = new Sword(iface); //kz made changes to how dumbledore receives his sword and updated it so that it interacts correctly with expelliarmus
 		entityManager.setLocation(dumbledore, loc);
-		// Use the sword's Take affordance to give it to Dumbledore, so all necessary things get done
-		// Quite hacky. Is there a better way?
-		Affordance[] affordances = sword.getAffordances();
-		for(int i = 0; i < affordances.length; i++) {
-			if (affordances[i] instanceof Take) {	//mh added && false for testing
-				affordances[i].execute(dumbledore);
-				break;
-			}
+		dumbledore.setItemCarried(sword);
+		for (Affordance a : sword.getAffordances()){
+			if (a instanceof Take){
+				sword.removeAffordance(a);
+			}	
 		}
-		
 		
 		loc = myGrid.getLocationByCoordinates(4,5);	//mh changed from (5,9)
 		
 		// Harry
-		Player harry = new Player(Team.GOOD, 100, iface, this);
+		Player harry = new Player(Team.EVIL, 100000, iface, this);
 		harry.setShortDescription("Harry");
 		harry.setLongDescription("Harry Potter, the boy who lived");
 		entityManager.setLocation(harry, loc);
 		Wand wand = new Wand(iface);
-		//harry.setItemCarried(wand);
+		harry.setItemCarried(wand);
 		for (Affordance a : wand.getAffordances()){
 			if (a instanceof Take){
 				wand.removeAffordance(a);
@@ -230,6 +225,7 @@ public class HPWorld extends World {
 		wand.capabilities.add(Capability.CASTING);
 		harry.learnSpell(new AvadaKedavra());
 		harry.learnSpell(new Expelliarmus());
+		harry.learnSpell(new Immobulus());
 		harry.resetMoveCommands(loc);
 		
 		/*

@@ -39,6 +39,8 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	
 	/**The <code>maxHitpoints</code> of this actor. Health cannot increase beyond this maximum, when initialized its the same as hitpoints*/
 	private int maxHitpoints;
+	
+	private int frozenTime;
 
 	/**The world this <code>HPActor</code> belongs to.*/
 	protected HPWorld world;
@@ -63,6 +65,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	
 	/** An ArrayList of <code>HPEntity</code> seen by the <code>HPctor</code>**/
 	private ArrayList<HPEntity> seenItems;
+	
 	/**
 	 * Constructor for the <code>HPActor</code>.
 	 * <p>
@@ -235,6 +238,11 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 * @param 	target the new item to be set as item carried
 	 * @see 	#itemCarried
 	 */
+	
+	public void unFreeze() {
+		frozenTime -= 1;
+	}
+	
 	public void setItemCarried(HPEntityInterface target) {
 		this.itemCarried = target;
 	}
@@ -253,6 +261,10 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		return hitpoints <= 0;
 	}
 	
+	
+	public boolean isFrozen() {
+		return frozenTime > 0;
+	}
 
 	@Override
 	public String getSymbol() {
@@ -332,6 +344,11 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 */
 	public void learnSpell(Spell newSpell){
 		knownSpells.add(newSpell);
+	}
+	
+	public void freeze(int freezeTime) {
+		assert freezeTime > 0: //;
+		this.frozenTime += freezeTime;
 	}
 	
 	/**
