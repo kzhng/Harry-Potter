@@ -51,13 +51,13 @@ fontsize=10
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>264</x>
+      <x>276</x>
       <y>252</y>
-      <w>120</w>
-      <h>36</h>
+      <w>108</w>
+      <h>204</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
+    <additional_attributes>10.0;150.0;40.0;150.0;40.0;10.0;70.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -102,19 +102,6 @@ fontsize=10
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>156</x>
-      <y>396</y>
-      <w>132</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;enum&gt;&gt;
-Spells
-</panel_attributes>
-    <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
@@ -250,25 +237,25 @@ m2=0..*
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
+      <x>72</x>
       <y>48</y>
       <w>120</w>
       <h>36</h>
     </coordinates>
-    <panel_attributes>Attack
+    <panel_attributes>HPActor
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>48</x>
+      <x>120</x>
       <y>72</y>
-      <w>168</w>
+      <w>96</w>
       <h>204</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0;120.0;60.0;120.0;150.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;60.0;60.0;60.0;150.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -329,5 +316,83 @@ fg=black</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;130.0;10.0;70.0;210.0;70.0;210.0;10.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>156</x>
+      <y>396</y>
+      <w>132</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>
+Spells</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>84</y>
+      <w>144</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>84</y>
+      <w>120</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>HPAffordance</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>444</x>
+      <y>252</y>
+      <w>120</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Avada Kedavra</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>348</x>
+      <y>240</y>
+      <w>120</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>80.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>552</x>
+      <y>252</y>
+      <w>252</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>190.0;60.0;190.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>552</x>
+      <y>264</y>
+      <w>96</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>60.0;180.0;60.0;10.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>

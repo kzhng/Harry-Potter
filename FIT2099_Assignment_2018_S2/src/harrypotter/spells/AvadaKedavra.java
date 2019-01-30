@@ -3,7 +3,6 @@ package harrypotter.spells;
 import harrypotter.HPEntityInterface;
 import harrypotter.actions.Leave;
 import harrypotter.Spell;
-import harrypotter.actions.Leave;
 import harrypotter.HPActor;
 
 /**

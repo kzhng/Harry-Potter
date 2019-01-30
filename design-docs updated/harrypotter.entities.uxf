@@ -282,4 +282,17 @@ bg=gray</panel_attributes>
 fg=yellow</panel_attributes>
     <additional_attributes>10.0;10.0;200.0;110.0</additional_attributes>
   </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>710</x>
+      <y>280</y>
+      <w>220</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+
+fg=orange</panel_attributes>
+    <additional_attributes>10.0;150.0;200.0;10.0</additional_attributes>
+  </element>
 </diagram>
