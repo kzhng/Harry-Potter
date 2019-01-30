@@ -210,7 +210,7 @@ public class HPWorld extends World {
 		loc = myGrid.getLocationByCoordinates(4,5);	//mh changed from (5,9)
 		
 		// Harry
-		Player harry = new Player(Team.EVIL, 100000, iface, this);
+		Player harry = new Player(Team.GOOD, 100000, iface, this);
 		harry.setShortDescription("Harry");
 		harry.setLongDescription("Harry Potter, the boy who lived");
 		entityManager.setLocation(harry, loc);
