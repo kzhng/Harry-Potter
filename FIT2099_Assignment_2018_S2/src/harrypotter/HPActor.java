@@ -40,6 +40,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	/**The <code>maxHitpoints</code> of this actor. Health cannot increase beyond this maximum, when initialized its the same as hitpoints*/
 	private int maxHitpoints;
 	
+	/**The <code>frozenTime</code> of this actor. The time frozen cannot be less than zero, and when initialized it is zero. */
 	private int frozenTime;
 
 	/**The world this <code>HPActor</code> belongs to.*/
@@ -240,7 +241,8 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 */
 	
 	public void unFreeze() {
-		frozenTime -= 1;
+		assert (frozenTime >= 1) : "freeze time on HPActor must be positive to unfreeze";
+		this.frozenTime -= 1;
 	}
 	
 	public void setItemCarried(HPEntityInterface target) {
@@ -265,7 +267,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	public boolean isFrozen() {
 		return frozenTime > 0;
 	}
-
+	
 	@Override
 	public String getSymbol() {
 		return symbol;
@@ -347,8 +349,8 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	}
 	
 	public void freeze(int freezeTime) {
-		assert freezeTime > 0: //;
-		this.frozenTime += freezeTime;
+		assert freezeTime > 0: "HPActor can only be frozen for a positive integer value";
+		frozenTime += freezeTime;
 	}
 	
 	/**
