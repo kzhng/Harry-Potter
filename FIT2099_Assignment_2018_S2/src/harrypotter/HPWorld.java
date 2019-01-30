@@ -270,12 +270,17 @@ public class HPWorld extends World {
 		entityManager.setLocation(axe, loc);
 		itemsExist.add(axe);
 				
-		// a health potion
+		// Some health potion
 		loc = myGrid.getLocationByCoordinates(4,7);
 		Potion potion = new Potion(iface);
 		entityManager.setLocation(potion, loc);
 		potion.addAffordance(new Drink(potion, iface));
 		
+		loc = myGrid.getLocationByCoordinates(4,8);
+		potion = new Potion(iface);
+		entityManager.setLocation(potion, loc);
+		potion.makeHidden();
+		potion.addAffordance(new Drink(potion, iface));
 		
 		// Some Death Eaters
 		DeathEater deathEater = new DeathEater(10, iface, this);
@@ -294,10 +299,10 @@ public class HPWorld extends World {
 		loc = myGrid.getLocationByCoordinates(1,1);
 		entityManager.setLocation(dementor, loc);
 		
-//		dementor = new Dementor(40, iface, this);
-//		dementor.setSymbol("Z");
-//		loc = myGrid.getLocationByCoordinates(5,5);
-//		entityManager.setLocation(dementor, loc);
+		dementor = new Dementor(40, iface, this);
+		dementor.setSymbol("Z");
+		loc = myGrid.getLocationByCoordinates(7,2);
+		entityManager.setLocation(dementor, loc);
 				
 		// Whomping Willow
 		loc = myGrid.getLocationByCoordinates(7, 4);
