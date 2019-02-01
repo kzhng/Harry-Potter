@@ -46,7 +46,7 @@ public class Dementor extends HPActor {
 
 	private int minWait = 1;
 	private int maxWait = 5;
-	private int turnWait;	//number of turn to wait
+	private int turnWait;	//number of turn to wait before moving
 
 	public Dementor(int hitpoints, MessageRenderer m, HPWorld world) {
 		super(Team.EVIL, hitpoints, m, world);

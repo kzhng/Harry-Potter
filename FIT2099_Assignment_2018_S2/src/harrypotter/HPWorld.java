@@ -215,7 +215,7 @@ public class HPWorld extends World {
 		harry.setLongDescription("Harry Potter, the boy who lived");
 		entityManager.setLocation(harry, loc);
 		Wand wand = new Wand(iface);
-		harry.setItemCarried(wand);
+		//harry.setItemCarried(wand);
 		for (Affordance a : wand.getAffordances()){
 			if (a instanceof Take){
 				wand.removeAffordance(a);
@@ -279,8 +279,22 @@ public class HPWorld extends World {
 		loc = myGrid.getLocationByCoordinates(4,8);
 		potion = new Potion(iface);
 		entityManager.setLocation(potion, loc);
-		potion.makeHidden();
+		potion.makeHidden();		// made this health potion hidden
 		potion.addAffordance(new Drink(potion, iface));
+				
+		// A broomstick
+		loc = myGrid.getLocationByCoordinates(4,6);
+		Broomstick broomstick= new Broomstick(iface);
+		//broomstick.addAffordance(new Take(broomstick, iface));
+		entityManager.setLocation(broomstick, loc);
+		harry.setItemCarried(broomstick);
+		broomstick.addAffordance(new Leave(broomstick, iface));
+		harry.resetMoveCommands(loc);
+		for (Affordance a : broomstick.getAffordances()){
+			if (a instanceof Take){
+				broomstick.removeAffordance(a);
+			}	
+		}
 		
 		// Some Death Eaters
 		DeathEater deathEater = new DeathEater(10, iface, this);
@@ -288,10 +302,10 @@ public class HPWorld extends World {
 		loc = myGrid.getLocationByCoordinates(4,3); 
 		entityManager.setLocation(deathEater, loc);
 		
-		deathEater = new DeathEater(10, iface, this);
-		deathEater.setSymbol("E");
-		loc = myGrid.getLocationByCoordinates(5,2);
-		entityManager.setLocation(deathEater, loc);
+//		deathEater = new DeathEater(10, iface, this);
+//		deathEater.setSymbol("E");
+//		loc = myGrid.getLocationByCoordinates(5,2);
+//		entityManager.setLocation(deathEater, loc);
 
 		// Some Dementor
 		Dementor dementor = new Dementor(780, iface, this);
@@ -299,10 +313,10 @@ public class HPWorld extends World {
 		loc = myGrid.getLocationByCoordinates(1,1);
 		entityManager.setLocation(dementor, loc);
 		
-		dementor = new Dementor(40, iface, this);
-		dementor.setSymbol("Z");
-		loc = myGrid.getLocationByCoordinates(7,2);
-		entityManager.setLocation(dementor, loc);
+//		dementor = new Dementor(780, iface, this);
+//		dementor.setSymbol("Z");
+//		loc = myGrid.getLocationByCoordinates(7,2);
+//		entityManager.setLocation(dementor, loc);
 				
 		// Whomping Willow
 		loc = myGrid.getLocationByCoordinates(7, 4);
@@ -331,6 +345,42 @@ public class HPWorld extends World {
 	public boolean canMove(HPActor a, Direction whichDirection) {
 		HPLocation where = (HPLocation)entityManager.whereIs(a); // requires a cast for no reason I can discern
 		return where.hasExit(whichDirection);
+	}
+	
+	/**
+	 * Determine whether a given <code>HPActor a</code> can double move in a given direction
+	 * <code>whichDirection</code>.
+	 * 
+	 * @author 	Matti
+	 * @param 	a the <code>HPActor</code> being queried.
+	 * @param 	whichDirection the <code>Direction</code> if which they want to double move
+	 * @return 	true if the actor can see an exit in <code>whichDirection</code>, false otherwise.
+	 */
+	public boolean canDoubleMove(HPActor a, Direction whichDirection) {
+		
+		if(a instanceof Player)
+			System.out.println("");
+		
+//		HPEntityInterface theItem = a.getItemCarried();
+//		boolean holdsBroomstick = theItem instanceof Broomstick;
+//		
+//		if (!(holdsBroomstick)) {
+//			return false;
+//		}
+		
+		if(this.canMove(a, whichDirection)) {
+			this.moveEntity(a, whichDirection);	//move the actor to the new location temporary
+			
+			if(this.canMove(a, whichDirection)) {
+				this.moveEntity(a, CompassBearing.opposite((CompassBearing) whichDirection));	//return the actor to the previous loc
+				return true;
+			}
+			else{
+				this.moveEntity(a, CompassBearing.opposite((CompassBearing) whichDirection));	//return the actor to the previous loc
+				return false;
+			}
+		}
+		return false;
 	}
 	
 	/**

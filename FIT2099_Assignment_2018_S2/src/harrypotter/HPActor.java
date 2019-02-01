@@ -26,7 +26,9 @@ import edu.monash.fit2099.simulator.time.Scheduler;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 import harrypotter.actions.Attack;
 import harrypotter.actions.Cast;
+import harrypotter.actions.DoubleMove;
 import harrypotter.actions.Move;
+import harrypotter.entities.Broomstick;
 import harrypotter.actions.Give;
 
 public abstract class HPActor extends Actor<HPActionInterface> implements HPEntityInterface {
@@ -67,6 +69,9 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	/** An ArrayList of <code>HPEntity</code> seen by the <code>HPctor</code>**/
 	private ArrayList<HPEntity> seenItems;
 	
+	/** An ArrayList of <code>HPEntity</code> carried by the <code>HPctor</code>**/
+	private ArrayList<HPEntityInterface> Inventory;
+	
 	/**
 	 * Constructor for the <code>HPActor</code>.
 	 * <p>
@@ -98,6 +103,8 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		this.symbol = "@";
 		this.knownSpells = new ArrayList<Spell>();
 		this.seenItems = new ArrayList<HPEntity>();
+		//this.capabilities.add(Capability.INVENTORY);
+		this.Inventory = new ArrayList<HPEntityInterface>();
 		
 		//HPActors are given the Attack affordance hence they can be attacked
 		HPAffordance attack = new Attack(this, m);
@@ -246,7 +253,14 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	}
 	
 	public void setItemCarried(HPEntityInterface target) {
+		
+		HPEntityInterface currentItem = this.getItemCarried();
+		if(currentItem !=null) {
+			this.Inventory.add(currentItem);
+		}
+		this.Inventory.add(target);
 		this.itemCarried = target;
+		
 	}
 	
 	
@@ -319,8 +333,14 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		
 		// add new movement possibilities
 		for (CompassBearing d: CompassBearing.values()) { 														  
-			if (loc.getNeighbour(d) != null) //if there is an exit from the current location in direction d, add that as a Move command
+			if (loc.getNeighbour(d) != null) { //if there is an exit from the current location in direction d, add that as a Move command
 				newActions.add(new Move(d,messageRenderer, world)); 
+				
+				
+				
+				if(this.getItemCarried() instanceof Broomstick && world.canDoubleMove(this, d))
+					newActions.add(new DoubleMove(d, messageRenderer, world));
+			}
 		}
 		
 		// replace command list of this HPActor
