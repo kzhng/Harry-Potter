@@ -25,17 +25,6 @@ HPActionInterface</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>800</x>
-      <y>480</y>
-      <w>48</w>
-      <h>160</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
       <x>1008</x>
@@ -145,5 +134,16 @@ HPActionInterface</panel_attributes>
     <panel_attributes>&lt;&lt;Interface&gt;&gt;
 HPEntityInterface</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>480</y>
+      <w>48</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
