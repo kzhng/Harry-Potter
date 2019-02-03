@@ -1,5 +1,6 @@
 package harrypotter.entities.actors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
@@ -57,30 +58,56 @@ public class TestActor extends HPActor {
 	 *  @see {@link edu.monash.fit2099.simulator.userInterface.MessageRenderer}
 	 */
 	public void describeScene() {
-		//get the location of the player and describe it
+		// get the location of the player and describe it
 		HPLocation location = this.world.getEntityManager().whereIs(this);
 		say(this.getShortDescription() + " [" + this.getHitpoints() + "] is at " + location.getShortDescription());
 		
-		//get the items carried for the player
-		for (HPEntityInterface itemCarried : this.getItemsCarried()) {
-			if (itemCarried != null) {
-				//and describe the item carried if the player is actually carrying an item
-				say(this.getShortDescription() 
-						+ " is holding " + itemCarried.getShortDescription() + " [" + itemCarried.getHitpoints() + "]");
-			}
-			
-			//get the contents of the location
-			List<HPEntityInterface> contents = this.world.getEntityManager().contents(location);
-			
-			//and describe the contents
-			if (contents.size() > 1) { // if it is equal to one, the only thing here is this Player, so there is nothing to report
-				say(this.getShortDescription() + " can see:");
-				for (HPEntityInterface entity : contents) {
-					if (entity != this) { // don't include self in scene description
-						say("\t " + entity.getSymbol() + " - " + entity.getLongDescription() + " [" + entity.getHitpoints() + "]");
+		String entityDescription = new String();
+		describeItems(this);
+		
+		// get the contents of the location
+		List<HPEntityInterface> contents = this.world.getEntityManager().contents(location);
+
+		// and describe the contents
+		if (contents.size() > 1) { // if it is equal to one, the only thing here is this Player, so there is
+									// nothing to report
+			say(this.getShortDescription() + " can see:");
+			for (HPEntityInterface entity : contents) {
+				if (entity != this) { // don't include self in scene description
+					entityDescription = "\t " + entity.getSymbol() + " - " + entity.getLongDescription() + " ["
+							+ entity.getHitpoints() + "]";
+					if (entity instanceof HPActor) {
+						HPActor actor = (HPActor) entity;
+						describeItems(actor);
 					}
+					say(entityDescription);
 				}
 			}
+		}
+
+	}
+	
+	/**
+	 * This method will describe items carried (if this <code>Player</code> is carrying any)
+	 * The output from this method would be through the
+	 * <code>MessageRenderer</code>.
+	 * 
+	 * @see {@link edu.monash.fit2099.simulator.userInterface.MessageRenderer}
+	 */
+	private void describeItems(HPActor a) {
+		String entityDescription = new String();
+		if(a.carriesItems()) {		
+			ArrayList<HPEntityInterface> items = a.getItemsCarried();
+			// get the items carried by the player
+			for (int i = 0; i < items.size(); i++) {
+				if(i!=0 && i == items.size()-1) {
+					entityDescription += "and ";
+				}
+				entityDescription += items.get(i).getShortDescription() + " ["
+						+ items.get(i).getHitpoints() + "] ";
+			} 
+			// and describe the items carried if the player is actually carrying an item
+			say(a.getShortDescription() + " is holding " + entityDescription);
 		}
 	}
 }

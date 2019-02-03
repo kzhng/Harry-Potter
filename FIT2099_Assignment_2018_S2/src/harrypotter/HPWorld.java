@@ -223,7 +223,7 @@ public class HPWorld extends World {
 			}	
 		}
 		
-		wand.addAffordance(new Leave(wand, iface));	//mh need to double check this
+		wand.addAffordance(new Leave(wand, iface));	
 		wand.capabilities.add(Capability.CASTING);
 		harry.learnSpell(new AvadaKedavra());
 		harry.learnSpell(new Expelliarmus());

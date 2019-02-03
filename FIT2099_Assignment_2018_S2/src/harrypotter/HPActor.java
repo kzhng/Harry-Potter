@@ -63,7 +63,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	private String symbol;
 	
 	/**A set of <code>Capabilities</code> of this <code>HPActor</code>*/
-	private HashSet<Capability> capabilities;
+	protected HashSet<Capability> capabilities;
 	
 	/**An ArrayList of <code>Spells</code> known to this <code>HPActor</code>, has to be learned when populating the HPWorld*/
 	private ArrayList<Spell> knownSpells;
@@ -71,8 +71,11 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	/** An ArrayList of <code>HPEntity</code> seen by the <code>HPctor</code>**/
 	private ArrayList<HPEntity> seenItems;
 	
-	/** An ArrayList of <code>HPEntity</code> carried by the <code>HPctor</code>**/
-	private ArrayList<HPEntityInterface> Inventory;
+	/** An ArrayList of <code>HPEntityInterface</code> carried by the <code>HPctor</code>**/
+	protected ArrayList<HPEntityInterface> Inventory;
+	
+	/** An <code>integer</code> that specifies inventory size, it is 1 if the actor doesn't have an INventory capability **/
+	protected int InventorySize = 1;
 	
 	/**
 	 * Constructor for the <code>HPActor</code>.
@@ -104,10 +107,10 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		this.world = world;
 		this.symbol = "@";
 		this.knownSpells = new ArrayList<Spell>();
-		this.seenItems = new ArrayList<HPEntity>();
-		//this.capabilities.add(Capability.INVENTORY);
+		this.seenItems = new ArrayList<HPEntity>();		
 		this.Inventory = new ArrayList<HPEntityInterface>();
-		
+		this.capabilities = new HashSet<Capability>();
+				
 		//HPActors are given the Attack affordance hence they can be attacked
 		HPAffordance attack = new Attack(this, m);
 		this.addAffordance(attack);
@@ -210,8 +213,9 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 * @return 	the items carried by this <code>HPActor</code> or null if no item is held by this <code>HPActor</code>
 	 * @see 	#Inventory
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList<HPEntityInterface> getItemsCarried() {
-		return this.Inventory;
+		return (ArrayList<HPEntityInterface>) this.Inventory.clone();		//cloned items, due to privacy risk
 	}
 	/**
 	 * 
@@ -226,7 +230,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 * @return true if the actor's inventory is not full
 	 */
 	public boolean inventoryNotFull() {
-		return (this.Inventory.size()<3);		//mh //magic number 
+		return (this.Inventory.size()<InventorySize);		//mh //magic number 
 	}
 
 	/**

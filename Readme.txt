@@ -1,3 +1,3 @@
-fix describe methdo for testActor
+describe method is the same for testActor and player
 
-Expelliarmus can be cast even when the actor(an opponenet) is holing an item.
+Refactor HPGridController and HPtextInterface

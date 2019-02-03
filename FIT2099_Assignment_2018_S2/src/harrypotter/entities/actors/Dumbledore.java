@@ -1,9 +1,13 @@
 package harrypotter.entities.actors;
 
+import java.util.ArrayList;
+
 import edu.monash.fit2099.simulator.space.Direction;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.Capability;
 import harrypotter.HPActionInterface;
 import harrypotter.HPAffordance;
+import harrypotter.HPEntityInterface;
 import harrypotter.HPLegend;
 import harrypotter.HPWorld;
 import harrypotter.Team;
@@ -36,6 +40,8 @@ public class Dumbledore extends HPLegend {
 		this.setSymbol("D");
 		this.setShortDescription("Albus Dumbledore");
 		this.setLongDescription("Albus Dumbledore, a very powerful wizard");
+		this.capabilities.add(Capability.INVENTORY);	
+		this.InventorySize = (this.hasCapability(Capability.INVENTORY))? 3 : 1;		//inventory size is 3 for actors with INVENTORY capability
 	}
 
 	public static Dumbledore getDumbledore(MessageRenderer m, HPWorld world, Direction[] moves) {

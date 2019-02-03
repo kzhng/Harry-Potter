@@ -11,7 +11,7 @@ public enum Capability {
 	CHOPPER,//CHOPPER capability allows an entity to Chop another entity which has the Chop Affordance
 	WEAPON,//WEAPON capability allows an entity to Attack another entity which has the Attack Affordance
 	CASTING, //CASTING capability allows an entity to Cast Spells on another entity which has the Cast Affordance
-	HEALTH//hEALTH capability allow an entity to increase its health
-, DOUBLESPEED,	// allow an actor to move at Double speed
-INVENTORY	// allow an actor to carry up to 3 items
+	HEALTH,	//hEALTH capability allow an entity to increase its health
+	DOUBLESPEED,	// allow an actor to move at Double speed
+	INVENTORY	// allow an actor to carry up to 3 items
 }

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.Capability;
 import harrypotter.HPActionInterface;
 import harrypotter.HPActor;
 import harrypotter.HPEntityInterface;
@@ -48,6 +49,8 @@ public class Player extends HPActor {
 	public Player(Team team, int hitpoints, MessageRenderer m, HPWorld world) {
 		super(team, hitpoints, m, world);
 		humanControlled = true; // this feels like a hack. Surely this should be dynamic
+		this.capabilities.add(Capability.INVENTORY);
+		this.InventorySize = (this.hasCapability(Capability.INVENTORY))? 3 : 1;		//inventory size is 3 for actors with INVENTORY capability
 	}
 
 	/**
@@ -84,7 +87,7 @@ public class Player extends HPActor {
 	 * This method will describe,
 	 * <ul>
 	 * <li>the this <code>Player</code>'s location</li>
-	 * <li>items carried (if this <code>Player</code> is carrying any)</li>
+	 * <li>calls <code>describeItems()</code> items carried (if this <code>Player</code> is carrying any)</li>
 	 * <li>the contents of this <code>Player</code> location (what this
 	 * <code>Player</code> can see) other than itself</li>
 	 * <ul>
@@ -100,20 +103,8 @@ public class Player extends HPActor {
 		say(this.getShortDescription() + " [" + this.getHitpoints() + "] is at " + location.getShortDescription());
 		
 		String entityDescription = new String();
+		describeItems(this);
 		
-		// get the items carried for the player
-		ArrayList<HPEntityInterface> items = this.getItemsCarried();
-		
-		for (int i = 0; i < items.size(); i++) {
-			if(i!=0 && i == items.size()-1) {
-				entityDescription += "and ";
-			}
-			entityDescription += items.get(i).getShortDescription() + " ["
-					+ items.get(i).getHitpoints() + "] ";
-		} 
-		// and describe the item carried if the player is actually carrying an item
-		say(this.getShortDescription() + " is holding " + entityDescription);
-
 		// get the contents of the location
 		List<HPEntityInterface> contents = this.world.getEntityManager().contents(location);
 
@@ -127,18 +118,36 @@ public class Player extends HPActor {
 							+ entity.getHitpoints() + "]";
 					if (entity instanceof HPActor) {
 						HPActor actor = (HPActor) entity;
-						if (actor.carriesItems()) {
-							entityDescription += ", holding ";
-
-							for (HPEntityInterface item : actor.getItemsCarried()) {
-								entityDescription += item.getShortDescription() + " ";
-							}
-						}
+						describeItems(actor);
 					}
 					say(entityDescription);
 				}
 			}
 		}
 
+	}
+	
+	/**
+	 * This method will describe items carried (if this <code>Player</code> is carrying any)
+	 * The output from this method would be through the
+	 * <code>MessageRenderer</code>.
+	 * 
+	 * @see {@link edu.monash.fit2099.simulator.userInterface.MessageRenderer}
+	 */
+	private void describeItems(HPActor a) {
+		String entityDescription = new String();
+		if(a.carriesItems()) {		
+			ArrayList<HPEntityInterface> items = a.getItemsCarried();
+			// get the items carried by the player
+			for (int i = 0; i < items.size(); i++) {
+				if(i!=0 && i == items.size()-1) {
+					entityDescription += "and ";
+				}
+				entityDescription += items.get(i).getShortDescription() + " ["
+						+ items.get(i).getHitpoints() + "] ";
+			} 
+			// and describe the items carried if the player is actually carrying an item
+			say(a.getShortDescription() + " is holding " + entityDescription);
+		}
 	}
 }

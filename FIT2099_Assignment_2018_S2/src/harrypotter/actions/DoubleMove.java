@@ -2,6 +2,7 @@ package harrypotter.actions;
 
 import edu.monash.fit2099.simulator.space.Direction;
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
+import harrypotter.Capability;
 import harrypotter.HPActor;
 import harrypotter.HPWorld;
 
@@ -20,6 +21,29 @@ public class DoubleMove extends Move{
 	}
 	
 	/**
+	 * Returns if or not a <code>HPActor a</code> can perform a <code>Move</code> command.
+	 * <p>
+	 * This method returns true if and only if <code>a</code> is not dead and is not frozen and has an item with capability DOUBLESPEED.
+	 * <p>
+	 * We assume that actors don't get movement commands attached to them unless they can
+	 * in fact move in the appropriate direction.  If this changes, then this method will
+	 * need to be altered or overridden.
+	 * 
+	 * @author 	ram
+	 * @param 	a the <code>HPActor</code> doing the moving
+	 * @return 	true if and only if <code>a</code> is not dead, false otherwise.
+	 * @see 	{@link harrypotter.HPActor#isDead()}
+	 */
+	@Override
+	public boolean canDo(HPActor a) {
+		if (a.isFrozen()) {
+			a.unFreeze();
+			return false;
+		}		
+		return a.getHighestItemWithCapability(Capability.DOUBLESPEED) != null && !a.isDead();
+	}
+	
+	/**
 	 * Perform the <code>DoubleMove</code> action.
 	 * <p>
 	 * If it is possible for <code>HPActor a</code> to double move in the given direction, tell the world to double move them
@@ -31,15 +55,13 @@ public class DoubleMove extends Move{
 	 * @param 	a the <code>HPActor</code> who is moving
 	 */	
 	@Override
-	public void act(HPActor a) {
-		
+	public void act(HPActor a) {		
 		if (world.canDoubleMove(a, whichDirection)) {
 			world.moveEntity(a, whichDirection);
 			world.moveEntity(a, whichDirection);
 			a.resetMoveCommands(world.find(a));//reset the new possible set of moves based on the new location of the entity
 			messageRenderer.render(a.getShortDescription() + " is double moving " + whichDirection);
-		}
-				
+		}				
 	}
 	
 	/**
@@ -52,7 +74,4 @@ public class DoubleMove extends Move{
 		return "double move " + whichDirection.toString();
 	}
 	
-
-
-
 }
