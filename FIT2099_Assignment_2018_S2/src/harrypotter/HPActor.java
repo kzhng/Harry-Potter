@@ -17,6 +17,7 @@ package harrypotter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import edu.monash.fit2099.gridworld.Grid.CompassBearing;
 import edu.monash.fit2099.simulator.matter.Actor;
@@ -27,6 +28,7 @@ import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 import harrypotter.actions.Attack;
 import harrypotter.actions.Cast;
 import harrypotter.actions.DoubleMove;
+import harrypotter.actions.Drink;
 import harrypotter.actions.Move;
 import harrypotter.entities.Broomstick;
 import harrypotter.actions.Give;
@@ -116,6 +118,9 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		
 		HPAffordance give = new Give(this, m);
 		this.addAffordance(give);
+		
+//		HPAffordance drink = new Drink(this,m);
+//		this.addAffordance(drink);
 
 	}
 	
@@ -186,27 +191,118 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		ArrayList<HPActionInterface> actionList = super.getActions();
 		
 		//If the HobbitActor is carrying anything, look for its affordances and add them to the list
-		HPEntityInterface item = getItemCarried();
-		if (item != null)
+		for (HPEntityInterface item : this.getItemsCarried()) {
 			for (Affordance aff : item.getAffordances())
 				if (aff instanceof HPAffordance)
 				actionList.add((HPAffordance)aff);
+		}
 		return actionList;
 	}
 	
 	/**
-	 * Returns the item carried by this <code>HPActor</code>. 
+	 * Returns the items carried by this <code>HPActor</code>. 
 	 * <p>
-	 * This method only returns the reference of the item carried 
-	 * and does not remove the item held from this <code>HPActor</code>.
+	 * This method only returns the reference of the items carried 
+	 * and does not remove items held from this <code>HPActor</code>.
 	 * <p>
-	 * If this <code>HPActor</code> is not carrying an item this method will return null.
+	 * If this <code>HPActor</code> is not carrying any item this method will return null.
 	 * 
-	 * @return 	the item carried by this <code>HPActor</code> or null if no item is held by this <code>HPActor</code>
-	 * @see 	#itemCarried
+	 * @return 	the items carried by this <code>HPActor</code> or null if no item is held by this <code>HPActor</code>
+	 * @see 	#Inventory
 	 */
-	public HPEntityInterface getItemCarried() {
-		return itemCarried;
+	public ArrayList<HPEntityInterface> getItemsCarried() {
+		return this.Inventory;
+	}
+	/**
+	 * 
+	 * @return true if the actor carries at least one item
+	 */
+	public boolean carriesItems() {
+		return this.Inventory.size()>=1;
+	}
+	
+	/**
+	 * 
+	 * @return true if the actor's inventory is not full
+	 */
+	public boolean inventoryNotFull() {
+		return (this.Inventory.size()<3);		//mh //magic number 
+	}
+
+	/**
+	 * returns an item for the requested capability which has the highest Hitpoints or null if no such item exist
+	 * <p>
+	 * this method does not remove the item requested
+	 * </p>
+	 * @param capability
+	 * @return returns an item for the requested capability which has the highest Hitpoints or null if no such item exist
+	 */
+	public HPEntityInterface getHighestItemWithCapability(Capability capability) {
+		ArrayList<HPEntityInterface> items = this.getItemsWithCapability(capability);
+		if ( items==null )
+				return null;
+		int highestCap = 0;
+		for (int i = 0; i < items.size(); i++) {			
+			if(items.get(i).getHitpoints()>items.get(highestCap).getHitpoints())
+				highestCap = i;			
+		}		
+		return items.get(highestCap);
+	}
+	
+	/**
+	 * returns items for the requested capability or null if no such items exist
+	 * <p>
+	 * this method does not remove the items requested
+	 * </p>
+	 * @param capability
+	 * @return returns items for the requested capability or null if no such items exist
+	 */
+	public ArrayList<HPEntityInterface> getItemsWithCapability(Capability capability) {
+		ArrayList<HPEntityInterface> items = new ArrayList<HPEntityInterface>();
+		for (HPEntityInterface item : this.Inventory) {
+			if(item.hasCapability(capability))
+				items.add(item);			
+		}
+		if (items.size() == 0)
+				return null;				
+		return items;
+	}
+	
+	/**
+	 * Adds an <code>item</code> to this <code>HPActor</code>'s
+	 * <code>Inventory</code>
+	 * <p>
+	 * This method will add and item to this <code>HPActor</code>'s
+	 * <code>Inventory</code>, it accepts regardless if the same item already exist in the inventory.
+	 * furthermore if this an item is added when the inventory is full, this method will do nothing
+	 * </p>
+	 * @param 	item to be added from the inventory
+	 * @see 	#Inventory
+	 */
+	
+	public void addToInventory(HPEntityInterface item) {	//mh what if null is added, need to fix this
+		if(this.inventoryNotFull()) {		
+			this.Inventory.add(item);
+		}
+		return;
+	}
+	
+	/**
+	 * Assigns this <code>HPActor</code>'s <code>itemCarried</code> to 
+	 * a new item <code>target</code>
+	 * <p>
+	 * This method will replace items already held by the <code>HPActor</code> with the <code>target</code>.
+	 * A null <code>target</code> would signify that this <code>HPActor</code> is not carrying an item anymore.
+	 * 
+	 * @param 	item to be removed from the inventory
+	 * @see 	#Inventory
+	 */
+	
+	public void removeFromInventory(HPEntityInterface item) {
+		if(this.Inventory.contains(item)) {
+			this.Inventory.remove(item);
+		}
+		return;
 	}
 
 	/**
@@ -236,27 +332,6 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		this.hitpoints -= damage;
 	}
 
-	/**
-	 * Assigns this <code>HPActor</code>'s <code>itemCarried</code> to 
-	 * a new item <code>target</code>
-	 * <p>
-	 * This method will replace items already held by the <code>HPActor</code> with the <code>target</code>.
-	 * A null <code>target</code> would signify that this <code>HPActor</code> is not carrying an item anymore.
-	 * 
-	 * @param 	target the new item to be set as item carried
-	 * @see 	#itemCarried
-	 */
-	
-	public void setItemCarried(HPEntityInterface target) {
-		
-		HPEntityInterface currentItem = this.getItemCarried();
-		if(currentItem !=null) {
-			this.Inventory.add(currentItem);
-		}
-		this.Inventory.add(target);
-		this.itemCarried = target;
-		
-	}
 	
 	/**
 	 * Reduces the <code>frozenTime</code> of this <code>HPActor</code>.
@@ -354,7 +429,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 				
 				
 				
-				if(this.getItemCarried() instanceof Broomstick && world.canDoubleMove(this, d))
+				if(this.getHighestItemWithCapability(Capability.DOUBLESPEED)!=null && world.canDoubleMove(this, d))
 					newActions.add(new DoubleMove(d, messageRenderer, world));
 			}
 		}

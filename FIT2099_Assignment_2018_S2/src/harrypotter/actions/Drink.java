@@ -1,5 +1,7 @@
 package harrypotter.actions;
 
+import java.util.ArrayList;
+
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 import harrypotter.Capability;
 import harrypotter.HPActor;
@@ -34,11 +36,19 @@ public class Drink extends HPAffordance {
 	 *  
 	 * @param 	a the <code>HPActor</code> being queried
 	 * @return 	true if the <code>HPActor</code> is can drink this item, false otherwise
-	 * @see		{@link harrypotter.HPActor#getItemCarried()}
+	 * @see		{@link harrypotter.HPActor#getItemsCarried()}
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
-		return a.getItemCarried() != null && a.getItemCarried().hasCapability(Capability.HEALTH);
+		ArrayList<HPEntityInterface> InventoryItems = a.getItemsWithCapability(Capability.HEALTH);
+		if (target instanceof HPEntityInterface && InventoryItems != null) {
+			//HPEntityInterface theItem = (HPEntityInterface) target;
+			for (HPEntityInterface item : InventoryItems) {
+				if(target == item)
+					return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -56,7 +66,7 @@ public class Drink extends HPAffordance {
 		if (target instanceof HPEntityInterface) {
 			HPEntityInterface theItem = (HPEntityInterface) target;
 			a.addHitpoints(theItem.getHitpoints());
-			a.setItemCarried(null);
+			a.removeFromInventory(theItem);
 			
 			//remove the drink affordance
 			theItem.removeAffordance(this);

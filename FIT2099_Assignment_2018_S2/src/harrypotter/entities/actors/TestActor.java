@@ -62,25 +62,25 @@ public class TestActor extends HPActor {
 		say(this.getShortDescription() + " [" + this.getHitpoints() + "] is at " + location.getShortDescription());
 		
 		//get the items carried for the player
-		HPEntityInterface itemCarried = this.getItemCarried();
-		if (itemCarried != null) {
-			//and describe the item carried if the player is actually carrying an item
-			say(this.getShortDescription() 
-					+ " is holding " + itemCarried.getShortDescription() + " [" + itemCarried.getHitpoints() + "]");
-		}
-		
-		//get the contents of the location
-		List<HPEntityInterface> contents = this.world.getEntityManager().contents(location);
-		
-		//and describe the contents
-		if (contents.size() > 1) { // if it is equal to one, the only thing here is this Player, so there is nothing to report
-			say(this.getShortDescription() + " can see:");
-			for (HPEntityInterface entity : contents) {
-				if (entity != this) { // don't include self in scene description
-					say("\t " + entity.getSymbol() + " - " + entity.getLongDescription() + " [" + entity.getHitpoints() + "]");
+		for (HPEntityInterface itemCarried : this.getItemsCarried()) {
+			if (itemCarried != null) {
+				//and describe the item carried if the player is actually carrying an item
+				say(this.getShortDescription() 
+						+ " is holding " + itemCarried.getShortDescription() + " [" + itemCarried.getHitpoints() + "]");
+			}
+			
+			//get the contents of the location
+			List<HPEntityInterface> contents = this.world.getEntityManager().contents(location);
+			
+			//and describe the contents
+			if (contents.size() > 1) { // if it is equal to one, the only thing here is this Player, so there is nothing to report
+				say(this.getShortDescription() + " can see:");
+				for (HPEntityInterface entity : contents) {
+					if (entity != this) { // don't include self in scene description
+						say("\t " + entity.getSymbol() + " - " + entity.getLongDescription() + " [" + entity.getHitpoints() + "]");
+					}
 				}
 			}
 		}
 	}
-
 }

@@ -45,7 +45,7 @@ public class Take extends HPAffordance {
 	 * @param a the <code>HPActor</code> being queried
 	 * @return true if the <code>HPActor</code> is can take this item, false
 	 *         otherwise
-	 * @see {@link harrypotter.HPActor#getItemCarried()}
+	 * @see {@link harrypotter.HPActor#getItemsCarried()}
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
@@ -54,7 +54,7 @@ public class Take extends HPAffordance {
 			return false;
 		}
 		
-		return a.getItemCarried() == null;
+		return a.inventoryNotFull();
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class Take extends HPAffordance {
 		if (target instanceof HPEntityInterface) {
 
 			HPEntityInterface theItem = (HPEntityInterface) target;
-			a.setItemCarried(theItem);
+			a.addToInventory(theItem);
 			HPAction.getEntitymanager().remove(target);// remove the target from the entity manager since it's now held
 														// by the HPActor
 

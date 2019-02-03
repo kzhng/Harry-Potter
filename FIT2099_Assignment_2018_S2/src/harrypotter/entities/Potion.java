@@ -36,9 +36,9 @@ public class Potion extends HPEntity {
 	 */
 	public Potion(MessageRenderer m) {
 		super(m);
-		this.shortDescription = "A health potion";
-		this.longDescription = "A health potion";
 		this.hitpoints = (int) Math.round((Math.random() * 50) + 1); // randomized hitpoints with a maximum of 50 hitpoints
+		this.shortDescription = "A health potion ";
+		this.longDescription = "A health potion";
 																		
 		this.addAffordance(new Take(this, m)); // add the take affordance so that the Potion can be taken by HPActors
 		this.capabilities.add(Capability.HEALTH); // it's a health Item.

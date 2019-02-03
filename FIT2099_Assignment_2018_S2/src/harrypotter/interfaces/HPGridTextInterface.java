@@ -254,5 +254,29 @@ public class HPGridTextInterface implements GridRenderer {
 			return false;
 		}
 	}
+	
+	public HPEntityInterface getItemSelection(ArrayList<HPEntityInterface> items) {
+
+		// assertion for the precondition
+		assert items.size() > 0 : "items list for the actor is empty";
+
+		// construct the commands to be displayed in the console
+		for (int i = 0; i < items.size(); i++) {
+			System.out.println(i + 1 + " " + items.get(i).getLongDescription());
+		}
+
+		int selection = 0; // set to zero to trigger the loop
+		while (selection < 1 || selection > items.size()) {// loop until a valid command has been obtained
+			System.out.println("Enter command:");
+
+			try {
+				selection = (instream.nextInt());
+			} catch (InputMismatchException e) { // catching any non integer inputs
+				instream.next(); // this consumes the invalid input
+			}
+		}
+
+		return items.get(selection - 1);// return the action selected
+	}
 
 }

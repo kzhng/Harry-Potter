@@ -200,12 +200,13 @@ public class HPWorld extends World {
 		Dumbledore dumbledore = Dumbledore.getDumbledore(iface, this, patrolmoves);
 		Sword sword = new Sword(iface); //kz made changes to how dumbledore receives his sword and updated it so that it interacts correctly with expelliarmus
 		entityManager.setLocation(dumbledore, loc);
-		dumbledore.setItemCarried(sword);
+		dumbledore.addToInventory(sword);
 		for (Affordance a : sword.getAffordances()){
 			if (a instanceof Take){
 				sword.removeAffordance(a);
 			}	
 		}
+		sword.addAffordance(new Leave(sword, iface));
 		
 		loc = myGrid.getLocationByCoordinates(4,5);	//mh changed from (5,9)
 		
@@ -215,17 +216,30 @@ public class HPWorld extends World {
 		harry.setLongDescription("Harry Potter, the boy who lived");
 		entityManager.setLocation(harry, loc);
 		Wand wand = new Wand(iface);
-		//harry.setItemCarried(wand);
+		harry.addToInventory(wand);
 		for (Affordance a : wand.getAffordances()){
 			if (a instanceof Take){
 				wand.removeAffordance(a);
 			}	
 		}
-		wand.addAffordance(new Leave(wand, iface));
+		
+		wand.addAffordance(new Leave(wand, iface));	//mh need to double check this
 		wand.capabilities.add(Capability.CASTING);
 		harry.learnSpell(new AvadaKedavra());
 		harry.learnSpell(new Expelliarmus());
 		harry.learnSpell(new Immobulus());
+		//harry.resetMoveCommands(loc);
+				
+		// A broomstick
+		loc = myGrid.getLocationByCoordinates(4,6);
+		Broomstick broomstick= new Broomstick(iface);
+		harry.addToInventory(broomstick);
+		for (Affordance a : broomstick.getAffordances()){
+			if (a instanceof Take){
+				broomstick.removeAffordance(a);
+			}	
+		}
+		broomstick.addAffordance(new Leave(broomstick, iface));
 		harry.resetMoveCommands(loc);
 		
 		/*
@@ -281,20 +295,6 @@ public class HPWorld extends World {
 		entityManager.setLocation(potion, loc);
 		potion.makeHidden();		// made this health potion hidden
 		potion.addAffordance(new Drink(potion, iface));
-				
-		// A broomstick
-		loc = myGrid.getLocationByCoordinates(4,6);
-		Broomstick broomstick= new Broomstick(iface);
-		//broomstick.addAffordance(new Take(broomstick, iface));
-		entityManager.setLocation(broomstick, loc);
-		harry.setItemCarried(broomstick);
-		broomstick.addAffordance(new Leave(broomstick, iface));
-		harry.resetMoveCommands(loc);
-		for (Affordance a : broomstick.getAffordances()){
-			if (a instanceof Take){
-				broomstick.removeAffordance(a);
-			}	
-		}
 		
 		// Some Death Eaters
 		DeathEater deathEater = new DeathEater(10, iface, this);

@@ -1,5 +1,7 @@
 package harrypotter.actions;
 
+import java.util.Iterator;
+
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 import harrypotter.HPActionInterface;
 import harrypotter.HPActor;
@@ -37,7 +39,7 @@ public class Give extends HPAffordance implements HPActionInterface {
 	 *
 	 * @param a the <code>HPActor</code> being queried
 	 * @return true if the <code>HPActor</code> can give this item, false otherwise
-	 * @see {@link harrypotter.HPActor#getItemCarried()}
+	 * @see {@link harrypotter.HPActor#getItemsCarried()}
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
@@ -45,7 +47,7 @@ public class Give extends HPAffordance implements HPActionInterface {
 			a.unFreeze();
 			return false;
 		}
-		
+
 		HPEntityInterface target = this.getTarget();
 		boolean targetIsActor = target instanceof HPActor;
 		HPActor targetActor = null;
@@ -53,7 +55,7 @@ public class Give extends HPAffordance implements HPActionInterface {
 		if (targetIsActor)
 			targetActor = (HPActor) target;
 
-		return a.getItemCarried() != null && targetActor.getItemCarried() == null && targetIsActor
+		return targetIsActor && a.carriesItems() && targetActor.inventoryNotFull()
 				&& (a.getTeam() == targetActor.getTeam());
 	}
 
@@ -79,27 +81,27 @@ public class Give extends HPAffordance implements HPActionInterface {
 		if (targetIsActor) {
 			targetActor = (HPActor) target;
 
-			if ((a.getTeam() == targetActor.getTeam()) && a.getItemCarried() != null && targetActor.getItemCarried() == null) {
-				HPEntityInterface theItem = a.getItemCarried();
-				
-				if(!(a.isHumanControlled())) {
-					a.say(a.getShortDescription() + " wants to give you this "
-							+ theItem.getShortDescription());
-				}
+			if ((a.getTeam() == targetActor.getTeam()) && a.carriesItems() && targetActor.inventoryNotFull()) {
 
+				HPEntityInterface selectedItem = HPGridController.getChosenItem(a);			
+
+				if (!(a.isHumanControlled())) {
+					a.say(a.getShortDescription() + " wants to give you this " + selectedItem.getShortDescription());
+				}
 				// getting AI decision using machine learning
 				boolean decision = HPGridController.getAcceptOrDecline(targetActor);
 				if (decision) {
-					a.setItemCarried(null);
-					targetActor.setItemCarried(theItem);
-					a.say(a.getShortDescription() + " gave " + theItem.getShortDescription() + " to "
+					a.removeFromInventory(selectedItem);
+					targetActor.addToInventory(selectedItem);
+					a.say(a.getShortDescription() + " gave " + selectedItem.getShortDescription() + " to "
 							+ targetActor.getShortDescription());
 
 				} else {
-					a.say(targetActor.getShortDescription() + " refused to take " + theItem.getShortDescription()
+					a.say(targetActor.getShortDescription() + " refused to take " + selectedItem.getShortDescription()
 							+ " from " + a.getShortDescription());
 					return;
 				}
+
 			}
 		}
 
@@ -114,12 +116,10 @@ public class Give extends HPAffordance implements HPActionInterface {
 	 */
 	@Override
 	public String getDescription() {
-		return "give to " + target.getShortDescription();
+		return "give an item to " + target.getShortDescription();
 	}
 
 }
-
-
 
 //this block is supposed to be for NonPlayer, couldn't get it to work, this was not its final form
 //if ( !(a.isHumanControlled()) && (a.getTeam() == targetActor.getTeam()) && a.getItemCarried() != null && targetActor.getItemCarried() == null) {

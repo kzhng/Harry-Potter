@@ -29,7 +29,7 @@ public class Leave extends HPAffordance {
 				return false;
 			}
 		 
-		 return a.getItemCarried()!=null;
+		 return a.carriesItems(); 
 	 }
 	 /**
 	  * removes Leave affordance from the item
@@ -41,7 +41,7 @@ public class Leave extends HPAffordance {
 	 public void act(HPActor a){
 		 if (target instanceof HPEntityInterface){
 			 HPEntityInterface theItem = (HPEntityInterface) target;
-			 a.setItemCarried(null);
+			 a.removeFromInventory(theItem);
 			 HPWorld.myEntitymanager(a).setLocation(theItem, HPWorld.myEntitymanager(a).whereIs(a));
 			 target.removeAffordance(this);
 			 target.addAffordance(new Take(theItem, messageRenderer));
@@ -54,7 +54,19 @@ public class Leave extends HPAffordance {
 	  */
 	 
 	 public String getDescription(){
-		 return "leave "+target.getShortDescription();
+		 return "leave "+ target.getShortDescription();
 	 }
 
 }
+
+//public void act(HPActor a){
+//	HPEntityInterface selectedItem = HPGridController.getChosenItem(a);
+//	this.target = selectedItem;
+//	 if (selectedItem instanceof HPEntityInterface){
+//		 //HPEntityInterface theItem = (HPEntityInterface) target;
+//		 a.removeFromInventory(selectedItem);
+//		 HPWorld.myEntitymanager(a).setLocation(selectedItem, HPWorld.myEntitymanager(a).whereIs(a));
+//		 selectedItem.removeAffordance(this);
+//		 selectedItem.addAffordance(new Take(selectedItem, messageRenderer));
+//	 }
+//}

@@ -3,6 +3,9 @@ package harrypotter.spells;
 import harrypotter.HPEntityInterface;
 import harrypotter.actions.Leave;
 import harrypotter.Spell;
+
+import java.util.ArrayList;
+
 import harrypotter.HPActor;
 
 /**
@@ -39,11 +42,13 @@ public class AvadaKedavra extends Spell {
 			
 			//After the attack
 			targetActor.setLongDescription(targetActor.getLongDescription() + ", was killed by the Killing Curse");
-			if (targetActor.getItemCarried() != null) {
-				HPEntityInterface item = ((HPActor)theTarget).getItemCarried();
+
+			ArrayList<HPEntityInterface> items = ((HPActor)theTarget).getItemsCarried();
+			for (HPEntityInterface item : items) {
 				Leave leaveEffect = new Leave(item, null);
 				leaveEffect.act((HPActor)theTarget);
 			}
+			
 
 		}		
 	}

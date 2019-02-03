@@ -1,6 +1,7 @@
 package harrypotter.interfaces;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import edu.monash.fit2099.gridworld.GridController;
 import edu.monash.fit2099.gridworld.GridRenderer;
@@ -9,6 +10,7 @@ import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 import harrypotter.Capability;
 import harrypotter.HPActionInterface;
 import harrypotter.HPActor;
+import harrypotter.HPEntityInterface;
 import harrypotter.HPGrid;
 import harrypotter.HPWorld;
 import harrypotter.Spell;
@@ -115,13 +117,11 @@ public class HPGridController implements GridController {
 				cmds.add(ac);
 		}
 		
-		if (a.getItemCarried() != null){
-			if (a.getItemCarried().hasCapability(Capability.CASTING)){
-				for (Spell s : a.getSpells()){
-					if (!s.affectActor()){
-						cmds.add(new Cast(null, s, m, false));
-					}
-				}
+		if (a.getHighestItemWithCapability(Capability.CASTING) != null){
+			for (Spell s : a.getSpells()){
+				if (!s.affectActor()){
+					cmds.add(new Cast(null, s, m, false));
+				}				
 			}
 		}
 		
@@ -184,5 +184,16 @@ public class HPGridController implements GridController {
 		else {
 			return (Math.random() > 0.25);
 		}
-	}	
+	}
+	
+	public static HPEntityInterface getChosenItem( HPActor a) {
+			if(a.isHumanControlled()) {
+				HPEntityInterface selectedItem = ((HPGridTextInterface) ui).getItemSelection(a.getItemsCarried());
+				return selectedItem;
+			}
+			else {
+				int rnd = new Random().nextInt(a.getItemsCarried().size());
+				return a.getItemsCarried().get(rnd);
+			}
+	}
 }

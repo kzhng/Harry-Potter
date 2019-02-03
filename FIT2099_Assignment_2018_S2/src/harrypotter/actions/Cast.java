@@ -82,12 +82,8 @@ public class Cast extends HPAffordance implements HPActionInterface {
 			return false;
 		}
 		
-		if ((a.getItemCarried()) != null ){
-			if ((a.getItemCarried()).hasCapability(Capability.CASTING)){
+		if (a.getHighestItemWithCapability(Capability.CASTING) != null ){
 				return true;
-			} else {
-				return false;
-			} 
 		} else {
 			return false;
 		}

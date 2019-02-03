@@ -3,6 +3,9 @@ package harrypotter.spells;
 import harrypotter.HPEntityInterface;
 import harrypotter.Spell;
 import harrypotter.actions.Leave;
+
+import java.util.ArrayList;
+
 import harrypotter.HPActor;
 
 /**
@@ -30,9 +33,11 @@ public class Expelliarmus extends Spell {
 	public void spellEffect(HPEntityInterface theTarget) {
 		
 		if (theTarget instanceof HPActor){
-			HPEntityInterface item = ((HPActor)theTarget).getItemCarried();
-			Leave leaveEffect = new Leave(item, null);
-			leaveEffect.act((HPActor)theTarget);
+			ArrayList<HPEntityInterface> items = ((HPActor)theTarget).getItemsCarried();
+			for (HPEntityInterface item : items) {
+				Leave leaveEffect = new Leave(item, null);
+				leaveEffect.act((HPActor)theTarget);
+			}
 		}
 	}
 }
