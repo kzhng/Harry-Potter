@@ -117,14 +117,15 @@ public class Attack extends HPAffordance implements HPActionInterface {
 				
 			a.say(a.getShortDescription() + " is attacking " + target.getShortDescription() + "!");
 			
-			HPEntityInterface itemCarried = a.getHighestItemWithCapability(Capability.WEAPON);
 			if (a.carriesItems()) {//if the actor is carrying an item 
+				HPEntityInterface itemCarried = a.getHighestItemWithCapability(Capability.WEAPON);
 				if (itemCarried != null) {
 					target.takeDamage(itemCarried.getHitpoints() + 1); // blunt weapon won't do much, but it will still do some damage
 					itemCarried.takeDamage(1); // weapon gets blunt
 					a.takeDamage(energyForAttackWithWeapon); // actor uses energy to attack
 				}
 				else {//an attack with a none weapon
+					itemCarried = a.getItemsCarried().get(0); //get the first item
 					if (targetIsActor) {
 						targetActor.say("\t" + targetActor.getShortDescription()
 								+ " is amused by " + a.getShortDescription()

@@ -1,7 +1,5 @@
 package harrypotter.actions;
 
-import java.util.Iterator;
-
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 import harrypotter.HPActionInterface;
 import harrypotter.HPActor;
@@ -56,7 +54,7 @@ public class Give extends HPAffordance implements HPActionInterface {
 			targetActor = (HPActor) target;
 
 		return targetIsActor && a.carriesItems() && targetActor.inventoryNotFull()
-				&& (a.getTeam() == targetActor.getTeam());
+				&& (a.getTeam() == targetActor.getTeam()) && !targetActor.isDead();
 	}
 
 	/**

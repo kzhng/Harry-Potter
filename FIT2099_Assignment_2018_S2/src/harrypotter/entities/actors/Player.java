@@ -1,7 +1,6 @@
 package harrypotter.entities.actors;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
@@ -50,6 +49,7 @@ public class Player extends HPActor {
 		super(team, hitpoints, m, world);
 		humanControlled = true; // this feels like a hack. Surely this should be dynamic
 		this.capabilities.add(Capability.INVENTORY);
+		this.InventorySize = (this.hasCapability(Capability.INVENTORY))? 3 : 1;		//inventory size is 3 for actors with INVENTORY capability
 	}
 
 	/**

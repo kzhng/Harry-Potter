@@ -175,17 +175,17 @@ public class HPGridTextInterface implements GridRenderer {
 		for (int i = 0; i < cmds.size(); i++) {
 			System.out.println(i + 1 + " " + cmds.get(i).getDescription());
 		}
-
-		int selection = 0; // set to zero to trigger the loop
-		while (selection < 1 || selection > cmds.size()) {// loop until a valid command has been obtained
-			System.out.println("Enter command:");
-
-			try {
-				selection = (instream.nextInt());
-			} catch (InputMismatchException e) { // catching any non integer inputs
-				instream.next(); // this consumes the invalid input
-			}
-		}
+		int selection = this.displayCommands(cmds);
+//		int selection = 0; // set to zero to trigger the loop
+//		while (selection < 1 || selection > cmds.size()) {// loop until a valid command has been obtained
+//			System.out.println("Enter command:");
+//
+//			try {
+//				selection = (instream.nextInt());
+//			} catch (InputMismatchException e) { // catching any non integer inputs
+//				instream.next(); // this consumes the invalid input
+//			}
+//		}
 
 		return cmds.get(selection - 1);// return the action selected
 	}
@@ -205,17 +205,17 @@ public class HPGridTextInterface implements GridRenderer {
 		for (int i = 0; i < listOfSpells.size(); i++) {
 			System.out.println(i + 1 + " " + listOfSpells.get(i).getDescription());
 		}
-
-		int selection = 0; // set to zero to trigger the loop
-		while (selection < 1 || selection > listOfSpells.size()) {// loop until a valid command has been obtained
-			System.out.println("Enter command:");
-
-			try {
-				selection = (instream.nextInt());
-			} catch (InputMismatchException e) { // catching any non integer inputs
-				instream.next(); // this consumes the invalid input
-			}
-		}
+		int selection = this.displayCommands(listOfSpells);
+//		int selection = 0; // set to zero to trigger the loop
+//		while (selection < 1 || selection > listOfSpells.size()) {// loop until a valid command has been obtained
+//			System.out.println("Enter command:");
+//
+//			try {
+//				selection = (instream.nextInt());
+//			} catch (InputMismatchException e) { // catching any non integer inputs
+//				instream.next(); // this consumes the invalid input
+//			}
+//		}
 
 		return listOfSpells.get(selection - 1);// return the spell selected
 	}
@@ -231,30 +231,37 @@ public class HPGridTextInterface implements GridRenderer {
 	 */
 	public boolean getRespond() {
 
-		String[] cmds = { "Accept", "Decline" };
-		for (int i = 0; i < cmds.length; i++) {
-			System.out.println(i + 1 + " " + cmds[i]);
+		ArrayList<String> cmds = new ArrayList<String>();
+		cmds.add("Accept");
+		cmds.add("Decline");
+		for (int i = 0; i < cmds.size(); i++) {
+			System.out.println(i + 1 + " " + cmds.get(i));
 		}
+		int selection = this.displayCommands(cmds);
+//		int selection = 0; // set to zero to trigger the loop
+//		while (selection < 1 || selection > cmds.size()) {// loop until a valid command has been obtained
+//			System.out.println("Enter command:");
+//
+//			try {
+//				selection = (instream.nextInt());
+//			} catch (InputMismatchException e) { // catching any non integer inputs
+//				instream.next(); // this consumes the invalid input
+//			}
+//		}
 
-		int selection = 0; // set to zero to trigger the loop
-		while (selection < 1 || selection > cmds.length) {// loop until a valid command has been obtained
-			System.out.println("Enter command:");
-
-			try {
-				selection = (instream.nextInt());
-			} catch (InputMismatchException e) { // catching any non integer inputs
-				instream.next(); // this consumes the invalid input
-			}
-		}
-
-		if (selection == 1) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return (selection == 1);
 	}
 	
+	/**
+	 * Will return a an item selected by the user.
+	 * <p>
+	 * This method will provide the user interface with a list of item from which
+	 * the user needs to select one from and will return this selection.
+	 * 
+	 * @param an ArrayList of <code>items</code>
+	 * @return the item selected by the user
+	 * @author Matti
+	 */
 	public HPEntityInterface getItemSelection(ArrayList<HPEntityInterface> items) {
 
 		// assertion for the precondition
@@ -264,9 +271,33 @@ public class HPGridTextInterface implements GridRenderer {
 		for (int i = 0; i < items.size(); i++) {
 			System.out.println(i + 1 + " " + items.get(i).getLongDescription());
 		}
+		
+		int selection = this.displayCommands(items);
+//		int selection = 0; // set to zero to trigger the loop
+//		while (selection < 1 || selection > items.size()) {// loop until a valid command has been obtained
+//			System.out.println("Enter command:");
+//
+//			try {
+//				selection = (instream.nextInt());
+//			} catch (InputMismatchException e) { // catching any non integer inputs
+//				instream.next(); // this consumes the invalid input
+//			}
+//		}
 
+		return items.get(selection - 1);// return the action selected
+	}
+
+	/**
+	 * Will return an integer representing the selected command
+	 * <p>
+	 * This method will display the command to the user 
+	 * </p>
+	 * @return an integer representing the selected command
+	 * @author Matti
+	 */
+	private int displayCommands(ArrayList<?> cmds) {
 		int selection = 0; // set to zero to trigger the loop
-		while (selection < 1 || selection > items.size()) {// loop until a valid command has been obtained
+		while (selection < 1 || selection > cmds.size()) {// loop until a valid command has been obtained
 			System.out.println("Enter command:");
 
 			try {
@@ -276,7 +307,6 @@ public class HPGridTextInterface implements GridRenderer {
 			}
 		}
 
-		return items.get(selection - 1);// return the action selected
+		return selection;// return the selection
 	}
-
 }

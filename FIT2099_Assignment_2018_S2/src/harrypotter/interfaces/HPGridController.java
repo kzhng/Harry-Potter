@@ -182,7 +182,7 @@ public class HPGridController implements GridController {
 			return ((HPGridTextInterface) ui).getRespond();	
 		}
 		else {
-			return (Math.random() > 0.25);
+			return (Math.random() > 0.25);	//AI decision is random, but more likely to accept
 		}
 	}
 	

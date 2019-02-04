@@ -17,7 +17,6 @@ package harrypotter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import edu.monash.fit2099.gridworld.Grid.CompassBearing;
 import edu.monash.fit2099.simulator.matter.Actor;
@@ -28,9 +27,7 @@ import edu.monash.fit2099.simulator.userInterface.MessageRenderer;
 import harrypotter.actions.Attack;
 import harrypotter.actions.Cast;
 import harrypotter.actions.DoubleMove;
-import harrypotter.actions.Drink;
 import harrypotter.actions.Move;
-import harrypotter.entities.Broomstick;
 import harrypotter.actions.Give;
 
 public abstract class HPActor extends Actor<HPActionInterface> implements HPEntityInterface {
@@ -52,9 +49,6 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	
 	/**Scheduler to schedule this <code>HPActor</code>'s events*/
 	protected static Scheduler scheduler;
-	
-	/**The item carried by this <code>HPActor</code>. <code>itemCarried</code> is null if this <code>HPActor</code> is not carrying an item*/
-	private HPEntityInterface itemCarried;
 	
 	/**If or not this <code>HPActor</code> is human controlled. <code>HPActor</code>s are not human controlled by default*/
 	protected boolean humanControlled = false;
@@ -224,12 +218,11 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	}
 	
 	/**
-	 * 
 	 * @return true if the actor's inventory is not full
 	 */
 	public boolean inventoryNotFull() {
-		this.checkInventorySize();
-		return (this.Inventory.size()<InventorySize);		//mh //magic number 
+		assert this.InventorySize > 0 : "Inventory size must be a positive integer";
+		return (this.Inventory.size()<InventorySize);		
 	}
 
 	/**
@@ -258,7 +251,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 * this method does not remove the items requested
 	 * </p>
 	 * @param capability
-	 * @return returns items for the requested capability or null if no such items exist
+	 * @return returns an arraylist of items for the requested capability or null if no such items exist
 	 */
 	public ArrayList<HPEntityInterface> getItemsWithCapability(Capability capability) {
 		ArrayList<HPEntityInterface> items = new ArrayList<HPEntityInterface>();
@@ -307,10 +300,6 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		return;
 	}
 	
-	private void checkInventorySize() {
-		this.InventorySize = (this.hasCapability(Capability.INVENTORY))? 3 : 1;		//inventory size is 3 for actors with INVENTORY capability
-	}
-
 	/**
 	 * Sets the team of this <code>HPActor</code> to a new team <code>team</code>.
 	 * <p>
@@ -484,3 +473,8 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		return tempSeenItems;
 	}	
 }
+
+
+
+///**The item carried by this <code>HPActor</code>. <code>itemCarried</code> is null if this <code>HPActor</code> is not carrying an item*/
+//private HPEntityInterface itemCarried;

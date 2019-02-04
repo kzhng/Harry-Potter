@@ -42,7 +42,7 @@ public class Drink extends HPAffordance {
 	public boolean canDo(HPActor a) {
 		ArrayList<HPEntityInterface> InventoryItems = a.getItemsWithCapability(Capability.HEALTH);
 		if (target instanceof HPEntityInterface && InventoryItems != null) {
-			//HPEntityInterface theItem = (HPEntityInterface) target;
+			
 			for (HPEntityInterface item : InventoryItems) {
 				if(target == item)
 					return true;
