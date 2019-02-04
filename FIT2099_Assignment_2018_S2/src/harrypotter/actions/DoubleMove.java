@@ -36,11 +36,7 @@ public class DoubleMove extends Move{
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
-		if (a.isFrozen()) {
-			a.unFreeze();
-			return false;
-		}		
-		return a.getHighestItemWithCapability(Capability.DOUBLESPEED) != null && !a.isDead();
+		return super.canDo(a) && a.getHighestItemWithCapability(Capability.DOUBLESPEED) != null;
 	}
 	
 	/**

@@ -358,16 +358,6 @@ public class HPWorld extends World {
 	 */
 	public boolean canDoubleMove(HPActor a, Direction whichDirection) {
 		
-		if(a instanceof Player)
-			System.out.println("");
-		
-//		HPEntityInterface theItem = a.getItemCarried();
-//		boolean holdsBroomstick = theItem instanceof Broomstick;
-//		
-//		if (!(holdsBroomstick)) {
-//			return false;
-//		}
-		
 		if(this.canMove(a, whichDirection)) {
 			this.moveEntity(a, whichDirection);	//move the actor to the new location temporary
 			

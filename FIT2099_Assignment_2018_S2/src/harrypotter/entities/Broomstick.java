@@ -50,7 +50,7 @@ public class Broomstick extends HPEntity {
 	 */
 	@Override
 	public String getSymbol() {
-		return "br ";
+		return "bs ";
 	}
 
 }
