@@ -8,7 +8,7 @@ import harrypotter.actions.Take;
 /**
  * A Broomstick.
  * <p>
- * In possession of a Broomstick an actor can travel at a double speed
+ * In possession of a Broomstick an actor can travel at double speed it's usual speed
  * </p>
  * @author Matti (adapted from Sword by Robert)
  */
@@ -36,7 +36,7 @@ public class Broomstick extends HPEntity {
 		this.shortDescription = "A broomstick";
 		this.longDescription = "A broomstick";							
 		this.addAffordance(new Take(this, m)); // add the take affordance so that the Broomstick can be taken by HPActors
-		this.capabilities.add(Capability.DOUBLESPEED); // it's a health Item.
+		this.capabilities.add(Capability.DOUBLESPEED); // it's a DOUBLESPEED Item.
 		this.hitpoints = 30;
 	}
 

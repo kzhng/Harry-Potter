@@ -41,7 +41,6 @@ public class Dumbledore extends HPLegend {
 		this.setShortDescription("Albus Dumbledore");
 		this.setLongDescription("Albus Dumbledore, a very powerful wizard");
 		this.capabilities.add(Capability.INVENTORY);	
-		this.InventorySize = (this.hasCapability(Capability.INVENTORY))? 3 : 1;		//inventory size is 3 for actors with INVENTORY capability
 	}
 
 	public static Dumbledore getDumbledore(MessageRenderer m, HPWorld world, Direction[] moves) {
@@ -71,7 +70,6 @@ public class Dumbledore extends HPLegend {
 		if (isDead()) {
 			return;
 		}
-
 		if (isFrozen()) {
 			unFreeze();
 			return;
@@ -84,12 +82,11 @@ public class Dumbledore extends HPLegend {
 			say(getShortDescription() + " suddenly looks sprightly and attacks " + attack.entity.getShortDescription());
 			scheduler.schedule(attack.affordance, albus, 1);
 		}
-
 		else if (canGive) {  // His grace's generosity, quite smelly
 			myGive.execute(this);
 			scheduler.schedule(null, this, 1);
-
-		} else {
+		} 
+		else {
 			Direction newdirection = path.getNext();
 			say(getShortDescription() + " moves " + newdirection);
 			Move myMove = new Move(newdirection, messageRenderer, world);

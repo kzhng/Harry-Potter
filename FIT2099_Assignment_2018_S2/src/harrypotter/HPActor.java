@@ -119,11 +119,9 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		HPAffordance cast = new Cast(this, null, m, true);	
 		this.addAffordance(cast);
 		
+		//HPActors are given the give affordance hence they can give to aother actors
 		HPAffordance give = new Give(this, m);
 		this.addAffordance(give);
-		
-//		HPAffordance drink = new Drink(this,m);
-//		this.addAffordance(drink);
 
 	}
 	
@@ -230,6 +228,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 * @return true if the actor's inventory is not full
 	 */
 	public boolean inventoryNotFull() {
+		this.checkInventorySize();
 		return (this.Inventory.size()<InventorySize);		//mh //magic number 
 	}
 
@@ -276,7 +275,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 * Adds an <code>item</code> to this <code>HPActor</code>'s
 	 * <code>Inventory</code>
 	 * <p>
-	 * This method will add and item to this <code>HPActor</code>'s
+	 * This method will add an item to this <code>HPActor</code>'s
 	 * <code>Inventory</code>, it accepts regardless if the same item already exist in the inventory.
 	 * furthermore if this an item is added when the inventory is full, this method will do nothing
 	 * </p>
@@ -285,18 +284,17 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 */
 	
 	public void addToInventory(HPEntityInterface item) {	//mh what if null is added, need to fix this
-		if(this.inventoryNotFull()) {		
+		if(this.inventoryNotFull() && item!=null) {		
 			this.Inventory.add(item);
 		}
 		return;
 	}
 	
 	/**
-	 * Assigns this <code>HPActor</code>'s <code>itemCarried</code> to 
-	 * a new item <code>target</code>
+	 * Remove the requested item form this <code>HPActor</code>'s <code>inventory</code>  
 	 * <p>
-	 * This method will replace items already held by the <code>HPActor</code> with the <code>target</code>.
-	 * A null <code>target</code> would signify that this <code>HPActor</code> is not carrying an item anymore.
+	 * This method will remove the requested item this <code>HPActor</code>'s <code>inventory</code> only if the <code>HPActor</code>
+	 * is carrying the requested item, otherwise it does noting 
 	 * 
 	 * @param 	item to be removed from the inventory
 	 * @see 	#Inventory
@@ -307,6 +305,10 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 			this.Inventory.remove(item);
 		}
 		return;
+	}
+	
+	private void checkInventorySize() {
+		this.InventorySize = (this.hasCapability(Capability.INVENTORY))? 3 : 1;		//inventory size is 3 for actors with INVENTORY capability
 	}
 
 	/**
