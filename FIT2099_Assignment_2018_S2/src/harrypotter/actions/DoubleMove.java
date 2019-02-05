@@ -36,7 +36,7 @@ public class DoubleMove extends Move{
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
-		return super.canDo(a) && a.getHighestItemWithCapability(Capability.DOUBLESPEED) != null;
+		return super.canDo(a) && a.Inventory.getHighestItemWithCapability(Capability.DOUBLESPEED) != null;
 	}
 	
 	/**

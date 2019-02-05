@@ -54,7 +54,7 @@ public class Take extends HPAffordance {
 			return false;
 		}
 		
-		return a.inventoryNotFull();
+		return a.Inventory.notFull();
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class Take extends HPAffordance {
 		if (target instanceof HPEntityInterface) {
 
 			HPEntityInterface theItem = (HPEntityInterface) target;
-			a.addToInventory(theItem);
+			a.Inventory.add(theItem);
 			HPAction.getEntitymanager().remove(target);// remove the target from the entity manager since it's now held
 														// by the HPActor
 

@@ -7,6 +7,7 @@ import harrypotter.HPActionInterface;
 import harrypotter.HPAffordance;
 import harrypotter.HPLegend;
 import harrypotter.HPWorld;
+import harrypotter.Inventory;
 import harrypotter.Team;
 import harrypotter.actions.Give;
 import harrypotter.actions.Move;
@@ -39,6 +40,7 @@ public class Dumbledore extends HPLegend {
 		this.setLongDescription("Albus Dumbledore, a very powerful wizard");
 		this.capabilities.add(Capability.INVENTORY);
 		this.InventorySize = (this.hasCapability(Capability.INVENTORY))? 3 : 1;		//inventory size is 3 for actors with INVENTORY capability
+		this.Inventory = new Inventory(InventorySize);
 	}
 
 	public static Dumbledore getDumbledore(MessageRenderer m, HPWorld world, Direction[] moves) {

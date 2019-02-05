@@ -10,6 +10,7 @@ import harrypotter.HPActor;
 import harrypotter.HPEntityInterface;
 import harrypotter.HPLocation;
 import harrypotter.HPWorld;
+import harrypotter.Inventory;
 import harrypotter.Team;
 import harrypotter.interfaces.HPGridController;
 
@@ -50,6 +51,7 @@ public class Player extends HPActor {
 		humanControlled = true; // this feels like a hack. Surely this should be dynamic
 		this.capabilities.add(Capability.INVENTORY);
 		this.InventorySize = (this.hasCapability(Capability.INVENTORY))? 3 : 1;		//inventory size is 3 for actors with INVENTORY capability
+		this.Inventory = new Inventory(InventorySize);
 	}
 
 	/**
@@ -135,8 +137,8 @@ public class Player extends HPActor {
 	 */
 	private void describeItems(HPActor a) {
 		String entityDescription = new String();
-		if(a.carriesItems()) {		
-			ArrayList<HPEntityInterface> items = a.getItemsCarried();
+		if(a.Inventory.containsItems()) {		
+			ArrayList<HPEntityInterface> items = a.Inventory.getItemsCarried();
 			// get the items carried by the player
 			for (int i = 0; i < items.size(); i++) {
 				if(i!=0 && i == items.size()-1) {

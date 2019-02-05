@@ -66,7 +66,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	private ArrayList<HPEntity> seenItems;
 	
 	/** An ArrayList of <code>HPEntityInterface</code> carried by the <code>HPctor</code>**/
-	protected ArrayList<HPEntityInterface> Inventory;
+	public harrypotter.Inventory Inventory;
 	
 	/** An <code>integer</code> that specifies inventory size, it is 1 if the actor doesn't have an INventory capability **/
 	protected int InventorySize = 1;
@@ -102,7 +102,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		this.symbol = "@";
 		this.knownSpells = new ArrayList<Spell>();
 		this.seenItems = new ArrayList<HPEntity>();		
-		this.Inventory = new ArrayList<HPEntityInterface>();
+		this.Inventory = new Inventory(InventorySize);
 		this.capabilities = new HashSet<Capability>();
 				
 		//HPActors are given the Attack affordance hence they can be attacked
@@ -186,7 +186,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		ArrayList<HPActionInterface> actionList = super.getActions();
 		
 		//If the HobbitActor is carrying anything, look for its affordances and add them to the list
-		for (HPEntityInterface item : this.getItemsCarried()) {
+		for (HPEntityInterface item : this.Inventory.getItemsCarried()) {
 			for (Affordance aff : item.getAffordances())
 				if (aff instanceof HPAffordance)
 				actionList.add((HPAffordance)aff);
@@ -194,111 +194,111 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		return actionList;
 	}
 	
-	/**
-	 * Returns the items carried by this <code>HPActor</code>. 
-	 * <p>
-	 * This method only returns the reference of the items carried 
-	 * and does not remove items held from this <code>HPActor</code>.
-	 * <p>
-	 * If this <code>HPActor</code> is not carrying any item this method will return null.
-	 * 
-	 * @return 	the items carried by this <code>HPActor</code> or null if no item is held by this <code>HPActor</code>
-	 * @see 	#Inventory
-	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<HPEntityInterface> getItemsCarried() {
-		return (ArrayList<HPEntityInterface>) this.Inventory.clone();		//cloned items, due to privacy risk
-	}
-	/**
-	 * 
-	 * @return true if the actor carries at least one item
-	 */
-	public boolean carriesItems() {
-		return this.Inventory.size()>=1;
-	}
-	
-	/**
-	 * @return true if the actor's inventory is not full
-	 */
-	public boolean inventoryNotFull() {
-		assert this.InventorySize > 0 : "Inventory size must be a positive integer";
-		return (this.Inventory.size()<InventorySize);		
-	}
-
-	/**
-	 * returns an item for the requested capability which has the highest Hitpoints or null if no such item exist
-	 * <p>
-	 * this method does not remove the item requested
-	 * </p>
-	 * @param capability
-	 * @return returns an item for the requested capability which has the highest Hitpoints or null if no such item exist
-	 */
-	public HPEntityInterface getHighestItemWithCapability(Capability capability) {
-		ArrayList<HPEntityInterface> items = this.getItemsWithCapability(capability);
-		if ( items==null )
-				return null;
-		int highestCap = 0;
-		for (int i = 0; i < items.size(); i++) {			
-			if(items.get(i).getHitpoints()>items.get(highestCap).getHitpoints())
-				highestCap = i;			
-		}		
-		return items.get(highestCap);
-	}
-	
-	/**
-	 * returns items for the requested capability or null if no such items exist
-	 * <p>
-	 * this method does not remove the items requested
-	 * </p>
-	 * @param capability
-	 * @return returns an arraylist of items for the requested capability or null if no such items exist
-	 */
-	public ArrayList<HPEntityInterface> getItemsWithCapability(Capability capability) {
-		ArrayList<HPEntityInterface> items = new ArrayList<HPEntityInterface>();
-		for (HPEntityInterface item : this.Inventory) {
-			if(item.hasCapability(capability))
-				items.add(item);			
-		}
-		if (items.size() == 0)
-				return null;				
-		return items;
-	}
-	
-	/**
-	 * Adds an <code>item</code> to this <code>HPActor</code>'s
-	 * <code>Inventory</code>
-	 * <p>
-	 * This method will add an item to this <code>HPActor</code>'s
-	 * <code>Inventory</code>, it accepts regardless if the same item already exist in the inventory.
-	 * furthermore if this an item is added when the inventory is full, this method will do nothing
-	 * </p>
-	 * @param 	item to be added from the inventory
-	 * @see 	#Inventory
-	 */
-	
-	public void addToInventory(HPEntityInterface item) {	//mh what if null is added, need to fix this
-		if(this.inventoryNotFull() && item!=null) {		
-			this.Inventory.add(item);
-		}
-		return;
-	}
-	
-	/**
-	 * Remove the requested item form this <code>HPActor</code>'s <code>inventory</code>  
-	 * <p>
-	 * This method will remove the requested item this <code>HPActor</code>'s <code>inventory</code> only if the <code>HPActor</code>
-	 * is carrying the requested item, otherwise it does noting 
-	 * 
-	 * @param 	item to be removed from the inventory
-	 * @see 	#Inventory
-	 */
-	
-	public void removeFromInventory(HPEntityInterface item) {
-		if(this.Inventory.contains(item)) {
-			this.Inventory.remove(item);
-		}
-		return;
-	}
+//	/**
+//	 * Returns the items carried by this <code>HPActor</code>. 
+//	 * <p>
+//	 * This method only returns the reference of the items carried 
+//	 * and does not remove items held from this <code>HPActor</code>.
+//	 * <p>
+//	 * If this <code>HPActor</code> is not carrying any item this method will return null.
+//	 * 
+//	 * @return 	the items carried by this <code>HPActor</code> or null if no item is held by this <code>HPActor</code>
+//	 * @see 	#Inventory
+//	 */
+//	@SuppressWarnings("unchecked")
+//	public ArrayList<HPEntityInterface> getItemsCarried() {
+//		return (ArrayList<HPEntityInterface>) this.Inventory.clone();		//cloned items, due to privacy risk
+//	}
+//	/**
+//	 * 
+//	 * @return true if the actor carries at least one item
+//	 */
+//	public boolean carriesItems() {
+//		return this.Inventory.size()>=1;
+//	}
+//	
+//	/**
+//	 * @return true if the actor's inventory is not full
+//	 */
+//	public boolean inventoryNotFull() {
+//		assert this.InventorySize > 0 : "Inventory size must be a positive integer";
+//		return (this.Inventory.size()<InventorySize);		
+//	}
+//
+//	/**
+//	 * returns an item for the requested capability which has the highest Hitpoints or null if no such item exist
+//	 * <p>
+//	 * this method does not remove the item requested
+//	 * </p>
+//	 * @param capability
+//	 * @return returns an item for the requested capability which has the highest Hitpoints or null if no such item exist
+//	 */
+//	public HPEntityInterface getHighestItemWithCapability(Capability capability) {
+//		ArrayList<HPEntityInterface> items = this.getItemsWithCapability(capability);
+//		if ( items==null )
+//				return null;
+//		int highestCap = 0;
+//		for (int i = 0; i < items.size(); i++) {			
+//			if(items.get(i).getHitpoints()>items.get(highestCap).getHitpoints())
+//				highestCap = i;			
+//		}		
+//		return items.get(highestCap);
+//	}
+//	
+//	/**
+//	 * returns items for the requested capability or null if no such items exist
+//	 * <p>
+//	 * this method does not remove the items requested
+//	 * </p>
+//	 * @param capability
+//	 * @return returns an arraylist of items for the requested capability or null if no such items exist
+//	 */
+//	public ArrayList<HPEntityInterface> getItemsWithCapability(Capability capability) {
+//		ArrayList<HPEntityInterface> items = new ArrayList<HPEntityInterface>();
+//		for (HPEntityInterface item : this.Inventory) {
+//			if(item.hasCapability(capability))
+//				items.add(item);			
+//		}
+//		if (items.size() == 0)
+//				return null;				
+//		return items;
+//	}
+//	
+//	/**
+//	 * Adds an <code>item</code> to this <code>HPActor</code>'s
+//	 * <code>Inventory</code>
+//	 * <p>
+//	 * This method will add an item to this <code>HPActor</code>'s
+//	 * <code>Inventory</code>, it accepts regardless if the same item already exist in the inventory.
+//	 * furthermore if this an item is added when the inventory is full, this method will do nothing
+//	 * </p>
+//	 * @param 	item to be added from the inventory
+//	 * @see 	#Inventory
+//	 */
+//	
+//	public void addToInventory(HPEntityInterface item) {	//mh what if null is added, need to fix this
+//		if(this.inventoryNotFull() && item!=null) {		
+//			this.Inventory.add(item);
+//		}
+//		return;
+//	}
+//	
+//	/**
+//	 * Remove the requested item form this <code>HPActor</code>'s <code>inventory</code>  
+//	 * <p>
+//	 * This method will remove the requested item this <code>HPActor</code>'s <code>inventory</code> only if the <code>HPActor</code>
+//	 * is carrying the requested item, otherwise it does noting 
+//	 * 
+//	 * @param 	item to be removed from the inventory
+//	 * @see 	#Inventory
+//	 */
+//	
+//	public void removeFromInventory(HPEntityInterface item) {
+//		if(this.Inventory.contains(item)) {
+//			this.Inventory.remove(item);
+//		}
+//		return;
+//	}
 	
 	/**
 	 * Sets the team of this <code>HPActor</code> to a new team <code>team</code>.
@@ -424,7 +424,7 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 				
 				
 				
-				if(this.getHighestItemWithCapability(Capability.DOUBLESPEED)!=null && world.canDoubleMove(this, d))
+				if(this.Inventory.getHighestItemWithCapability(Capability.DOUBLESPEED)!=null && world.canDoubleMove(this, d))
 					newActions.add(new DoubleMove(d, messageRenderer, world));
 			}
 		}

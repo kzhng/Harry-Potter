@@ -53,7 +53,7 @@ public class Give extends HPAffordance implements HPActionInterface {
 		if (targetIsActor)
 			targetActor = (HPActor) target;
 
-		return targetIsActor && a.carriesItems() && targetActor.inventoryNotFull()
+		return targetIsActor && a.Inventory.containsItems() && targetActor.Inventory.notFull()
 				&& (a.getTeam() == targetActor.getTeam()) && !targetActor.isDead();
 	}
 
@@ -79,7 +79,7 @@ public class Give extends HPAffordance implements HPActionInterface {
 		if (targetIsActor) {
 			targetActor = (HPActor) target;
 
-			if ((a.getTeam() == targetActor.getTeam()) && a.carriesItems() && targetActor.inventoryNotFull()) {
+			if ((a.getTeam() == targetActor.getTeam()) && a.Inventory.containsItems() && targetActor.Inventory.notFull()) {
 
 				if (a.isHumanControlled()) {
 					a.say("Choose an item to give to " + targetActor.getShortDescription());
@@ -94,8 +94,8 @@ public class Give extends HPAffordance implements HPActionInterface {
 				// getting AI decision using machine learning
 				boolean decision = HPGridController.getAcceptOrDecline(targetActor);
 				if (decision) {
-					a.removeFromInventory(selectedItem);
-					targetActor.addToInventory(selectedItem);
+					a.Inventory.remove(selectedItem);
+					targetActor.Inventory.add(selectedItem);
 					a.say(a.getShortDescription() + " gave " + selectedItem.getShortDescription() + " to "
 							+ targetActor.getShortDescription());
 

@@ -117,7 +117,7 @@ public class HPGridController implements GridController {
 				cmds.add(ac);
 		}
 		
-		if (a.getHighestItemWithCapability(Capability.CASTING) != null){
+		if (a.Inventory.getHighestItemWithCapability(Capability.CASTING) != null){
 			for (Spell s : a.getSpells()){
 				if (!s.affectActor()){
 					cmds.add(new Cast(null, s, m, false));
@@ -188,12 +188,12 @@ public class HPGridController implements GridController {
 	
 	public static HPEntityInterface getChosenItem( HPActor a) {
 			if(a.isHumanControlled()) {
-				HPEntityInterface selectedItem = ((HPGridTextInterface) ui).getItemSelection(a.getItemsCarried());
+				HPEntityInterface selectedItem = ((HPGridTextInterface) ui).getItemSelection(a.Inventory.getItemsCarried());
 				return selectedItem;
 			}
 			else {
-				int rnd = new Random().nextInt(a.getItemsCarried().size());
-				return a.getItemsCarried().get(rnd);
+				int rnd = new Random().nextInt(a.Inventory.getItemsCarried().size());
+				return a.Inventory.getItemsCarried().get(rnd);
 			}
 	}
 }

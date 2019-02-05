@@ -40,8 +40,8 @@ public class Expelliarmus extends Spell {
 		
 		if (theTarget instanceof HPActor){
 			ArrayList<HPEntityInterface> items = new ArrayList<HPEntityInterface>();			
-			HPEntityInterface weaponItem = ((HPActor)theTarget).getHighestItemWithCapability(Capability.WEAPON);
-			HPEntityInterface castItem = ((HPActor)theTarget).getHighestItemWithCapability(Capability.CASTING);
+			HPEntityInterface weaponItem = ((HPActor)theTarget).Inventory.getHighestItemWithCapability(Capability.WEAPON);
+			HPEntityInterface castItem = ((HPActor)theTarget).Inventory.getHighestItemWithCapability(Capability.CASTING);
 			
 			if (weaponItem!=null)
 					items.add(weaponItem);

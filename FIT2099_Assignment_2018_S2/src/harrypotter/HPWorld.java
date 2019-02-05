@@ -200,7 +200,7 @@ public class HPWorld extends World {
 		Dumbledore dumbledore = Dumbledore.getDumbledore(iface, this, patrolmoves);
 		Sword sword = new Sword(iface); //kz made changes to how dumbledore receives his sword and updated it so that it interacts correctly with expelliarmus
 		entityManager.setLocation(dumbledore, loc);
-		dumbledore.addToInventory(sword);
+		dumbledore.Inventory.add(sword);
 		for (Affordance a : sword.getAffordances()){
 			if (a instanceof Take){
 				sword.removeAffordance(a);
@@ -216,7 +216,7 @@ public class HPWorld extends World {
 		harry.setLongDescription("Harry Potter, the boy who lived");
 		entityManager.setLocation(harry, loc);
 		Wand wand = new Wand(iface);
-		harry.addToInventory(wand);
+		harry.Inventory.add(wand);
 		for (Affordance a : wand.getAffordances()){
 			if (a instanceof Take){
 				wand.removeAffordance(a);
@@ -233,7 +233,7 @@ public class HPWorld extends World {
 		// A broomstick
 		loc = myGrid.getLocationByCoordinates(4,6);
 		Broomstick broomstick= new Broomstick(iface);
-		harry.addToInventory(broomstick);
+		harry.Inventory.add(broomstick);
 		for (Affordance a : broomstick.getAffordances()){
 			if (a instanceof Take){
 				broomstick.removeAffordance(a);

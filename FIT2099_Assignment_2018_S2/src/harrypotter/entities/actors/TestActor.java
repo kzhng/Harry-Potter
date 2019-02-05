@@ -96,8 +96,8 @@ public class TestActor extends HPActor {
 	 */
 	private void describeItems(HPActor a) {
 		String entityDescription = new String();
-		if(a.carriesItems()) {		
-			ArrayList<HPEntityInterface> items = a.getItemsCarried();
+		if(a.Inventory.containsItems()) {		
+			ArrayList<HPEntityInterface> items = a.Inventory.getItemsCarried();
 			// get the items carried by the player
 			for (int i = 0; i < items.size(); i++) {
 				if(i!=0 && i == items.size()-1) {

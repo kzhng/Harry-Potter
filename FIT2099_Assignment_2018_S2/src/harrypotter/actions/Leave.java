@@ -29,7 +29,7 @@ public class Leave extends HPAffordance {
 				return false;
 			}
 		 
-		 return a.carriesItems(); 
+		 return a.Inventory.containsItems(); 
 	 }
 	 /**
 	  * removes Leave affordance from the item
@@ -41,7 +41,7 @@ public class Leave extends HPAffordance {
 	 public void act(HPActor a){
 		 if (target instanceof HPEntityInterface){
 			 HPEntityInterface theItem = (HPEntityInterface) target;
-			 a.removeFromInventory(theItem);
+			 a.Inventory.remove(theItem);
 			 HPWorld.myEntitymanager(a).setLocation(theItem, HPWorld.myEntitymanager(a).whereIs(a));
 			 target.removeAffordance(this);
 			 target.addAffordance(new Take(theItem, messageRenderer));

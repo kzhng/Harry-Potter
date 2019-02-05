@@ -43,7 +43,7 @@ public class AvadaKedavra extends Spell {
 			//After the attack
 			targetActor.setLongDescription(targetActor.getLongDescription() + ", was killed by the Killing Curse");
 
-			ArrayList<HPEntityInterface> items = ((HPActor)theTarget).getItemsCarried();
+			ArrayList<HPEntityInterface> items = ((HPActor)theTarget).Inventory.getItemsCarried();
 			for (HPEntityInterface item : items) {
 				Leave leaveEffect = new Leave(item, null);
 				leaveEffect.act((HPActor)theTarget);

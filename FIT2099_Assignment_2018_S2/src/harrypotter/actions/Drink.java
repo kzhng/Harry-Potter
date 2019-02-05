@@ -40,7 +40,7 @@ public class Drink extends HPAffordance {
 	 */
 	@Override
 	public boolean canDo(HPActor a) {
-		ArrayList<HPEntityInterface> InventoryItems = a.getItemsWithCapability(Capability.HEALTH);
+		ArrayList<HPEntityInterface> InventoryItems = a.Inventory.getItemsWithCapability(Capability.HEALTH);
 		if (target instanceof HPEntityInterface && InventoryItems != null) {
 			
 			for (HPEntityInterface item : InventoryItems) {
@@ -66,7 +66,7 @@ public class Drink extends HPAffordance {
 		if (target instanceof HPEntityInterface) {
 			HPEntityInterface theItem = (HPEntityInterface) target;
 			a.addHitpoints(theItem.getHitpoints());
-			a.removeFromInventory(theItem);
+			a.Inventory.remove(theItem);
 			
 			//remove the drink affordance
 			theItem.removeAffordance(this);
