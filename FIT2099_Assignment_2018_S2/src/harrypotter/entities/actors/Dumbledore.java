@@ -10,6 +10,7 @@ import harrypotter.HPWorld;
 import harrypotter.Inventory;
 import harrypotter.Team;
 import harrypotter.actions.Give;
+import harrypotter.actions.GiveBroomStick;
 import harrypotter.actions.Move;
 import harrypotter.entities.actors.behaviors.AttackInformation;
 import harrypotter.entities.actors.behaviors.AttackNeighbours;
@@ -41,6 +42,7 @@ public class Dumbledore extends HPLegend {
 		this.capabilities.add(Capability.INVENTORY);
 		this.InventorySize = (this.hasCapability(Capability.INVENTORY))? 3 : 1;		//inventory size is 3 for actors with INVENTORY capability
 		this.Inventory = new Inventory(InventorySize);
+
 	}
 
 	public static Dumbledore getDumbledore(MessageRenderer m, HPWorld world, Direction[] moves) {
@@ -52,17 +54,19 @@ public class Dumbledore extends HPLegend {
 	@Override
 	protected void legendAct() {
 
-		boolean canGive = false;
-		HPAffordance myGive = null;
+		HPAffordance albusGive = null;
+		HPAffordance albusBroomstickGive = null;
 
 		// Get all the actions the HPActor a can perform
 		for (HPActionInterface ac : HPWorld.getEntitymanager().getActionsFor(this)) {
-
 			if (ac instanceof Give) {
 				if (ac.canDo(this)) {
-					canGive = true;
-					myGive = (HPAffordance) ac;
-					break;
+					albusGive = (HPAffordance) ac;
+				}
+			}
+			if (ac instanceof GiveBroomStick) {
+				if (ac.canDo(this)) {
+					albusBroomstickGive = (HPAffordance) ac;
 				}
 			}
 		}
@@ -82,8 +86,14 @@ public class Dumbledore extends HPLegend {
 			say(getShortDescription() + " suddenly looks sprightly and attacks " + attack.entity.getShortDescription());
 			scheduler.schedule(attack.affordance, albus, 1);
 		}
-		else if (canGive) {  // His grace's generosity, quite smelly
-			myGive.execute(this);
+		
+		else if(albusBroomstickGive != null) {
+			albusBroomstickGive.execute(this);
+			scheduler.schedule(null, this, 1);
+		}
+		
+		else if (albusGive!=null) {  // His grace's generosity, quite smelly
+			albusGive.execute(this);
 			scheduler.schedule(null, this, 1);
 		} 
 		else {

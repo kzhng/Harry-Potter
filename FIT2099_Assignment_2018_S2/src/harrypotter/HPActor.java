@@ -29,6 +29,7 @@ import harrypotter.actions.Cast;
 import harrypotter.actions.DoubleMove;
 import harrypotter.actions.Move;
 import harrypotter.actions.Give;
+import harrypotter.actions.GiveBroomStick;
 
 public abstract class HPActor extends Actor<HPActionInterface> implements HPEntityInterface {
 	
@@ -70,6 +71,9 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	
 	/** An <code>integer</code> that specifies inventory size, it is 1 if the actor doesn't have an INventory capability **/
 	protected int InventorySize = 1;
+	
+	/** HPActors can only ever own one Broomstick, it dropped can be retrieved from the location it was dropped**/
+	protected boolean ownsBroomstick = false;
 	
 	/**
 	 * Constructor for the <code>HPActor</code>.
@@ -113,9 +117,13 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		HPAffordance cast = new Cast(this, null, m, true);	
 		this.addAffordance(cast);
 		
-		//HPActors are given the give affordance hence they can give to aother actors
+		//HPActors are given the give affordance hence they can give to another actors
 		HPAffordance give = new Give(this, m);
-		this.addAffordance(give);
+		this.addAffordance(give);		
+		
+		//HPActors are given the give broomstick affordance hence they can give broomstick to another actors
+		HPAffordance giveBroomstick = new GiveBroomStick(this, m,world);
+		this.addAffordance(giveBroomstick);
 
 	}
 	
@@ -193,112 +201,6 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		}
 		return actionList;
 	}
-	
-//	/**
-//	 * Returns the items carried by this <code>HPActor</code>. 
-//	 * <p>
-//	 * This method only returns the reference of the items carried 
-//	 * and does not remove items held from this <code>HPActor</code>.
-//	 * <p>
-//	 * If this <code>HPActor</code> is not carrying any item this method will return null.
-//	 * 
-//	 * @return 	the items carried by this <code>HPActor</code> or null if no item is held by this <code>HPActor</code>
-//	 * @see 	#Inventory
-//	 */
-//	@SuppressWarnings("unchecked")
-//	public ArrayList<HPEntityInterface> getItemsCarried() {
-//		return (ArrayList<HPEntityInterface>) this.Inventory.clone();		//cloned items, due to privacy risk
-//	}
-//	/**
-//	 * 
-//	 * @return true if the actor carries at least one item
-//	 */
-//	public boolean carriesItems() {
-//		return this.Inventory.size()>=1;
-//	}
-//	
-//	/**
-//	 * @return true if the actor's inventory is not full
-//	 */
-//	public boolean inventoryNotFull() {
-//		assert this.InventorySize > 0 : "Inventory size must be a positive integer";
-//		return (this.Inventory.size()<InventorySize);		
-//	}
-//
-//	/**
-//	 * returns an item for the requested capability which has the highest Hitpoints or null if no such item exist
-//	 * <p>
-//	 * this method does not remove the item requested
-//	 * </p>
-//	 * @param capability
-//	 * @return returns an item for the requested capability which has the highest Hitpoints or null if no such item exist
-//	 */
-//	public HPEntityInterface getHighestItemWithCapability(Capability capability) {
-//		ArrayList<HPEntityInterface> items = this.getItemsWithCapability(capability);
-//		if ( items==null )
-//				return null;
-//		int highestCap = 0;
-//		for (int i = 0; i < items.size(); i++) {			
-//			if(items.get(i).getHitpoints()>items.get(highestCap).getHitpoints())
-//				highestCap = i;			
-//		}		
-//		return items.get(highestCap);
-//	}
-//	
-//	/**
-//	 * returns items for the requested capability or null if no such items exist
-//	 * <p>
-//	 * this method does not remove the items requested
-//	 * </p>
-//	 * @param capability
-//	 * @return returns an arraylist of items for the requested capability or null if no such items exist
-//	 */
-//	public ArrayList<HPEntityInterface> getItemsWithCapability(Capability capability) {
-//		ArrayList<HPEntityInterface> items = new ArrayList<HPEntityInterface>();
-//		for (HPEntityInterface item : this.Inventory) {
-//			if(item.hasCapability(capability))
-//				items.add(item);			
-//		}
-//		if (items.size() == 0)
-//				return null;				
-//		return items;
-//	}
-//	
-//	/**
-//	 * Adds an <code>item</code> to this <code>HPActor</code>'s
-//	 * <code>Inventory</code>
-//	 * <p>
-//	 * This method will add an item to this <code>HPActor</code>'s
-//	 * <code>Inventory</code>, it accepts regardless if the same item already exist in the inventory.
-//	 * furthermore if this an item is added when the inventory is full, this method will do nothing
-//	 * </p>
-//	 * @param 	item to be added from the inventory
-//	 * @see 	#Inventory
-//	 */
-//	
-//	public void addToInventory(HPEntityInterface item) {	//mh what if null is added, need to fix this
-//		if(this.inventoryNotFull() && item!=null) {		
-//			this.Inventory.add(item);
-//		}
-//		return;
-//	}
-//	
-//	/**
-//	 * Remove the requested item form this <code>HPActor</code>'s <code>inventory</code>  
-//	 * <p>
-//	 * This method will remove the requested item this <code>HPActor</code>'s <code>inventory</code> only if the <code>HPActor</code>
-//	 * is carrying the requested item, otherwise it does noting 
-//	 * 
-//	 * @param 	item to be removed from the inventory
-//	 * @see 	#Inventory
-//	 */
-//	
-//	public void removeFromInventory(HPEntityInterface item) {
-//		if(this.Inventory.contains(item)) {
-//			this.Inventory.remove(item);
-//		}
-//		return;
-//	}
 	
 	/**
 	 * Sets the team of this <code>HPActor</code> to a new team <code>team</code>.
@@ -441,8 +343,9 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 *  
 	 *  @return an ArrayList of <code>Spell</code>
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList<Spell> getSpells(){
-		return knownSpells;
+		return (ArrayList<Spell>) knownSpells.clone();
 	}
 	
 	/**
@@ -471,10 +374,21 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	public ArrayList<HPEntity> returnSeenItems(){
 		ArrayList<HPEntity>  tempSeenItems= new ArrayList<HPEntity>(seenItems);
 		return tempSeenItems;
+	}
+	
+	/** HPActors must meet requirements to be able to carry a broomstick**/
+	public boolean canUseBroomstick() {
+		return knownSpells.size()>=2;
+	}
+
+	/** HPActors can only ever own one Broomstick, it dropped can be retrieved from the location it was dropped**/
+	public boolean ownsBroomstick() {
+		return ownsBroomstick;
+	}
+
+	/** sets whether this <code>HPActor</code> owns broomstick**/
+	public void setOwnsBroomstick(boolean ownsBroomstick) {
+		this.ownsBroomstick = ownsBroomstick;
 	}	
+	
 }
-
-
-
-///**The item carried by this <code>HPActor</code>. <code>itemCarried</code> is null if this <code>HPActor</code> is not carrying an item*/
-//private HPEntityInterface itemCarried;

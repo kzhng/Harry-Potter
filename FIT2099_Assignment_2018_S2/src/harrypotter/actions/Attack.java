@@ -71,7 +71,7 @@ public class Attack extends HPAffordance implements HPActionInterface {
 			a.unFreeze();
 			return false;
 		}
-		return true;
+		return !a.isDead();
 	}
 
 	

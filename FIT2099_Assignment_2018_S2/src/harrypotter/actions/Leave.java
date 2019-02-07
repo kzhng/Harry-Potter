@@ -29,7 +29,7 @@ public class Leave extends HPAffordance {
 				return false;
 			}
 		 
-		 return a.Inventory.containsItems(); 
+		 return a.Inventory.containsItems() && !a.isDead(); 
 	 }
 	 /**
 	  * removes Leave affordance from the item

@@ -186,6 +186,18 @@ public class HPGridController implements GridController {
 		}
 	}
 	
+	/**
+	 * Will return a item selected by the user.
+	 * <p>
+	 * This method will provide the user interface with a list of items from which the user 
+	 * needs to select one from and will return this selection.	
+	 * 
+	 * Nonplayers will return a random item,
+	 * 
+	 * @param 	a the <code>HPActor</code> for whom a item needs to be selected
+	 * @return	the selected item for the <code>HPActor a</code>
+	 */
+	
 	public static HPEntityInterface getChosenItem( HPActor a) {
 			if(a.isHumanControlled()) {
 				HPEntityInterface selectedItem = ((HPGridTextInterface) ui).getItemSelection(a.Inventory.getItemsCarried());

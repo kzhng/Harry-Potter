@@ -208,10 +208,10 @@ public class HPWorld extends World {
 		}
 		sword.addAffordance(new Leave(sword, iface));
 		
-		loc = myGrid.getLocationByCoordinates(4,5);	//mh changed from (5,9)
+		loc = myGrid.getLocationByCoordinates(4,5);	
 		
 		// Harry
-		Player harry = new Player(Team.GOOD, 100000, iface, this);
+		Player harry = new Player(Team.GOOD, 10000, iface, this);
 		harry.setShortDescription("Harry");
 		harry.setLongDescription("Harry Potter, the boy who lived");
 		entityManager.setLocation(harry, loc);
@@ -231,15 +231,15 @@ public class HPWorld extends World {
 		//harry.resetMoveCommands(loc);
 				
 		// A broomstick
-		loc = myGrid.getLocationByCoordinates(4,6);
-		Broomstick broomstick= new Broomstick(iface);
-		harry.Inventory.add(broomstick);
-		for (Affordance a : broomstick.getAffordances()){
-			if (a instanceof Take){
-				broomstick.removeAffordance(a);
-			}	
-		}
-		broomstick.addAffordance(new Leave(broomstick, iface));
+		loc = myGrid.getLocationByCoordinates(4,5);
+//		Broomstick broomstick= new Broomstick(iface);
+//		harry.Inventory.add(broomstick);
+//		for (Affordance a : broomstick.getAffordances()){
+//			if (a instanceof Take){
+//				broomstick.removeAffordance(a);
+//			}	
+//		}
+//		broomstick.addAffordance(new Leave(broomstick, iface));
 		harry.resetMoveCommands(loc);
 		
 		/*
@@ -302,21 +302,21 @@ public class HPWorld extends World {
 		loc = myGrid.getLocationByCoordinates(4,3); 
 		entityManager.setLocation(deathEater, loc);
 		
-//		deathEater = new DeathEater(10, iface, this);
-//		deathEater.setSymbol("E");
-//		loc = myGrid.getLocationByCoordinates(5,2);
-//		entityManager.setLocation(deathEater, loc);
+		deathEater = new DeathEater(10, iface, this);
+		deathEater.setSymbol("E");
+		loc = myGrid.getLocationByCoordinates(5,2);
+		entityManager.setLocation(deathEater, loc);
 
 		// Some Dementor
 		Dementor dementor = new Dementor(780, iface, this);
 		dementor.setSymbol("Z");
-		loc = myGrid.getLocationByCoordinates(1,1);
+		loc = myGrid.getLocationByCoordinates(3,3);
 		entityManager.setLocation(dementor, loc);
 		
-//		dementor = new Dementor(780, iface, this);
-//		dementor.setSymbol("Z");
-//		loc = myGrid.getLocationByCoordinates(7,2);
-//		entityManager.setLocation(dementor, loc);
+		dementor = new Dementor(780, iface, this);
+		dementor.setSymbol("Z");
+		loc = myGrid.getLocationByCoordinates(7,2);
+		entityManager.setLocation(dementor, loc);
 				
 		// Whomping Willow
 		loc = myGrid.getLocationByCoordinates(7, 4);
