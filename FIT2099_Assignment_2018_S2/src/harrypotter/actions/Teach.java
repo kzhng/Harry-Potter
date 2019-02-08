@@ -35,7 +35,7 @@ public class Teach extends HPAffordance implements HPActionInterface {
 		if (targetIsActor) {
 			targetActor = (HPActor) target;
 			
-			if (a.isTeacher()) {
+			if (a.isTeacher() && a.getTeam() == targetActor.getTeam()) {
 				ArrayList<Spell> targetSpells = targetActor.getSpells();
 				ArrayList<Spell> teacherSpells = a.getSpells();
 				for (int i = 0; i < teacherSpells.size(); i++ ) {

@@ -11,6 +11,7 @@ import harrypotter.Inventory;
 import harrypotter.Team;
 import harrypotter.actions.Give;
 import harrypotter.actions.GiveBroomStick;
+import harrypotter.actions.Teach;
 import harrypotter.actions.Move;
 import harrypotter.entities.actors.behaviors.AttackInformation;
 import harrypotter.entities.actors.behaviors.AttackNeighbours;
@@ -56,6 +57,7 @@ public class Dumbledore extends HPLegend {
 
 		HPAffordance albusGive = null;
 		HPAffordance albusBroomstickGive = null;
+		HPAffordance albusTeach = null;
 
 		// Get all the actions the HPActor a can perform
 		for (HPActionInterface ac : HPWorld.getEntitymanager().getActionsFor(this)) {
@@ -67,6 +69,12 @@ public class Dumbledore extends HPLegend {
 			if (ac instanceof GiveBroomStick) {
 				if (ac.canDo(this)) {
 					albusBroomstickGive = (HPAffordance) ac;
+				}
+			}
+			
+			if (ac instanceof Teach) {
+				if (ac.canDo(this)) {
+					albusTeach = (HPAffordance) ac;
 				}
 			}
 		}
@@ -96,6 +104,12 @@ public class Dumbledore extends HPLegend {
 			albusGive.execute(this);
 			scheduler.schedule(null, this, 1);
 		} 
+		
+		else if(albusTeach != null) {
+			albusTeach.execute(this);
+			scheduler.schedule(null, this, 1);
+		}
+		
 		else {
 			Direction newdirection = path.getNext();
 			say(getShortDescription() + " moves " + newdirection);

@@ -212,8 +212,8 @@ public class HPGridController implements GridController {
 	
 	public static Spell getTeachingSpell(HPActor a, ArrayList<Spell> spellsToTeach) {
 		if(a.isHumanControlled()) {
-		Spell selectedSpell = ((HPGridTextInterface) ui).getSpellSelection(spellsToTeach);
-		return selectedSpell;
+			Spell selectedSpell = ((HPGridTextInterface) ui).getSpellSelection(spellsToTeach);
+			return selectedSpell;
 		}
 		else {
 			int randomSpellIndex = getRandomNumber(spellsToTeach.size() - 1);
