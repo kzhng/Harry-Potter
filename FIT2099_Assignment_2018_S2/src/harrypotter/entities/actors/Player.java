@@ -159,7 +159,7 @@ public class Player extends HPActor {
 	}
 	
 	public boolean isTeacher() {
-		return true;
+		return false;
 	}
 	
 	/**
