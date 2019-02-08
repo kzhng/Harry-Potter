@@ -12,6 +12,7 @@ import harrypotter.HPLocation;
 import harrypotter.HPWorld;
 import harrypotter.Inventory;
 import harrypotter.Team;
+import harrypotter.Tunnel;
 import harrypotter.interfaces.HPGridController;
 
 /**
@@ -26,6 +27,9 @@ import harrypotter.interfaces.HPGridController;
  */
 public class Player extends HPActor {
 
+	public static boolean inTunnel;
+	public Tunnel tunnel;
+	
 	/**
 	 * Constructor for the <code>Player</code> class. This constructor will,
 	 * <ul>
@@ -46,9 +50,11 @@ public class Player extends HPActor {
 	 *                  <code>Player</code> belongs to
 	 * 
 	 */
-	public Player(Team team, int hitpoints, MessageRenderer m, HPWorld world) {
+	public Player(Team team, int hitpoints, MessageRenderer m, HPWorld world, Tunnel myTunnel) {
 		super(team, hitpoints, m, world);
 		humanControlled = true; // this feels like a hack. Surely this should be dynamic
+		inTunnel = false;
+		tunnel = myTunnel;		
 		this.capabilities.add(Capability.INVENTORY);
 		this.InventorySize = (this.hasCapability(Capability.INVENTORY))? 3 : 1;		//inventory size is 3 for actors with INVENTORY capability
 		this.Inventory = new Inventory(InventorySize);
@@ -100,14 +106,14 @@ public class Player extends HPActor {
 	 */
 	public void describeScene() {
 		// get the location of the player and describe it
-		HPLocation location = this.world.getEntityManager().whereIs(this);
+		HPLocation location = HPWorld.myEntitymanager().whereIs(this);
 		say(this.getShortDescription() + " [" + this.getHitpoints() + "] is at " + location.getShortDescription());
 		
 		String entityDescription = new String();
 		describeItems(this);
 		
 		// get the contents of the location
-		List<HPEntityInterface> contents = this.world.getEntityManager().contents(location);
+		List<HPEntityInterface> contents = HPWorld.myEntitymanager().contents(location);
 
 		// and describe the contents
 		if (contents.size() > 1) { // if it is equal to one, the only thing here is this Player, so there is
@@ -154,5 +160,31 @@ public class Player extends HPActor {
 	
 	public boolean isTeacher() {
 		return true;
+	}
+	
+	/**
+	 * check the world location of the actor
+	 * @return boolean if the actor is in tunnel or not 
+	 */
+	public static boolean isPlayerInTunnel(){
+		return inTunnel;
+	}
+	
+	/**
+	 * @param b the flag telling the actor's world location
+	 */
+	public static void setPlayerTunnel(boolean b){
+		inTunnel = b;
+	}
+	
+	/**
+	 * setter for telling the actor's world location
+	 */
+	public void setPlayerGrid(){
+		if (isPlayerInTunnel()){
+			HPGridController.setGrid(tunnel.getGrid());
+		} else {
+			HPGridController.setGrid(world.getGrid());
+		}		
 	}
 }
