@@ -30,6 +30,7 @@ import harrypotter.actions.DoubleMove;
 import harrypotter.actions.Move;
 import harrypotter.actions.Give;
 import harrypotter.actions.GiveBroomStick;
+import harrypotter.actions.Teach;
 
 public abstract class HPActor extends Actor<HPActionInterface> implements HPEntityInterface {
 	
@@ -124,6 +125,10 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		//HPActors are given the give broomstick affordance hence they can give broomstick to another actors
 		HPAffordance giveBroomstick = new GiveBroomStick(this, m,world);
 		this.addAffordance(giveBroomstick);
+		
+		//HPActors are given the teach affordance hence they can be taught by teachers
+		HPAffordance teach = new Teach(this, m);
+		this.addAffordance(teach);
 
 	}
 	
@@ -270,6 +275,18 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 		return frozenTime > 0;
 	}
 	
+	
+	/**
+	 * Returns true if this <code>HPActor</code> is a teacher, false otherwise.
+	 * <p>
+	 * A <code>HPActor</code> is a teacher if it can <code>Teach</code>.
+	 *
+	 * @author 	Kerry Zheng
+	 * @return 	true if and only if this <code>HPActor</code> is a teacher, false otherwise
+	 * @see 	#Teach affordance
+	 */
+	public abstract boolean isTeacher();
+	
 	@Override
 	public String getSymbol() {
 		return symbol;
@@ -355,6 +372,10 @@ public abstract class HPActor extends Actor<HPActionInterface> implements HPEnti
 	 */
 	public void learnSpell(Spell newSpell){
 		knownSpells.add(newSpell);
+	}
+	
+	public boolean knowSpell(Spell spell) {
+		return knownSpells.contains(spell);
 	}
 	
 	/**

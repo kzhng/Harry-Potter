@@ -198,6 +198,8 @@ public class HPWorld extends World {
                 CompassBearing.EAST, CompassBearing.EAST,
                 CompassBearing.NORTHWEST, CompassBearing.NORTHWEST*/};
 		Dumbledore dumbledore = Dumbledore.getDumbledore(iface, this, patrolmoves);
+		dumbledore.learnSpell(new Expelliarmus());
+		dumbledore.learnSpell(new Immobulus());
 		Sword sword = new Sword(iface); //kz made changes to how dumbledore receives his sword and updated it so that it interacts correctly with expelliarmus
 		entityManager.setLocation(dumbledore, loc);
 		dumbledore.Inventory.add(sword);
@@ -226,8 +228,6 @@ public class HPWorld extends World {
 		wand.addAffordance(new Leave(wand, iface));	
 		wand.capabilities.add(Capability.CASTING);
 		harry.learnSpell(new AvadaKedavra());
-		harry.learnSpell(new Expelliarmus());
-		harry.learnSpell(new Immobulus());
 		//harry.resetMoveCommands(loc);
 				
 		// A broomstick

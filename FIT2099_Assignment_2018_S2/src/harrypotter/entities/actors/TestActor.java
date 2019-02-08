@@ -110,4 +110,8 @@ public class TestActor extends HPActor {
 			say(a.getShortDescription() + " is holding " + entityDescription);
 		}
 	}
+	
+	public boolean isTeacher() {
+		return false;
+	}
 }

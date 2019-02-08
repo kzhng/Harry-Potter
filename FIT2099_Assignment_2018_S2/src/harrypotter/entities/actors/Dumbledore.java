@@ -105,4 +105,8 @@ public class Dumbledore extends HPLegend {
 		}
 	}
 
+	public boolean isTeacher() {
+		return true;
+	}
+	
 }

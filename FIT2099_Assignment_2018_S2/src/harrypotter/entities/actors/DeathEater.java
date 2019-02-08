@@ -89,4 +89,8 @@ public class DeathEater extends HPActor {
 		return this.getShortDescription() + " [" + this.getHitpoints() + "] is at " + location.getShortDescription();
 
 	}
+	
+	public boolean isTeacher() {
+		return false;
+	}
 }

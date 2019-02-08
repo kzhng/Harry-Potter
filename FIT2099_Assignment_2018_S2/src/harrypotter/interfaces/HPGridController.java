@@ -15,6 +15,7 @@ import harrypotter.HPGrid;
 import harrypotter.HPWorld;
 import harrypotter.Spell;
 import harrypotter.actions.Cast;
+import harrypotter.actions.Teach;
 
 /**
  * Concrete implementation of the <code>GridController</code>.
@@ -207,5 +208,21 @@ public class HPGridController implements GridController {
 				int rnd = new Random().nextInt(a.Inventory.getItemsCarried().size());
 				return a.Inventory.getItemsCarried().get(rnd);
 			}
+	}
+	
+	public static Spell getTeachingSpell(HPActor a, ArrayList<Spell> spellsToTeach) {
+		if(a.isHumanControlled()) {
+		Spell selectedSpell = ((HPGridTextInterface) ui).getSpellSelection(spellsToTeach);
+		return selectedSpell;
+		}
+		else {
+			int randomSpellIndex = getRandomNumber(spellsToTeach.size() - 1);
+			return spellsToTeach.get(randomSpellIndex);
+		}
+	}
+	
+	private static int getRandomNumber(int max) {
+	   int range = (max) + 1;     
+	   return (int)(Math.random() * range);
 	}
 }
