@@ -20,11 +20,13 @@ public class HPGrid extends Grid<HPLocation> {
 	/**
 	 * The constructor of the <code>HPGrid</code>. 
 	 * Will create a 10 by 10 grid with 100 <code>HPLocation</code>s
-	 * 
+	 * 	 
+	 * @param int number of rows in HPGrid
+	 * @param int number of columns of HPGrid
 	 * @param factory the maker of the <code>HPLocation</code>s
 	 */
-	public HPGrid(LocationMaker<HPLocation> factory) {
-		super(10,10,factory);
+	public HPGrid(int row, int column, LocationMaker<HPLocation> factory) {
+		super(row,column,factory);
 	}
 	
 
