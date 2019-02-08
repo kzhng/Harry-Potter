@@ -201,6 +201,7 @@ public class HPWorld extends World {
 		dumbledore.learnSpell(new Expelliarmus());
 		dumbledore.learnSpell(new Immobulus());
 		dumbledore.learnSpell(new AvadaKedavra());
+		dumbledore.learnSpell(new Apparate());
 		Sword sword = new Sword(iface); //kz made changes to how dumbledore receives his sword and updated it so that it interacts correctly with expelliarmus
 		entityManager.setLocation(dumbledore, loc);
 		dumbledore.Inventory.add(sword);

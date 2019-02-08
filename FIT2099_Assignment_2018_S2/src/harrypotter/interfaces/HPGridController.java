@@ -36,6 +36,9 @@ public class HPGridController implements GridController {
 	/**HPgrid of the world*/
 	private HPGrid grid;
 	
+	/**world of the HPWorld*/
+	private static HPWorld world;
+	
 	/**
 	 * Constructor of this <code>HPGridController</code>
 	 * <p>
@@ -48,6 +51,7 @@ public class HPGridController implements GridController {
 	 */
 	public HPGridController(HPWorld world) {
 		this.grid = world.getGrid();
+		this.world = world;
 		
 		//change the user interface to be used here in the constructor
 		HPGridController.ui = new HPGridTextInterface(this.grid); //use a Text Interface to interact
@@ -207,6 +211,16 @@ public class HPGridController implements GridController {
 				int rnd = new Random().nextInt(a.Inventory.getItemsCarried().size());
 				return a.Inventory.getItemsCarried().get(rnd);
 			}
+	}
+	
+	public static int getChosenCoordinate(HPActor a) {
+		if(a.isHumanControlled()) {
+			return ((HPGridTextInterface) ui).getCoordinates();	
+		}
+		else {
+			int rnd = new Random().nextInt(world.height());
+			return rnd;
+		}
 	}
 	
 	/**

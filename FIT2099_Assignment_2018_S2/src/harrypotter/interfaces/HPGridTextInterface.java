@@ -253,6 +253,27 @@ public class HPGridTextInterface implements GridRenderer {
 	}
 	
 	/**
+	 * Will return a boolean representing Accept and decline
+	 * <p>
+	 * This method will provide the user interface with Accept and Decline from which the user needs to select one from and will return this
+	 * selection.
+	 * 
+	 * @return a boolean represent Accept and decline
+	 * @author Matti
+	 */
+	public int getCoordinates() {
+
+		ArrayList<String> cmds = new ArrayList<String>();
+		cmds.add("Enter your width coordinate: ");
+		for (int i = 0; i < cmds.size(); i++) {
+			System.out.println(cmds.get(i));
+		}
+		int selection = this.displayCommands(cmds);
+
+		return selection;
+	}
+	
+	/**
 	 * Will return a an item selected by the user.
 	 * <p>
 	 * This method will provide the user interface with a list of item from which
