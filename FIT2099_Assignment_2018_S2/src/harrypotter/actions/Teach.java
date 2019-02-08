@@ -105,8 +105,6 @@ public class Teach extends HPAffordance implements HPActionInterface {
 		ArrayList<Spell> spellsToTeach = new ArrayList<Spell>();
 		ArrayList<Spell> targetSpells = student.getSpells();
 		ArrayList<Spell> teacherSpells = teacher.getSpells();
-		System.out.println(targetSpells);
-		System.out.println(teacherSpells);
 		if (targetSpells.size() == 0) {
 			return teacherSpells;
 		}
