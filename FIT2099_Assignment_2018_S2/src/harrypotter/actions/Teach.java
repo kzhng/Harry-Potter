@@ -41,7 +41,7 @@ public class Teach extends HPAffordance implements HPActionInterface {
 				for (int i = 0; i < teacherSpells.size(); i++ ) {
 					boolean learnableSpell = true;
 					for (int j = 0; j < targetSpells.size(); j++) {
-						if (teacherSpells.get(i).getClass() == targetSpells.get(j).getClass()) {
+						if (teacherSpells.get(i) == targetSpells.get(j)) {
 							learnableSpell = false;
 						}
 					}
@@ -63,7 +63,7 @@ public class Teach extends HPAffordance implements HPActionInterface {
 
 		if (targetIsActor) {
 			targetActor = (HPActor) target;
-			if (a.getTeam() == targetActor.getTeam()) {
+			if (canDo(a)) {
 				if (a.isHumanControlled()) {
 					a.say("Choose a spell to teach " + targetActor.getShortDescription());
 				}
@@ -79,7 +79,7 @@ public class Teach extends HPAffordance implements HPActionInterface {
 				boolean decision = HPGridController.getAcceptOrDecline(targetActor);
 				if (decision) {
 					targetActor.learnSpell(selectedSpell);
-					a.say(a.getShortDescription() + " taught " + selectedSpell.getDescription() + " to "
+					a.say(a.getShortDescription() + " taught " + selectedSpell.getSpellName() + " to "
 							+ targetActor.getShortDescription());
 
 				} else {
@@ -105,10 +105,15 @@ public class Teach extends HPAffordance implements HPActionInterface {
 		ArrayList<Spell> spellsToTeach = new ArrayList<Spell>();
 		ArrayList<Spell> targetSpells = student.getSpells();
 		ArrayList<Spell> teacherSpells = teacher.getSpells();
+		System.out.println(targetSpells);
+		System.out.println(teacherSpells);
+		if (targetSpells.size() == 0) {
+			return teacherSpells;
+		}
 		for (int i = 0; i < teacherSpells.size(); i++ ) {
 			boolean learnableSpell = true;
 			for (int j = 0; j < targetSpells.size(); j++) {
-				if (teacherSpells.get(i).getClass() == targetSpells.get(j).getClass()) {
+				if (teacherSpells.get(i) == targetSpells.get(j)) {
 					learnableSpell = false;
 				}
 			if (learnableSpell && !spellsToTeach.contains(teacherSpells.get(i))) {

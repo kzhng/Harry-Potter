@@ -15,7 +15,6 @@ import harrypotter.HPGrid;
 import harrypotter.HPWorld;
 import harrypotter.Spell;
 import harrypotter.actions.Cast;
-import harrypotter.actions.Teach;
 
 /**
  * Concrete implementation of the <code>GridController</code>.
@@ -216,13 +215,10 @@ public class HPGridController implements GridController {
 			return selectedSpell;
 		}
 		else {
-			int randomSpellIndex = getRandomNumber(spellsToTeach.size() - 1);
+			
+			Random randomNumberGenerator = new Random();
+			int randomSpellIndex = randomNumberGenerator.nextInt(spellsToTeach.size());
 			return spellsToTeach.get(randomSpellIndex);
 		}
-	}
-	
-	private static int getRandomNumber(int max) {
-	   int range = (max) + 1;     
-	   return (int)(Math.random() * range);
 	}
 }

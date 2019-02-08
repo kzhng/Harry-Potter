@@ -44,6 +44,16 @@ public abstract class Spell {
 	}
 	
 	/**
+	 * Returns the name of the Spell.
+	 * 
+	 * @return a String of the name of the <code>Spell</code>, suitable for display to the user in the interface
+	 */
+	public String getSpellName(){
+		return name;
+	}
+	
+	
+	/**
 	 * Returns the generic result of the Spell.
 	 * 
 	 * @return a String of the result of a <code>Spell</code>, suitable for display to the user in the interface

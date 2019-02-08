@@ -65,7 +65,7 @@ public class GiveBroomStick extends Give {
 			targetActor = (HPActor) target;
 
 		//check javadoc for the logic
-		return targetIsActor &&  !targetActor.ownsBroomstick() && targetActor.Inventory.notFull() && /*a.isTeacher() && */ targetActor.canUseBroomstick()		//mh please, uncoment the teacher bit once teacher class is completed
+		return targetIsActor &&  !targetActor.ownsBroomstick() && targetActor.Inventory.notFull() && a.isTeacher() && targetActor.canUseBroomstick()		//mh please, uncoment the teacher bit once teacher class is completed
 				&& (a.getTeam() == targetActor.getTeam()) && !targetActor.isDead() && !a.isDead();
 	}
 	
