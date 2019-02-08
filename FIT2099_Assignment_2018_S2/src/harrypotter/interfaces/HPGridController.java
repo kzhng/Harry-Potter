@@ -209,6 +209,18 @@ public class HPGridController implements GridController {
 			}
 	}
 	
+	/**
+	 * Will return a spell selected by the user.
+	 * <p>
+	 * This method will provide the user interface with a list of spells from which the user 
+	 * needs to select one from and will return this selection.	
+	 * 
+	 * Nonplayers will return a random spell,
+	 * 
+	 * @param 	a the <code>HPActor</code> for whom a spell needs to be selected
+	 * @return	the selected spell for the <code>HPActor a</code>
+	 */
+	
 	public static Spell getTeachingSpell(HPActor a, ArrayList<Spell> spellsToTeach) {
 		if(a.isHumanControlled()) {
 			Spell selectedSpell = ((HPGridTextInterface) ui).getSpellSelection(spellsToTeach);

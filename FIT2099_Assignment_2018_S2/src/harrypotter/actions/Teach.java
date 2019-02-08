@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 
 public class Teach extends HPAffordance implements HPActionInterface {
-	//private Spell teachSpell;
+	// private Spell teachSpell;
 	/**
-	 * Constructor for the <code>Take</code> Class. Will initialize the message
+	 * Constructor for the <code>Teach</code> Class. Will initialize the message
 	 * renderer, the target and set the priority of this <code>Action</code> to 1
 	 * (lowest priority is 0).
 	 * 
@@ -25,7 +25,19 @@ public class Teach extends HPAffordance implements HPActionInterface {
 		priority = 1; 
 	}
 
-
+	/**
+	 * Returns if or not this <code>Teach</code> can be performed by the
+	 * <code>HPActor a</code>.
+	 * <p>
+	 * This method returns true if and only if <code>a</code>
+	 * 1- the target is an actor, 2-both actors on the same team, 3-the teacher knows at least one spell the target doesn't
+	 * 4- both actors is not dead, 5- the HPActor is a teacher.
+	 *</p>
+	 * @param a the <code>HPActor</code> being queried
+	 * @return true if the <code>HPActor</code> can teach the target a spell that don't already know, false otherwise
+	 * @see {@link harrypotter.HPActor#isTeacher()}
+	 * * @see {@link harrypotter.HPActor#knowSpell()}
+	 */
 	@Override
 	public boolean canDo(HPActor a) {
 		HPEntityInterface target = this.getTarget();
@@ -55,6 +67,18 @@ public class Teach extends HPAffordance implements HPActionInterface {
 		return false;
 	}
 
+	/**
+	 * Perform the <code>Teach</code> action by having the
+	 * <code>HPActor</code> teach a spell to another HP actor in the same location ( the
+	 * <code>HPActor a</code>'s student(the one learning the spell) would be the target of this
+	 * <code>Teach</code>).
+	 * <p>
+	 * This method should only be called if the <code>HPActor a</code> is alive.
+	 * 
+	 * @param a the <code>HPActor</code> that is teaching the spell 
+	 * @see {@link #theTarget}
+	 * @see {@link harrypotter.HPActor#isDead()}
+	 */
 	@Override
 	public void act(HPActor a) {
 		HPEntityInterface target = this.getTarget();
@@ -101,6 +125,14 @@ public class Teach extends HPAffordance implements HPActionInterface {
 		//return teachSpell;
 	//}
 	
+	/**
+	 * Determine what spells the <code>HPActor a</code> can teach to <code>student</code>/
+	 * 
+	 * @author 	Kerry Zheng
+	 * @param 	a the <code>HPActor</code> teaching the spell, student the <code>HPActor</code> learning the spell
+	 * @return 	a list of <code>Spell</code> that the teacher knows that the student does not
+	 */
+	
 	public ArrayList<Spell> getSpellsToTeach(HPActor teacher, HPActor student) {
 		ArrayList<Spell> spellsToTeach = new ArrayList<Spell>();
 		ArrayList<Spell> targetSpells = student.getSpells();
@@ -121,7 +153,16 @@ public class Teach extends HPAffordance implements HPActionInterface {
 		}
 		return spellsToTeach;
 	}
-
+	
+	/**
+	 * A String describing what this action will do, suitable for display in a user
+	 * interface
+	 * 
+	 * @author Kerry Zheng
+	 * @return String comprising "teach " and the short description of the target of
+	 *         this <code>Teach</code>
+	 */
+	
 	@Override
 	public String getDescription() {
 		if (target != null) {
