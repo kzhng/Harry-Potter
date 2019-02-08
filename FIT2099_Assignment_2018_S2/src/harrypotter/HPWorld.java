@@ -45,7 +45,7 @@ public class HPWorld extends World {
 	 */
 	public HPWorld() {
 		HPLocation.HPLocationMaker factory = HPLocation.getMaker();
-		myGrid = new HPGrid(factory);
+		myGrid = new HPGrid(10,10,factory);
 		space = myGrid;
 		
 	}
@@ -80,6 +80,8 @@ public class HPWorld extends World {
 	 */
 	public void initializeWorld(MessageRenderer iface) {
 		HPLocation loc;
+		HPLocation loc1;
+		
 		// Set default location string
 		for (int row=0; row < height(); row++) {
 			for (int col=0; col < width(); col++) {
@@ -89,6 +91,30 @@ public class HPWorld extends World {
 				loc.setSymbol('.');				
 			}
 		}
+		
+		Tunnel tunnel = new Tunnel();
+		tunnel.initializeWorld(iface);
+		
+		loc = tunnel.getGrid().getLocationByCoordinates(0,0);
+		loc1 = myGrid.getLocationByCoordinates(7, 4);
+		Door door = new Door(loc, loc1,iface);
+		door.setShortDescription("a door");
+		door.setLongDescription("new world awaits you!");
+		door.setSymbol("U");
+		Tunnel.getTunnelEntitymanager().setLocation(door, loc);
+		entityManager.setLocation(door, loc1);
+		door.addAffordance(new Enter(loc,loc1,door, iface));
+		
+		loc = tunnel.getGrid().getLocationByCoordinates(7,0);
+		loc1 = myGrid.getLocationByCoordinates(0, 1);
+		Door door2 = new Door(loc1,loc,iface);
+		door2.setShortDescription("a door");
+		door2.setLongDescription("new world awaits you!");
+		door2.setSymbol("U");
+		Tunnel.getTunnelEntitymanager().setLocation(door2, loc);
+		entityManager.setLocation(door2, loc1);
+		door2.addAffordance(new Enter(loc,loc1,door2, iface));
+
 		
 		// Hogsmeade
 		loc = myGrid.getLocationByCoordinates(0, 0);
@@ -191,7 +217,7 @@ public class HPWorld extends World {
 		
 		// Dumbledore
 		loc = myGrid.getLocationByCoordinates(4,  5);
-		Direction [] patrolmoves = {CompassBearing.EAST, CompassBearing.WEST, //mh changed from CompassBearing.EAST, CompassBearing.east
+		Direction [] patrolmoves = {CompassBearing.EAST, CompassBearing.WEST, 
                 /*CompassBearing.SOUTH,
                 CompassBearing.WEST, CompassBearing.WEST,
                 CompassBearing.SOUTH,
@@ -201,7 +227,6 @@ public class HPWorld extends World {
 		dumbledore.learnSpell(new Expelliarmus());
 		dumbledore.learnSpell(new Immobulus());
 		dumbledore.learnSpell(new AvadaKedavra());
-		dumbledore.learnSpell(new Apparate());
 		Sword sword = new Sword(iface); //kz made changes to how dumbledore receives his sword and updated it so that it interacts correctly with expelliarmus
 		entityManager.setLocation(dumbledore, loc);
 		dumbledore.Inventory.add(sword);
@@ -215,7 +240,7 @@ public class HPWorld extends World {
 		loc = myGrid.getLocationByCoordinates(4,5);	
 		
 		// Harry
-		Player harry = new Player(Team.GOOD, 10000, iface, this);
+		Player harry = new Player(Team.GOOD, 10000, iface, this, tunnel);
 		harry.setShortDescription("Harry");
 		harry.setLongDescription("Harry Potter, the boy who lived");
 		entityManager.setLocation(harry, loc);
@@ -421,7 +446,7 @@ public class HPWorld extends World {
 
 	@SuppressWarnings("unchecked")
 	public EntityManager<HPEntityInterface, HPLocation> getEntityManager() {
-		return HPWorld.getEntitymanager();
+		return entityManager;
 	}
 	
 	/**
@@ -432,10 +457,33 @@ public class HPWorld extends World {
 	 * @param 	e the entity to find
 	 * @see 	{@link #entityManager}
 	 */
-	public static EntityManager<HPEntityInterface, HPLocation> myEntitymanager(HPEntityInterface e) {
-		return entityManager;
+	public static EntityManager<HPEntityInterface, HPLocation> myEntitymanager() {
+		if(Player.isPlayerInTunnel()){
+			return Tunnel.getTunnelEntitymanager();
+		} else {
+			return HPWorld.entityManager;
+		}
 	}
-//mmoh
+
+	/**
+	 * Provides a method to return the appropriate <code>EntityManager</code>, 
+	 * depending on the type of <code>HPEntityInterface</code>. 
+	 * 
+	 * @param <code>HPEntityInterface</code> e that represents the entity requesting the EntityManager
+	 * 
+	 * @return 	the <code>EntityManager</code> of where the <code>Player</code> or <code>HPEntityInterface</code> is
+	 * @see 	{@link #entityManager}
+	 */
+	
+	public static EntityManager<HPEntityInterface, HPLocation> myEntitymanager(HPEntityInterface e) {
+		if(Player.isPlayerInTunnel() && (e instanceof Player)){
+			return Tunnel.getTunnelEntitymanager();
+		} else {
+			return HPWorld.entityManager;
+		}
+	}
+	
+	
 	/**
 	 * Returns the <code>EntityManager</code> which keeps track of the <code>HPEntities</code> and
 	 * <code>HPLocations</code> in <code>HPWorld</code>.
@@ -447,8 +495,6 @@ public class HPWorld extends World {
 		return entityManager;
 	}
 	
-//mmoh
-	
 	/**
 	 * Makes all entities in HPWorld and Tunnel tick, and carry out their actions 
 	 * 
@@ -457,5 +503,6 @@ public class HPWorld extends World {
 	@Override
 	public void tick() {
 		entityManager.tick();
+		Tunnel.getTunnelEntitymanager().tick();
 	}
 }
