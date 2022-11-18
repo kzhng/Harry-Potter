@@ -1,3 +1,1 @@
-describe method is the same for testActor and player
-
-Refactor HPGridController and HPtextInterface
+A "rogue-like" text-based game set in the Harry Potter universe using Java
